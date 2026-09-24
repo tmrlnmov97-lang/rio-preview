@@ -2465,14 +2465,20 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 @media (min-width: 1024px) {
   .banner { display: none; }
   .hero {
-    display: flex; gap: var(--wl-sp-4); height: 239px; flex: none;
+    /* Высоту задаёт баннер своей пропорцией, а не жёсткие 239: при широкой
+       колонке он тянулся вширь при той же высоте и становился всё тоньше. */
+    display: flex; gap: var(--wl-sp-4); height: auto; flex: none;
   }
   /* Иначе display из этого правила перебивает атрибут hidden */
   .hero[hidden] { display: none; }
   .hero__banner {
     /* Растёт вместе с колонкой: при жёстких 737 герой не дотягивался до
        правого края на ширинах больше 1440. Карточки держат размер макета. */
-    position: relative; flex: 1 1 auto; min-width: 0; height: 238px; align-self: flex-start;
+    /* Пропорция арта 1474×476: высота считается от ширины, поэтому на
+       любой колонке баннер выглядит одинаково, а картинку не приходится
+       резать сильнее. На 1440 выходят прежние 238. */
+    position: relative; flex: 1 1 auto; min-width: 0;
+    aspect-ratio: 1474 / 476; height: auto; align-self: stretch;
     margin-top: .5px; overflow: hidden;
     /* Радиус 24 — значение фрейма 1118:12299, а не 18 от карточек.
        Обводка и скругление живут только здесь: в выгруженной картинке их нет.
@@ -2674,9 +2680,11 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   .hero__soc img { display: block; width: 20px; height: 20px; }
 
   /* 1122:15006 / 1125:15026 — карточки 351x128 */
-  .hero__side { flex: 0 0 351px; display: flex; flex-direction: column; gap: var(--wl-sp-4); }
+  /* Карточки тянутся по высоте баннера и делят её поровну */
+  .hero__side { flex: 0 0 351px; display: flex; flex-direction: column; gap: var(--wl-sp-4);
+                align-self: stretch; }
   .hcard {
-    position: relative; height: 111px; overflow: hidden;
+    position: relative; flex: 1 1 0; height: auto; min-height: 0; overflow: hidden;
     --hcard-r: 18px; border-radius: var(--hcard-r); isolation: isolate;
     /* см. пояснение к clip-path у мобильной карточки: одним overflow WebKit
        не обрезает слой с mix-blend-mode и фильтром */
@@ -2712,7 +2720,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 
 @media (min-width: 1024px) {
   /* 1125:15026 — вторая карточка на пиксель выше первой, так в макете */
-  .hcard--sport { height: 112px; }
+  /* высота теперь делится поровну флексом, жёсткое значение убрано */
 }
 
 /* Смена страницы: короткое проявление вместо мгновенной подмены.
