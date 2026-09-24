@@ -506,7 +506,8 @@ body.nav-rail .nav-toggle::before { transform: scaleX(-1); }
   position: fixed; left: 0; top: 78px; bottom: 0;
   display: none; flex-direction: column;
   width: var(--wl-nav);
-  padding: var(--wl-sp-3);
+  /* Поля убраны: карточка меню идёт вровень с краем экрана. */
+  padding: 0;
   transition: width .24s cubic-bezier(.4, 0, .2, 1);
   background: transparent;
   z-index: 2;
