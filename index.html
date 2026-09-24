@@ -527,9 +527,10 @@ body.nav-rail .sidebar__top .cat-buttons { display: none; }
   position: fixed; left: 0; top: 0; bottom: 0;
   display: none; flex-direction: column;
   width: var(--wl-nav);
-  /* Поле 8, а не 12: у Stake карточка отступает от края колонки на 16 при
-     колонке 490 — в наши 252 это ровно 8. */
-  padding: 0 var(--wl-sp-2) var(--wl-sp-2);
+  /* Поле 16. В прошлый раз я посчитал колонку Stake как 490 и получил 8 —
+     ошибся: карточка у них 32…487, то есть колонка 520, и поле выходит 15.5.
+     Округляем до 16. */
+  padding: 0 var(--wl-sp-4) var(--wl-sp-4);
   transition: width .24s cubic-bezier(.4, 0, .2, 1);
   background: transparent;
   z-index: 2;
@@ -552,14 +553,17 @@ body.nav-rail .sidebar__top .cat-buttons { display: none; }
 }
 /* 860:5898. В макете между группами зазор 230px и нижняя группа прижата к низу.
    По решению заказчика язык и поддержка подняты к навигации — расхождение осознанное. */
-.sidebar__inner  { display: flex; flex-direction: column; gap: 6px; width: 100%; flex: 0 1 auto; min-height: 0; padding: var(--wl-sp-2) 0; }
+/* Вертикальных полей нет: у Stake первый пункт начинается в 13.6 от верха
+   карточки, и это целиком воздух внутри самой строки пункта. Наши 8+8
+   добавляли сверху ещё 16, и первый пункт стоял на 29. */
+.sidebar__inner  { display: flex; flex-direction: column; gap: 6px; width: 100%; flex: 0 1 auto; min-height: 0; padding: 0; }
 /* 860:5900 — сама навигация, шаг 2.
    min-height равен высоте раскрытого меню из макета (600). Благодаря этому
    при сворачивании раздела нижняя группа остаётся на месте, а не подпрыгивает.
    Если какой-то раздел раскроется сверх этой высоты — группа сместится вниз. */
 /* Прокручивается только навигация. Карточка и нижняя группа стоят на месте. */
 .sidebar__nav {
-  display: flex; flex-direction: column; gap: var(--wl-sp-1); width: 100%; padding-block: 8px;
+  display: flex; flex-direction: column; gap: var(--wl-sp-1); width: 100%; padding-block: 0;
   flex: 0 1 auto; min-height: 0;
   overflow-y: auto; overscroll-behavior: contain;
   scrollbar-width: thin; scrollbar-color: var(--wl-w-18) transparent;
