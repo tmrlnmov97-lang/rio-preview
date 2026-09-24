@@ -489,6 +489,18 @@ body.nav-rail .sidebar__top .cat-buttons { display: none; }
 .nav-toggle:hover { background: var(--wl-bg-hover); color: var(--wl-text); }
 .nav-toggle:active { background: var(--wl-bg-active); }
 .logo { width: 156px; height: 55px; display: block; }
+/* Заглушка под будущий знак: пунктирная рамка читается как «здесь будет
+   логотип» и не притворяется готовым знаком. */
+.logo--ph {
+  display: flex; align-items: center; justify-content: center;
+  /* На мобильной слот знака 120, а заглушка 156 — без ограничения её
+     обрезало слева. */
+  max-width: 100%;
+  border: 1px dashed var(--wl-line-strong); border-radius: var(--wl-r-sm);
+  color: var(--wl-text-dim); font-size: var(--wl-fs-sm);
+  font-weight: var(--wl-fw-semibold); letter-spacing: 2px; text-transform: uppercase;
+  user-select: none;
+}
 
 .header-desktop {
   display: flex; align-items: center; justify-content: space-between;
@@ -6585,7 +6597,10 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
   <header class="topbar" data-node-id="860:5725">
     <div class="topbar__brand" data-node-id="860:6106">
       <div class="topbar__logo-wrap" data-node-id="860:6113">
-        <img class="logo" src="a/0d526d6016.svg" alt="RioBet">
+        <!-- Заглушка вместо знака: логотипа у Рио ещё нет, а прежний
+             варвиновский вводил в заблуждение. Габариты те же, 156×55,
+             чтобы раскладка шапки не поехала. -->
+        <span class="logo logo--ph" role="img" aria-label="Место под логотип">ЛОГО</span>
       </div>
     </div>
 
