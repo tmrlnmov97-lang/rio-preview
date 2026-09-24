@@ -1408,7 +1408,11 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
      Знак вынут из потока — иначе он оттягивал бы центр на себя и
      чипы с кнопками перестали бы делить остаток поровну. */
   .topbar__brand {
-    position: absolute; left: 50%; transform: translateX(-50%);
+    /* Центр не экрана, а колонки контента: её левый край зависит от ширины
+       меню, поэтому знак сам едет вместе с ней при сворачивании. */
+    position: absolute;
+    left: calc((var(--wl-nav) + 44px + 100% - 40px) / 2);
+    transform: translateX(-50%);
     width: auto; padding-left: 0; pointer-events: none;
   }
   .topbar__brand .logo { pointer-events: auto; }
