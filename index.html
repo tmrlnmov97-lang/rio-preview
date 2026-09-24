@@ -926,6 +926,20 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   border-radius: var(--wl-r-lg); overflow: hidden;
   background-image: linear-gradient(181.26deg, var(--banner-a) 2.83%, var(--banner-b) 28.46%, var(--banner-c) 86.84%);
 }
+/* Заглушка вместо баннера: те же габариты, но пунктирная рамка и
+   подпись — видно, что место зарезервировано, а содержимого ещё нет.
+   Внутренний отступ слева в 299 убираем: он был под арт с девушкой. */
+.bonus--ph {
+  justify-content: center; padding: var(--wl-sp-5);
+  background-image: none; background: transparent;
+  border: 1px dashed var(--wl-line-strong);
+}
+.bonus__ph-label {
+  color: var(--wl-text-dim); font-size: var(--wl-fs-md);
+  font-weight: var(--wl-fw-semibold); letter-spacing: 2px; text-transform: uppercase;
+  user-select: none;
+}
+
 .bonus__bg { position: absolute; left: 0; right: 15px; top: 0; height: 206px; overflow: hidden; opacity: .2; pointer-events: none; }
 .bonus__bg img { position: absolute; left: -82.09%; top: -278.64%; width: 182.09%; height: 384.95%; max-width: none; display: block; }
 .bonus__girl { position: absolute; left: 32px; top: -25px; width: 206px; height: 532px; overflow: hidden; pointer-events: none; }
@@ -1897,6 +1911,10 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
     background-image: linear-gradient(182.6deg,
       var(--banner-a) 2.83%, var(--banner-b) 28.46%, var(--banner-c) 86.84%);
   }
+  /* Заглушка и на мобильной без градиента: правило .bonus выше перебивало
+     общий стиль заглушки, потому что стоит ниже по файлу. */
+  .bonus--ph { padding: var(--wl-sp-4); align-items: center;
+               background-image: none; background: transparent; }
   .bonus__bg { display: none; }
   /* 925:2742 — окно 103x272 на (23,2); картинка внутри сдвинута по процентам */
   .bonus__girl { left: 23px; top: 2px; width: 103px; height: 272px; }
@@ -7196,14 +7214,11 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
               <div class="lc__info" style="background-image:linear-gradient(to bottom, rgba(0,0,0,0), #fea20f)"><div class="lc__name">DRAGON TIGER</div><p class="lc__provider">EVOLUTION</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
           </div>
-        <section class="bonus" data-node-id="891:2999">
-          <div class="bonus__bg"><img loading="lazy" decoding="async" src="a/19dd4c202d.webp" alt=""></div>
-          <div class="bonus__girl"><img loading="lazy" decoding="async" src="a/bfecd8692c.webp" alt=""></div>
-          <div class="bonus__copy">
-            <h2 class="bonus__title">100% CASINO BONUS</h2>
-            <p class="bonus__sub">Buy Bonus Buys <br class="only-mobile">Before You Play</p>
-          </div>
-          <button class="bonus__cta" data-fgo="auth:reg"><span class="only-desktop">BUY BONUS NOW!</span><span class="only-mobile">Join now</span></button>
+        <!-- Место под баннер. Прежний «100% CASINO BONUS» снят: он был
+             варвиновский, со своим артом и текстом. Заглушка держит те же
+             габариты, чтобы соседние блоки не съехали. -->
+        <section class="bonus bonus--ph" data-node-id="891:2999">
+          <span class="bonus__ph-label">ЗДЕСЬ БУДЕТ БАННЕР</span>
         </section>
 
       </div>
