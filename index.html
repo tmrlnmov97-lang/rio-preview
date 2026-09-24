@@ -541,13 +541,18 @@ body.nav-rail .sidebar__top .cat-buttons { display: none; }
    а не обрезается по содержимому. */
 .sidebar__menu {
   display: flex; flex-direction: column; align-items: stretch;
-  width: 100%; flex: 1 1 auto; min-height: 0; background: var(--wl-bg-chrome);
+  /* flex: 0 1 auto — карточка ростом по содержимому: у Stake она кончается
+     сразу после последнего пункта, а ниже идёт фон страницы. С 1 1 auto она
+     растягивалась до низа экрана и под пунктами висело пустое поле.
+     Сжиматься при этом разрешаем: если пунктов станет больше высоты окна,
+     внутри включится прокрутка. */
+  width: 100%; flex: 0 1 auto; min-height: 0; background: var(--wl-bg-chrome);
   /* Радиус 8, а не 16: у Stake скругление втрое меньше поля. */
   border-radius: var(--wl-r-sm); overflow: hidden;
 }
 /* 860:5898. В макете между группами зазор 230px и нижняя группа прижата к низу.
    По решению заказчика язык и поддержка подняты к навигации — расхождение осознанное. */
-.sidebar__inner  { display: flex; flex-direction: column; gap: 6px; width: 100%; flex: 1 1 auto; min-height: 0; padding: var(--wl-sp-2) 0; }
+.sidebar__inner  { display: flex; flex-direction: column; gap: 6px; width: 100%; flex: 0 1 auto; min-height: 0; padding: var(--wl-sp-2) 0; }
 /* 860:5900 — сама навигация, шаг 2.
    min-height равен высоте раскрытого меню из макета (600). Благодаря этому
    при сворачивании раздела нижняя группа остаётся на месте, а не подпрыгивает.
@@ -555,7 +560,7 @@ body.nav-rail .sidebar__top .cat-buttons { display: none; }
 /* Прокручивается только навигация. Карточка и нижняя группа стоят на месте. */
 .sidebar__nav {
   display: flex; flex-direction: column; gap: var(--wl-sp-1); width: 100%; padding-block: 8px;
-  flex: 1 1 auto; min-height: 0;
+  flex: 0 1 auto; min-height: 0;
   overflow-y: auto; overscroll-behavior: contain;
   scrollbar-width: thin; scrollbar-color: var(--wl-w-18) transparent;
 }
