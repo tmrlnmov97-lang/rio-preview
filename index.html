@@ -457,7 +457,9 @@ body {
    у шапки, чтобы встать на один уровень с логотипом. */
 .sidebar__top {
   display: flex; align-items: center; gap: var(--wl-sp-2);
-  flex: none; height: 74px; padding: 0 var(--wl-sp-3);
+  /* 60, а не 74: у Stake строка чипов стоит выше середины шапки, и
+     карточка начинается на 72. Боковых полей нет — их задаёт колонка. */
+  flex: none; height: 60px; padding: 0;
   margin-bottom: var(--wl-sp-3);
 }
 .sidebar__top .cat-buttons { flex: 1 1 auto; min-width: 0; gap: var(--wl-sp-2); }
@@ -520,8 +522,10 @@ body.nav-rail .sidebar__top .cat-buttons { display: none; }
   position: fixed; left: 0; top: 0; bottom: 0;
   display: none; flex-direction: column;
   width: var(--wl-nav);
-  /* Поля убраны: карточка меню идёт вровень с краем экрана. */
-  padding: 0;
+  /* Поля есть: карточка вставлена внутрь колонки, и тёмная подложка
+     обрамляет её слева, справа и снизу. У Stake поля 28 и 32 при колонке
+     516 — в наши 252 это 14 и 16, берём 16 из шкалы. */
+  padding: 0 var(--wl-sp-4) var(--wl-sp-4);
   transition: width .24s cubic-bezier(.4, 0, .2, 1);
   /* Свой тон, темнее всего остального. У Stake тёмная только левая полоса:
      колонка #12202c против #1c2b38 у шапки, карточки и полотна. */
@@ -536,9 +540,9 @@ body.nav-rail .sidebar__top .cat-buttons { display: none; }
 .sidebar__menu {
   display: flex; flex-direction: column; align-items: stretch;
   width: 100%; flex: 1 1 auto; min-height: 0; background: var(--wl-bg-chrome);
-  /* Верх не скругляем: карточка стыкуется с шапкой, круглые углы там
-     читались бы как щель. Низ упирается в край окна — тоже прямой. */
-  border-radius: 0; overflow: hidden;
+  /* Карточка с шапкой больше не стыкуется — между ними тёмная полоса,
+     поэтому скругление вернулось. */
+  border-radius: var(--wl-r-sm); overflow: hidden;
 }
 /* 860:5898. В макете между группами зазор 230px и нижняя группа прижата к низу.
    По решению заказчика язык и поддержка подняты к навигации — расхождение осознанное. */
