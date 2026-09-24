@@ -449,7 +449,9 @@ body {
    элементам нужно 252 при доступных 228. */
 .sidebar__top {
   display: flex; align-items: center; gap: var(--wl-sp-2);
-  flex: none; margin-bottom: var(--wl-sp-3);
+  /* Высота ровно как у шапки: бургер и чипы встают на один уровень с
+     логотипом и кнопками входа, а карточка ниже — на прежние 90. */
+  flex: none; height: 74px; margin-bottom: var(--wl-sp-4);
 }
 .sidebar__top .nav-toggle { width: 32px; height: 32px; }
 .sidebar__top .cat-buttons { flex: 1 1 auto; min-width: 0; gap: var(--wl-sp-2); }
@@ -518,12 +520,13 @@ body.nav-rail .sidebar__top .cat-buttons { display: none; }
 
 /* ─────────────── Сайдбар · 252×1254, y=76 ─────────────── */
 .sidebar {
-  /* Карточка меню отделена от шапки, как у Stake: зазор 16 сверху и
-     поля 12 по бокам. Мерил по их скриншоту — там те же доли колонки. */
-  position: fixed; left: 0; top: 78px; bottom: 0;
+  /* Колонка идёт от самого верха страницы: шапка её не накрывает, она
+     начинается правее. Так устроен Stake — на высоте шапки слева от
+     колонки у них цвет страницы, а не панели. */
+  position: fixed; left: 0; top: 0; bottom: 0;
   display: none; flex-direction: column;
   width: var(--wl-nav);
-  padding: var(--wl-sp-3);
+  padding: 0 var(--wl-sp-3) var(--wl-sp-3);
   transition: width .24s cubic-bezier(.4, 0, .2, 1);
   background: transparent;
   z-index: 2;
@@ -1424,19 +1427,13 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
      уходят влево и встают над меню, действия остаются справа.
      Знак вынут из потока — иначе он оттягивал бы центр на себя и
      чипы с кнопками перестали бы делить остаток поровну. */
-  .topbar__brand {
-    /* Знак начинается там же, где колонка контента, — по левому краю
-       баннера. Считаем от ширины меню, поэтому при сворачивании знак
-       едет вместе с колонкой. */
-    position: absolute;
-    /* Нижний предел — правый край чипов плюс зазор: при свёрнутом меню
-       колонка уезжает на 128, и знак лёг бы поверх CASINO и SPORTS. */
-    left: max(calc(var(--wl-nav) + 44px), 239px);
-    width: auto; padding-left: 0; pointer-events: none;
-  }
-  .topbar__brand .logo { pointer-events: auto; }
-  /* Чипы садятся на колонку меню: тот же левый отступ, что у карточки. */
-  .topbar { padding-left: var(--wl-sp-4); }
+  /* Знак снова в потоке: шапка сама начинается на сетке, догонять нечего.
+     Прежний абсолютный left с полом в 239 к тому же расходился с колонкой
+     при свёрнутой панели — контент уезжал на 128, а знак оставался. */
+  .topbar__brand { width: auto; padding-left: 0; }
+  /* Шапка стоит только над контентом, слева от неё — колонка меню.
+     Левый край считаем тем же выражением, что у .content ниже. */
+  .topbar { left: calc(var(--wl-nav) + 44px); }
   .header-desktop { margin-left: 0; }
   /* 296 = 252 панели + 44 зазора. Считаем от --nav-w, чтобы при сворачивании
      колонка сама подъезжала влево без второго набора правил. */
