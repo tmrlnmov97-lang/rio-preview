@@ -430,7 +430,10 @@ body {
   position: fixed; left: 0; right: 0; top: 0;
   display: flex; align-items: center; gap: var(--wl-sp-6);
   width: auto; height: 74px; padding-right: var(--wl-sp-5);
-  background: var(--wl-bg-chrome);
+  /* Плашки у шапки нет — цвет полотна, а не своя поверхность. Именно
+     цвет, а не transparent: шапка закреплена сверху, и сквозь прозрачную
+     на неё наезжали бы карточки игр при прокрутке. */
+  background: var(--wl-bg-page);
   z-index: 20;
 }
 /* 860:6106 — слот 235px, внутри 860:6113: только логотип, отступ 20 слева,
