@@ -2554,9 +2554,32 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
      прежнего двухстрочного заголовка, этому нужно 376 в одну строку; колонка
      440, место есть. Не nowrap: переводы длиннее английского, пусть переносятся
      сами. Подпись в макете светлая, а не акцентная. */
-  .hero__copy--guest .hero__title { width: 400px; }
-  .hero__copy--guest .hero__sub   { font-size: var(--wl-fs-2xl); line-height: var(--wl-lh-2xl);
-                                    color: var(--wl-text-muted); }
+  /* 1753:13976 «Gate of Olympus» — гостевой баннер, значения из макета:
+     текстовый блок в 40,41, шаг между строками 16, до кнопки 50.
+     Интерлиньяж у обеих строк 26 при кеглях 37 и 26 — в Figma коробка
+     обжата по капители, поэтому строки идут плотнее кегля. */
+  /* gap колонки гасим: расстояние до кнопки задаёт сама строка, иначе
+     к её 50 прибавлялись общие 32 и кнопка уезжала на 191 вместо 159. */
+  .hero__copy--guest { left: 40px; top: 41px; width: 322px; gap: 0; }
+  .hero__copy--guest .hero__text { gap: 16px; }
+  .hero__copy--guest .hero__title {
+    margin: 0; width: 100%; font-weight: var(--wl-fw-semibold);
+    font-size: 37px; line-height: 26px; letter-spacing: -1.85px; color: #eef8fe;
+  }
+  .hero__copy--guest .hero__sub {
+    margin: 0; width: 100%; font-weight: 300;
+    font-size: 26px; line-height: 26px; letter-spacing: -.52px; color: #eef8fe;
+  }
+  .hero__copy--guest .hero__row { margin-top: 50px; height: 40px; }
+  /* 1753:13973 — кнопка белая с чёрной надписью, 114×40, радиус 10.
+     Общий янтарь сюда не идёт: в макете она белая. */
+  .hero__copy--guest .hero__cta {
+    width: 114px; height: 40px; border-radius: 10px; padding: 0;
+    background: #fff; color: #000;
+    font-weight: var(--wl-fw-medium); font-size: var(--wl-fs-sm);
+  }
+  .hero__copy--guest .hero__cta:hover  { background: #e6e7ea; }
+  .hero__copy--guest .hero__cta:active { background: #d2d4d9; }
   .hero__row { display: flex; align-items: center; gap: var(--wl-sp-2); height: 40px; }
   .hero__cta {
     display: flex; align-items: center; justify-content: center;
