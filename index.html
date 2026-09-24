@@ -443,24 +443,21 @@ body {
 /* Кнопка сворачивания сидит на правом крае панели, как у 1win: половина
    круга заходит на панель, половина в зазор до контента. Стрелки смотрят
    в ту сторону, куда панель уедет. */
+/* Бургер в шапке, первым слева — над колонкой меню, как у Stake.
+   Прежде это был круг на правом крае панели: он наезжал на пункты меню
+   и закрывал строку. Ниже 1024 панели нет, поэтому и кнопки нет. */
 .nav-toggle {
-  /* Круг садится ровно на правый край карточки меню, а не на край самой
-     панели: у той ещё 12px поля, и кнопка висела в воздухе рядом с углом.
-     right = поле панели − половина круга. */
-  position: absolute; right: calc(var(--pad, 12px) - 15px); top: 61px; z-index: 3;
-  display: flex; align-items: center; justify-content: center;
-  width: 30px; height: 30px; border-radius: var(--wl-r-round);
-  background: var(--wl-bg-field); border: 1px solid var(--wl-w-12);
-  box-shadow: 0 4px 12px -4px rgba(0, 0, 0, .6);
+  display: none; flex: none;
+  align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: var(--wl-r-md);
+  background: transparent; border: 0; box-shadow: none;
   color: var(--wl-text-muted);
 }
 .nav-toggle::before {
-  content: ''; width: 15px; height: 15px; background: currentColor;
-  -webkit-mask: var(--ico-chevrons) center / contain no-repeat;
-  mask: var(--ico-chevrons) center / contain no-repeat;
+  content: ''; width: 22px; height: 22px; background: currentColor;
+  -webkit-mask: url(a/7aae139d08.svg) center / contain no-repeat;
+  mask: url(a/7aae139d08.svg) center / contain no-repeat;
 }
-/* Свернули — стрелки разворачиваются наружу, кнопка теперь разворачивает */
-body.nav-rail .nav-toggle::before { transform: scaleX(-1); }
 .nav-toggle:hover { background: var(--wl-bg-hover); color: var(--wl-text); }
 .nav-toggle:active { background: var(--wl-bg-active); }
 .logo { width: 156px; height: 55px; display: block; }
@@ -503,13 +500,12 @@ body.nav-rail .nav-toggle::before { transform: scaleX(-1); }
 
 /* ─────────────── Сайдбар · 252×1254, y=76 ─────────────── */
 .sidebar {
-  /* Вплотную к шапке: её высота 74, зазора между ними больше нет —
-     колонка меню продолжает шапку, как у Stake. */
-  position: fixed; left: 0; top: 74px; bottom: 0;
+  /* Карточка меню отделена от шапки, как у Stake: зазор 16 сверху и
+     поля 12 по бокам. Мерил по их скриншоту — там те же доли колонки. */
+  position: fixed; left: 0; top: 78px; bottom: 0;
   display: none; flex-direction: column;
   width: var(--wl-nav);
-  /* Поля убраны: карточка меню идёт вровень с краем экрана. */
-  padding: 0;
+  padding: var(--wl-sp-3);
   transition: width .24s cubic-bezier(.4, 0, .2, 1);
   background: transparent;
   z-index: 2;
@@ -522,9 +518,8 @@ body.nav-rail .nav-toggle::before { transform: scaleX(-1); }
 .sidebar__menu {
   display: flex; flex-direction: column; align-items: stretch;
   width: 100%; flex: 1 1 auto; min-height: 0; background: var(--wl-bg-chrome);
-  /* Верх не скругляем: карточка стыкуется с шапкой, круглые углы там
-     читались бы как щель. Низ упирается в край окна — тоже прямой. */
-  border-radius: 0; overflow: hidden;
+  /* Радиус 8, а не 16: у Stake скругление втрое меньше поля. */
+  border-radius: var(--wl-r-sm); overflow: hidden;
 }
 /* 860:5898. В макете между группами зазор 230px и нижняя группа прижата к низу.
    По решению заказчика язык и поддержка подняты к навигации — расхождение осознанное. */
@@ -1403,6 +1398,11 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 /* lg — с этой ширины появляется сайдбар и включается раскладка макета */
 @media (min-width: 1024px) {
   .sidebar { display: flex; }
+  .nav-toggle { display: flex; }
+  /* Бургер и чипы — одна левая группа. У .header-desktop раздача
+     space-between, и с появлением четвёртого ребёнка чипы уезжали
+     на середину; auto-поле снова прижимает остальных вправо. */
+  .cat-buttons { margin-right: auto; }
   /* Раскладка шапки как у Stake: знак по центру экрана, CASINO и SPORTS
      уходят влево и встают над меню, действия остаются справа.
      Знак вынут из потока — иначе он оттягивал бы центр на себя и
@@ -6548,6 +6548,10 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
     </div>
 
     <div class="header-desktop">
+      <!-- Бургер сворачивает панель в колонку иконок. Стоит первым в шапке,
+           над самим меню, как у Stake. -->
+      <button class="nav-toggle" type="button" aria-label="Collapse menu"
+              aria-expanded="true" aria-controls="sidebar"></button>
       <nav class="cat-buttons">
         <a class="cat-tab" href="#">
           <span class="cat-tab__icon">
@@ -6591,10 +6595,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
 
   <!-- ═══════════ Сайдбар ═══════════ -->
   <aside class="sidebar" id="sidebar" data-node-id="860:5895">
-    <!-- Сворачивает панель в колонку иконок. Сидит на её правом крае,
-         как у 1win: стрелки смотрят в ту сторону, куда поедет панель. -->
-    <button class="nav-toggle" type="button" aria-label="Collapse menu"
-            aria-expanded="true" aria-controls="sidebar"></button>
     <div class="sidebar__menu" data-node-id="860:5897">
       <!-- 860:5898 — две группы, между ними зазор 230 -->
       <div class="sidebar__inner" data-node-id="860:5898">
