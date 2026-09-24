@@ -455,17 +455,17 @@ body {
 }
 /* Строка над карточкой: бургер и два раздела верхнего уровня. Высота как
    у шапки, чтобы встать на один уровень с логотипом. */
+/* Первая строка карточки меню: бургер и два раздела верхнего уровня.
+   Живёт внутри карточки, на её фоне — колонка так читается одним тоном,
+   без стыка между «чёрным верхом» и «серым низом». */
 .sidebar__top {
-  display: flex; align-items: center; gap: var(--wl-sp-2);
-  /* 60, а не 74: у Stake строка чипов стоит выше середины шапки, и
-     карточка начинается на 72. Боковых полей нет — их задаёт колонка. */
-  flex: none; height: 60px; padding: 0;
-  margin-bottom: var(--wl-sp-3);
+  display: flex; align-items: center; gap: var(--wl-sp-1);
+  flex: none; height: 56px; padding: 0 var(--wl-sp-2); margin-bottom: 0;
 }
-.sidebar__top .cat-buttons { flex: 1 1 auto; min-width: 0; gap: var(--wl-sp-2); }
+.sidebar__top .cat-buttons { flex: 1 1 auto; min-width: 0; gap: var(--wl-sp-1); }
 .sidebar__top .cat-tab {
   flex: 1 1 0; min-width: 0; justify-content: center;
-  padding: var(--wl-sp-2); gap: var(--wl-sp-2);
+  padding: var(--wl-sp-2) var(--wl-sp-1); gap: var(--wl-sp-1);
 }
 /* Свёрнутая панель: остаётся один бургер по центру колонки */
 body.nav-rail .sidebar__top { justify-content: center; padding-inline: 0; }
@@ -525,11 +525,12 @@ body.nav-rail .sidebar__top .cat-buttons { display: none; }
   /* Поля есть: карточка вставлена внутрь колонки, и тёмная подложка
      обрамляет её слева, справа и снизу. У Stake поля 28 и 32 при колонке
      516 — в наши 252 это 14 и 16, берём 16 из шкалы. */
-  padding: 0 var(--wl-sp-4) var(--wl-sp-4);
+  padding: var(--wl-sp-2);
   transition: width .24s cubic-bezier(.4, 0, .2, 1);
-  /* Свой тон, темнее всего остального. У Stake тёмная только левая полоса:
-     колонка #12202c против #1c2b38 у шапки, карточки и полотна. */
-  background: var(--wl-bg-sunken);
+  /* Фон страницы, а не отдельный тёмный: у Stake колонка и есть полотно,
+     светлая только карточка. Отдельный тон давал шаг в 19 единиц —
+     верх колонки читался чёрным, низ серым. Теперь шаг 9, как у них 10. */
+  background: transparent;
   z-index: 2;
   /* Скролл живёт внутри карточки, а сама панель ничего не обрезает:
      кнопка сворачивания наполовину выходит за её правый край. */
@@ -6603,26 +6604,26 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
 
   <!-- ═══════════ Сайдбар ═══════════ -->
   <aside class="sidebar" id="sidebar" data-node-id="860:5895">
-    <!-- Бургер и разделы верхнего уровня: верх тёмной колонки, на одном
-         уровне с логотипом — как у Stake. -->
-    <div class="sidebar__top">
-      <button class="nav-toggle" type="button" aria-label="Collapse menu"
-              aria-expanded="true" aria-controls="sidebar"></button>
-      <nav class="cat-buttons">
-        <a class="cat-tab" href="#">
-          <span class="cat-tab__icon">
-            <img src="a/dd57cc1252.svg" alt="" style="inset:0 0 16.3% 46.46%">
-            <img src="a/1904eb85cf.svg" alt="" style="inset:14.22% 31.26% 0 0">
-          </span>
-          <span class="cat-tab__label">CASINO</span>
-        </a>
-        <a class="cat-tab" href="#">
-          <span class="cat-tab__icon"><img src="a/ca02f2e00c.svg" alt="" style="inset:0 0.03% 0 0.02%"></span>
-          <span class="cat-tab__label">SPORTS</span>
-        </a>
-      </nav>
-    </div>
     <div class="sidebar__menu" data-node-id="860:5897">
+      <!-- Бургер и разделы верхнего уровня: верх тёмной колонки, на одном
+           уровне с логотипом — как у Stake. -->
+      <div class="sidebar__top">
+        <button class="nav-toggle" type="button" aria-label="Collapse menu"
+                aria-expanded="true" aria-controls="sidebar"></button>
+        <nav class="cat-buttons">
+          <a class="cat-tab" href="#">
+            <span class="cat-tab__icon">
+              <img src="a/dd57cc1252.svg" alt="" style="inset:0 0 16.3% 46.46%">
+              <img src="a/1904eb85cf.svg" alt="" style="inset:14.22% 31.26% 0 0">
+            </span>
+            <span class="cat-tab__label">CASINO</span>
+          </a>
+          <a class="cat-tab" href="#">
+            <span class="cat-tab__icon"><img src="a/ca02f2e00c.svg" alt="" style="inset:0 0.03% 0 0.02%"></span>
+            <span class="cat-tab__label">SPORTS</span>
+          </a>
+        </nav>
+      </div>
       <!-- 860:5898 — две группы, между ними зазор 230 -->
       <div class="sidebar__inner" data-node-id="860:5898">
 
