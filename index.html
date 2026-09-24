@@ -542,9 +542,9 @@ body.nav-rail .sidebar__top .cat-buttons { display: none; }
    а не обрезается по содержимому. */
 .sidebar__menu {
   display: flex; flex-direction: column; align-items: stretch;
-  /* На ступень светлее: на --wl-bg-chrome карточка отличалась от полотна
-     всего на 9 единиц яркости и сливалась с ним. На --wl-bg-raised — 19. */
-  width: 100%; flex: 1 1 auto; min-height: 0; background: var(--wl-bg-raised);
+  /* #1d1e20 — цвет прислан пипеткой. Осветление до --wl-bg-raised
+     отменено: разница с полотном снова 9 единиц, так и задумано. */
+  width: 100%; flex: 1 1 auto; min-height: 0; background: var(--wl-bg-chrome);
   /* Карточка с шапкой больше не стыкуется — между ними тёмная полоса,
      поэтому скругление вернулось. */
   border-radius: var(--wl-r-sm); overflow: hidden;
