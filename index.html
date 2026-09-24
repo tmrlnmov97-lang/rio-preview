@@ -443,24 +443,36 @@ body {
 /* Кнопка сворачивания сидит на правом крае панели, как у 1win: половина
    круга заходит на панель, половина в зазор до контента. Стрелки смотрят
    в ту сторону, куда панель уедет. */
+/* Бургер в верху колонки, слева от чипов — как у Stake. Прежде это был
+   круг на правом крае панели: он наезжал на пункты меню. Ниже 1024
+   панели нет, поэтому и кнопки нет. */
 .nav-toggle {
-  /* Круг садится ровно на правый край карточки меню, а не на край самой
-     панели: у той ещё 12px поля, и кнопка висела в воздухе рядом с углом.
-     right = поле панели − половина круга. */
-  position: absolute; right: calc(var(--pad, 12px) - 15px); top: 61px; z-index: 3;
-  display: flex; align-items: center; justify-content: center;
-  width: 30px; height: 30px; border-radius: var(--wl-r-round);
-  background: var(--wl-bg-field); border: 1px solid var(--wl-w-12);
-  box-shadow: 0 4px 12px -4px rgba(0, 0, 0, .6);
+  display: none; flex: none;
+  align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: var(--wl-r-md);
+  background: transparent; border: 0; box-shadow: none;
   color: var(--wl-text-muted);
 }
-.nav-toggle::before {
-  content: ''; width: 15px; height: 15px; background: currentColor;
-  -webkit-mask: var(--ico-chevrons) center / contain no-repeat;
-  mask: var(--ico-chevrons) center / contain no-repeat;
+/* Строка над карточкой: бургер и два раздела верхнего уровня. Высота как
+   у шапки, чтобы встать на один уровень с логотипом. */
+.sidebar__top {
+  display: flex; align-items: center; gap: var(--wl-sp-2);
+  flex: none; height: 74px; padding: 0 var(--wl-sp-3);
+  margin-bottom: var(--wl-sp-3);
 }
-/* Свернули — стрелки разворачиваются наружу, кнопка теперь разворачивает */
-body.nav-rail .nav-toggle::before { transform: scaleX(-1); }
+.sidebar__top .cat-buttons { flex: 1 1 auto; min-width: 0; gap: var(--wl-sp-2); }
+.sidebar__top .cat-tab {
+  flex: 1 1 0; min-width: 0; justify-content: center;
+  padding: var(--wl-sp-2); gap: var(--wl-sp-2);
+}
+/* Свёрнутая панель: остаётся один бургер по центру колонки */
+body.nav-rail .sidebar__top { justify-content: center; padding-inline: 0; }
+body.nav-rail .sidebar__top .cat-buttons { display: none; }
+.nav-toggle::before {
+  content: ''; width: 22px; height: 22px; background: currentColor;
+  -webkit-mask: url(a/7aae139d08.svg) center / contain no-repeat;
+  mask: url(a/7aae139d08.svg) center / contain no-repeat;
+}
 .nav-toggle:hover { background: var(--wl-bg-hover); color: var(--wl-text); }
 .nav-toggle:active { background: var(--wl-bg-active); }
 .logo { width: 156px; height: 55px; display: block; }
@@ -503,15 +515,17 @@ body.nav-rail .nav-toggle::before { transform: scaleX(-1); }
 
 /* ─────────────── Сайдбар · 252×1254, y=76 ─────────────── */
 .sidebar {
-  /* Вплотную к шапке: её высота 74, зазора между ними больше нет —
-     колонка меню продолжает шапку, как у Stake. */
-  position: fixed; left: 0; top: 74px; bottom: 0;
+  /* Колонка идёт от самого верха: шапка её не накрывает, она начинается
+     правее. Верхний угол принадлежит колонке — там бургер и чипы. */
+  position: fixed; left: 0; top: 0; bottom: 0;
   display: none; flex-direction: column;
   width: var(--wl-nav);
   /* Поля убраны: карточка меню идёт вровень с краем экрана. */
   padding: 0;
   transition: width .24s cubic-bezier(.4, 0, .2, 1);
-  background: transparent;
+  /* Свой тон, темнее всего остального. У Stake тёмная только левая полоса:
+     колонка #12202c против #1c2b38 у шапки, карточки и полотна. */
+  background: var(--wl-bg-sunken);
   z-index: 2;
   /* Скролл живёт внутри карточки, а сама панель ничего не обрезает:
      кнопка сворачивания наполовину выходит за её правый край. */
@@ -1407,17 +1421,14 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
      уходят влево и встают над меню, действия остаются справа.
      Знак вынут из потока — иначе он оттягивал бы центр на себя и
      чипы с кнопками перестали бы делить остаток поровну. */
-  .topbar__brand {
-    /* Знак начинается там же, где колонка контента, — по левому краю
-       баннера. Считаем от ширины меню, поэтому при сворачивании знак
-       едет вместе с колонкой. */
-    position: absolute;
-    /* Нижний предел — правый край чипов плюс зазор: при свёрнутом меню
-       колонка уезжает на 128, и знак лёг бы поверх CASINO и SPORTS. */
-    left: max(calc(var(--wl-nav) + 44px), 239px);
-    width: auto; padding-left: 0; pointer-events: none;
-  }
-  .topbar__brand .logo { pointer-events: auto; }
+  /* Знак в потоке: шапка сама начинается на сетке, догонять нечего. */
+  .topbar__brand { width: auto; padding-left: 0; }
+  /* Шапка стоит только над контентом, слева от неё — колонка меню.
+     Левый край считаем тем же выражением, что у .content ниже. */
+  .topbar { left: calc(var(--wl-nav) + 44px); }
+  /* В шапке слева больше ничего нет — отправляем кнопки входа вправо явно */
+  .header-actions { margin-left: auto; }
+  .nav-toggle { display: flex; }
   /* Чипы садятся на колонку меню: тот же левый отступ, что у карточки. */
   .topbar { padding-left: var(--wl-sp-4); }
   .header-desktop { margin-left: 0; }
@@ -1586,18 +1597,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
    и прошла бы над колонкой меню, отрезая её от шапки щелью. Начинаем
    его там же, где колонка контента. */
 .topbar { transition: box-shadow .2s ease; }
-.topbar::after {
-  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
-  background: var(--wl-line-hover); pointer-events: none;
-}
 .topbar.is-scrolled { box-shadow: 0 6px 20px -6px rgba(0,0,0,.55); }
-/* Ниже 1024 колонки нет, кант идёт во всю ширину. На десктопе он
-   начинается после колонки меню: иначе проходит над ней и отрезает её
-   от шапки щелью. Правило стоит после базового — иначе не перебьёт. */
-@media (min-width: 1024px) {
-  .topbar::after { left: calc(var(--wl-nav) + 44px); }
-}
-
 /* --- Уважаем системную настройку «меньше движения» --- */
 @media (prefers-reduced-motion: reduce) {
   .btn--primary::after { animation: none; }
@@ -6569,19 +6569,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
     </div>
 
     <div class="header-desktop">
-      <nav class="cat-buttons">
-        <a class="cat-tab" href="#">
-          <span class="cat-tab__icon">
-            <img src="a/dd57cc1252.svg" alt="" style="inset:0 0 16.3% 46.46%">
-            <img src="a/1904eb85cf.svg" alt="" style="inset:14.22% 31.26% 0 0">
-          </span>
-          <span class="cat-tab__label">CASINO</span>
-        </a>
-        <a class="cat-tab" href="#">
-          <span class="cat-tab__icon"><img src="a/ca02f2e00c.svg" alt="" style="inset:0 0.03% 0 0.02%"></span>
-          <span class="cat-tab__label">SPORTS</span>
-        </a>
-      </nav>
       <!-- 905:4387 — баланс и пополнение отдельной группой: в макете после
            входа шапка делится на три части, кошелёк стоит между ними -->
       <div class="wallet" data-node-id="905:4387">
@@ -6612,10 +6599,25 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
 
   <!-- ═══════════ Сайдбар ═══════════ -->
   <aside class="sidebar" id="sidebar" data-node-id="860:5895">
-    <!-- Сворачивает панель в колонку иконок. Сидит на её правом крае,
-         как у 1win: стрелки смотрят в ту сторону, куда поедет панель. -->
-    <button class="nav-toggle" type="button" aria-label="Collapse menu"
-            aria-expanded="true" aria-controls="sidebar"></button>
+    <!-- Бургер и разделы верхнего уровня: верх тёмной колонки, на одном
+         уровне с логотипом — как у Stake. -->
+    <div class="sidebar__top">
+      <button class="nav-toggle" type="button" aria-label="Collapse menu"
+              aria-expanded="true" aria-controls="sidebar"></button>
+      <nav class="cat-buttons">
+        <a class="cat-tab" href="#">
+          <span class="cat-tab__icon">
+            <img src="a/dd57cc1252.svg" alt="" style="inset:0 0 16.3% 46.46%">
+            <img src="a/1904eb85cf.svg" alt="" style="inset:14.22% 31.26% 0 0">
+          </span>
+          <span class="cat-tab__label">CASINO</span>
+        </a>
+        <a class="cat-tab" href="#">
+          <span class="cat-tab__icon"><img src="a/ca02f2e00c.svg" alt="" style="inset:0 0.03% 0 0.02%"></span>
+          <span class="cat-tab__label">SPORTS</span>
+        </a>
+      </nav>
+    </div>
     <div class="sidebar__menu" data-node-id="860:5897">
       <!-- 860:5898 — две группы, между ними зазор 230 -->
       <div class="sidebar__inner" data-node-id="860:5898">
