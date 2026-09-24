@@ -443,6 +443,19 @@ body {
 /* Кнопка сворачивания сидит на правом крае панели, как у 1win: половина
    круга заходит на панель, половина в зазор до контента. Стрелки смотрят
    в ту сторону, куда панель уедет. */
+/* Верх меню: бургер и разделы верхнего уровня. Двумя строками, а не одной:
+   чипам нужно ровно 204 — вся ширина карточки без полей, на бургер в той же
+   строке уже не остаётся. */
+.sidebar__top {
+  display: flex; flex-direction: column; align-items: stretch; gap: var(--wl-sp-2);
+  padding: var(--wl-sp-3) var(--wl-sp-3) 0;
+}
+.sidebar__top .cat-buttons { gap: var(--wl-sp-2); }
+.sidebar__top .cat-tab { flex: 1 1 0; min-width: 0; justify-content: center; }
+/* Свёрнутая панель: остаётся один бургер по центру колонки */
+body.nav-rail .sidebar__top { align-items: center; padding-inline: 0; }
+body.nav-rail .sidebar__top .cat-buttons { display: none; }
+
 /* Бургер в шапке, первым слева — над колонкой меню, как у Stake.
    Прежде это был круг на правом крае панели: он наезжал на пункты меню
    и закрывал строку. Ниже 1024 панели нет, поэтому и кнопки нет. */
@@ -1399,10 +1412,9 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 @media (min-width: 1024px) {
   .sidebar { display: flex; }
   .nav-toggle { display: flex; }
-  /* Бургер и чипы — одна левая группа. У .header-desktop раздача
-     space-between, и с появлением четвёртого ребёнка чипы уезжали
-     на середину; auto-поле снова прижимает остальных вправо. */
-  .cat-buttons { margin-right: auto; }
+  /* В шапке слева больше ничего нет, и space-between прижимал действия
+     к левому краю — отправляем их вправо явно. */
+  .header-actions { margin-left: auto; }
   /* Раскладка шапки как у Stake: знак по центру экрана, CASINO и SPORTS
      уходят влево и встают над меню, действия остаются справа.
      Знак вынут из потока — иначе он оттягивал бы центр на себя и
@@ -6548,23 +6560,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
     </div>
 
     <div class="header-desktop">
-      <!-- Бургер сворачивает панель в колонку иконок. Стоит первым в шапке,
-           над самим меню, как у Stake. -->
-      <button class="nav-toggle" type="button" aria-label="Collapse menu"
-              aria-expanded="true" aria-controls="sidebar"></button>
-      <nav class="cat-buttons">
-        <a class="cat-tab" href="#">
-          <span class="cat-tab__icon">
-            <img src="a/dd57cc1252.svg" alt="" style="inset:0 0 16.3% 46.46%">
-            <img src="a/1904eb85cf.svg" alt="" style="inset:14.22% 31.26% 0 0">
-          </span>
-          <span class="cat-tab__label">CASINO</span>
-        </a>
-        <a class="cat-tab" href="#">
-          <span class="cat-tab__icon"><img src="a/ca02f2e00c.svg" alt="" style="inset:0 0.03% 0 0.02%"></span>
-          <span class="cat-tab__label">SPORTS</span>
-        </a>
-      </nav>
       <!-- 905:4387 — баланс и пополнение отдельной группой: в макете после
            входа шапка делится на три части, кошелёк стоит между ними -->
       <div class="wallet" data-node-id="905:4387">
@@ -6596,6 +6591,24 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
   <!-- ═══════════ Сайдбар ═══════════ -->
   <aside class="sidebar" id="sidebar" data-node-id="860:5895">
     <div class="sidebar__menu" data-node-id="860:5897">
+      <!-- Бургер и разделы верхнего уровня живут в самом меню, а не в шапке -->
+      <div class="sidebar__top">
+        <button class="nav-toggle" type="button" aria-label="Collapse menu"
+                aria-expanded="true" aria-controls="sidebar"></button>
+        <nav class="cat-buttons">
+          <a class="cat-tab" href="#">
+            <span class="cat-tab__icon">
+              <img src="a/dd57cc1252.svg" alt="" style="inset:0 0 16.3% 46.46%">
+              <img src="a/1904eb85cf.svg" alt="" style="inset:14.22% 31.26% 0 0">
+            </span>
+            <span class="cat-tab__label">CASINO</span>
+          </a>
+          <a class="cat-tab" href="#">
+            <span class="cat-tab__icon"><img src="a/ca02f2e00c.svg" alt="" style="inset:0 0.03% 0 0.02%"></span>
+            <span class="cat-tab__label">SPORTS</span>
+          </a>
+        </nav>
+      </div>
       <!-- 860:5898 — две группы, между ними зазор 230 -->
       <div class="sidebar__inner" data-node-id="860:5898">
 
