@@ -2550,6 +2550,13 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
     font-family: var(--wl-font-ui); font-weight: var(--wl-fw-regular);
     font-size: var(--wl-fs-xl); line-height: 26px; color: var(--wl-primary);
   }
+  /* 1654:20863 «Gate of Olympus» — гостевой баннер. Ширина 333 осталась от
+     прежнего двухстрочного заголовка, этому нужно 376 в одну строку; колонка
+     440, место есть. Не nowrap: переводы длиннее английского, пусть переносятся
+     сами. Подпись в макете светлая, а не акцентная. */
+  .hero__copy--guest .hero__title { width: 400px; }
+  .hero__copy--guest .hero__sub   { font-size: var(--wl-fs-2xl); line-height: var(--wl-lh-2xl);
+                                    color: var(--wl-text-muted); }
   .hero__row { display: flex; align-items: center; gap: var(--wl-sp-2); height: 40px; }
   .hero__cta {
     display: flex; align-items: center; justify-content: center;
@@ -6787,17 +6794,11 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         </div>
         <div class="hero__copy hero__copy--guest" data-node-id="1126:15051">
           <div class="hero__text">
-            <h1 class="hero__title">Discover betting without borders</h1>
-            <p class="hero__sub" data-node-id="1118:14912">+100% up&nbsp;to $500 and&nbsp;200 free spins</p>
+            <h1 class="hero__title">GATE OF OLYMPUS</h1>
+            <p class="hero__sub" data-node-id="1753:13971">SPIN TO&nbsp;HUGE WINS</p>
           </div>
-          <div class="hero__row" data-node-id="1118:14902">
-            <button class="hero__cta" type="button" data-node-id="1125:15043" data-fgo="auth:reg">REGISTER</button>
-            <span class="hero__or">or</span>
-            <div class="hero__socials" data-node-id="1143:10609">
-              <a class="hero__soc" href="https://accounts.google.com" target="_blank" rel="noopener noreferrer" aria-label="Google"><img src="a/93b28ea74e.svg" alt="" width="20" height="20"></a>
-              <a class="hero__soc" href="https://t.me/riobet" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><img src="a/344221bbb4.svg" alt="" width="20" height="20"></a>
-              <a class="hero__soc" href="https://facebook.com/riobet" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img src="a/dacfa20d08.svg" alt="" width="20" height="20"></a>
-            </div>
+          <div class="hero__row" data-node-id="1753:13973">
+            <button class="hero__cta hero__cta--join" type="button" data-node-id="1753:13974" data-fgo="auth:reg">Join now</button>
           </div>
         </div>
       </div>
