@@ -463,8 +463,14 @@ body {
    без стыка между «чёрным верхом» и «серым низом». */
 .sidebar__top {
   display: flex; align-items: center; gap: var(--wl-sp-1);
-  flex: none; height: 56px; padding: 0 var(--wl-sp-2); margin-bottom: 0;
+  /* Боковое поле 16 — как у пунктов меню: бургер встаёт по одной линии
+     с их иконками. Сверху 12, иначе строка прилипает к краю карточки. */
+  flex: none; height: 56px;
+  padding: var(--wl-sp-3) var(--wl-sp-4) 0; margin-bottom: var(--wl-sp-2);
 }
+/* Иконки у чипов внутри колонки сняты: при поле 16 подписи с ними
+   не помещаются. У Stake эти кнопки тоже без значков. */
+.sidebar__top .cat-tab__icon { display: none; }
 .sidebar__top .cat-buttons { flex: 1 1 auto; min-width: 0; gap: var(--wl-sp-1); }
 .sidebar__top .cat-tab {
   flex: 1 1 0; min-width: 0; justify-content: center;
@@ -528,9 +534,9 @@ body.nav-rail .sidebar__top .cat-buttons { display: none; }
   /* Поля есть: карточка вставлена внутрь колонки, и тёмная подложка
      обрамляет её слева, справа и снизу. У Stake поля 28 и 32 при колонке
      516 — в наши 252 это 14 и 16, берём 16 из шкалы. */
-  /* Сверху воздух: вровень с краем окна карточка выглядела прилипшей.
-     12 против 8 по бокам — сверху поле заметнее, иначе не читается. */
-  padding: var(--wl-sp-3) var(--wl-sp-2) var(--wl-sp-2);
+  /* Внешние поля одинаковые со всех сторон — разнобой 12/8/8 бросался
+     в глаза. */
+  padding: var(--wl-sp-3);
   transition: width .24s cubic-bezier(.4, 0, .2, 1);
   /* Фон страницы, а не отдельный тёмный: у Stake колонка и есть полотно,
      светлая только карточка. Отдельный тон давал шаг в 19 единиц —
