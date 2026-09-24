@@ -503,7 +503,9 @@ body.nav-rail .nav-toggle::before { transform: scaleX(-1); }
 
 /* ─────────────── Сайдбар · 252×1254, y=76 ─────────────── */
 .sidebar {
-  position: fixed; left: 0; top: 78px; bottom: 0;
+  /* Вплотную к шапке: её высота 74, зазора между ними больше нет —
+     колонка меню продолжает шапку, как у Stake. */
+  position: fixed; left: 0; top: 74px; bottom: 0;
   display: none; flex-direction: column;
   width: var(--wl-nav);
   /* Поля убраны: карточка меню идёт вровень с краем экрана. */
@@ -520,7 +522,9 @@ body.nav-rail .nav-toggle::before { transform: scaleX(-1); }
 .sidebar__menu {
   display: flex; flex-direction: column; align-items: stretch;
   width: 100%; flex: 1 1 auto; min-height: 0; background: var(--wl-bg-chrome);
-  border-radius: var(--wl-r-lg); overflow: hidden;
+  /* Верх не скругляем: карточка стыкуется с шапкой, круглые углы там
+     читались бы как щель. Низ упирается в край окна — тоже прямой. */
+  border-radius: 0; overflow: hidden;
 }
 /* 860:5898. В макете между группами зазор 230px и нижняя группа прижата к низу.
    По решению заказчика язык и поддержка подняты к навигации — расхождение осознанное. */
@@ -1399,8 +1403,18 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 /* lg — с этой ширины появляется сайдбар и включается раскладка макета */
 @media (min-width: 1024px) {
   .sidebar { display: flex; }
-  /* Слот знака держит ширину макета: за ним начинаются CASINO и SPORTS */
-  .topbar__brand { width: 235px; }
+  /* Раскладка шапки как у Stake: знак по центру экрана, CASINO и SPORTS
+     уходят влево и встают над меню, действия остаются справа.
+     Знак вынут из потока — иначе он оттягивал бы центр на себя и
+     чипы с кнопками перестали бы делить остаток поровну. */
+  .topbar__brand {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    width: auto; padding-left: 0; pointer-events: none;
+  }
+  .topbar__brand .logo { pointer-events: auto; }
+  /* Чипы садятся на колонку меню: тот же левый отступ, что у карточки. */
+  .topbar { padding-left: var(--wl-sp-4); }
+  .header-desktop { margin-left: 0; }
   /* 296 = 252 панели + 44 зазора. Считаем от --nav-w, чтобы при сворачивании
      колонка сама подъезжала влево без второго набора правил. */
   /* Потолка у колонки больше нет: у 1win контент идёт до самого края, поле
