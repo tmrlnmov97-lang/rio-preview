@@ -6517,111 +6517,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
 <link rel="apple-touch-icon" href="a/a722b79467.png">
 <link rel="shortcut icon" href="favicon.ico">
 <!-- Палитра идёт первой: styles.css берёт из неё значения. -->
-<!-- RioBet preloader — вставить сразу после открывающего <body> -->
-
-<style>
-  :root {
-    --wp-bg: #0e1630;          /* фон прелоадера */
-    --wp-size: 240px;          /* ширина лого */
-    --wp-draw: 750ms;          /* росчерк */
-    --wp-crown-delay: 430ms;   /* когда падает корона */
-    --wp-exit: 260ms;          /* уход */
-  }
-
-  #wp {
-    position: fixed; inset: 0; z-index: 9999;
-    display: grid; place-items: center;
-    background: var(--wp-bg);
-    transition: opacity var(--wp-exit) ease, transform var(--wp-exit) ease;
-  }
-  #wp.wp-done { opacity: 0; transform: scale(1.04); pointer-events: none; }
-  #wp.wp-off  { display: none; }
-
-  #wp svg { width: min(40vw, var(--wp-size)); overflow: visible; }
-
-  #wp-axis {
-    stroke: #fff; fill: none;
-    /* Росчерк работает маской: логотип видно там, куда достала линия. Корона
-       поднята над строкой выше остальных букв — её дальняя точка в 77.5 от
-       линии, буквам хватает 55. При толщине 132 (половина 66) верх короны
-       не попадал в маску и пропадал совсем. 168 — это половина 84, с запасом. */
-    stroke-width: 168; stroke-linecap: round; stroke-linejoin: round;
-    stroke-dasharray: 1; stroke-dashoffset: 1;
-    animation: wp-draw var(--wp-draw) cubic-bezier(.65,0,.35,1) forwards;
-  }
-  @keyframes wp-draw { to { stroke-dashoffset: 0 } }
-
-  #wp-crown {
-    transform-box: view-box; transform-origin: 110px 70px;
-    animation: wp-drop 340ms var(--wp-crown-delay) cubic-bezier(.34,1.56,.64,1) backwards;
-  }
-  @keyframes wp-drop { from { opacity: 0; transform: translateY(-16px) scale(.55) } }
-
-  @media (prefers-reduced-motion: reduce) {
-    #wp-axis { animation: none; stroke-dashoffset: 0 }
-    #wp-crown { animation: none }
-    #wp { transition: none }
-  }
-</style>
-
-<div id="wp">
-  <svg viewBox="55 0 480 165" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="RioBet">
-    <defs>
-      <mask id="wp-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="705" height="165">
-        <path id="wp-axis" pathLength="1" d="M 94,114.8 C 97.0,114.0 106.0,111.5 112.0,110.0 C 118.0,108.5 124.0,106.5 130.0,105.8 C 136.0,105.1 142.0,104.8 148.0,105.8 C 154.0,106.8 160.0,110.4 166.0,111.7 C 172.0,113.0 178.0,114.7 184.0,113.7 C 190.0,112.7 196.0,108.3 202.0,105.7 C 208.0,103.1 214.0,99.7 220.0,98.0 C 226.0,96.3 232.0,94.5 238.0,95.7 C 244.0,96.9 250.0,102.2 256.0,105.0 C 262.0,107.8 268.0,110.7 274.0,112.5 C 280.0,114.3 286.0,115.4 292.0,115.9 C 298.0,116.4 304.0,115.2 310.0,115.6 C 316.0,116.0 322.0,117.7 328.0,118.5 C 334.0,119.3 340.0,120.0 346.0,120.7 C 352.0,121.5 358.0,122.9 364.0,123.0 C 370.0,123.1 376.0,121.6 382.0,121.1 C 388.0,120.5 394.0,120.0 400.0,119.7 C 406.0,119.4 412.0,120.0 418.0,119.2 C 424.0,118.4 430.0,116.0 436.0,115.1 C 442.0,114.1 448.0,113.8 454.0,113.5 C 460.0,113.2 466.0,112.5 472.0,113.0 C 478.0,113.5 484.0,114.5 490.0,116.2 C 496.0,117.9 502.0,121.7 508.0,123.0 C 514.0,124.3 523.0,123.8 526.0,124.0"/>
-      </mask>
-    </defs>
-    <image href="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE1NiIgaGVpZ2h0PSI1NSIgdmlld0JveD0iMCAwIDE1NiA1NSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgaWQ9ImltYWdlIDU4NyBbVmVjdG9yaXplZF0iPgo8cGF0aCBpZD0iVmVjdG9yIiBkPSJNODIuOTMxMyAyNi45MjM1Qzg1Ljc3NjIgMjYuNzc1IDg2LjUzOTggMjguNzgzIDg1LjAyNDEgMzEuMDE5N0M4Ny42ODA4IDMyLjMxODcgODkuNjM2NiAzMC42OTk2IDkxLjg0NjEgMzEuMTc4MUM5Mi4yNDczIDMxLjI2NDkgOTIuNzA3OCAzMS40NDIyIDkyLjkzMDUgMzEuODExMkM5My4yMTYgMzIuMjg1NiA5My4wODE2IDMyLjkxMzggOTIuODg1NCAzMy4zOTUxQzkyLjUzNTUgMzQuMjU2NyA5MS44NjI5IDM1LjA4ODIgOTEuMzY4OCAzNS44ODM3Qzg5Ljk1ODMgMzguMTUzNiA4OC4wMzM0IDQxLjIzMzYgODcuMzg1NiA0My43OTgzQzg3LjI5MTkgNDQuMTY3MyA4Ny4yNjgxIDQ0LjcwOTQgODcuNDc4NCA0NS4wNDM0Qzg3LjYwMzkgNDUuMjQyNiA4Ny44MzAyIDQ1LjQgODguMDU5MSA0NS40NTA5Qzg4LjcwNzggNDUuNTk1MSA4OS41MTczIDQ1LjA5NDQgOTAuMDE5MyA0NC43MzdDOTEuMDUwNyA0NC4wMDI3IDkyLjI1NDQgNDIuOTA2NiA5Mi45NjE0IDQxLjg2MzFDOTMuNDU2NCA0MS4xMzI0IDkzLjc5MzEgNDAuMTg1OCA5NC4xNzY2IDM5LjM4NjhDOTQuODYyNSAzNy45NTg2IDk3LjU4MDEgMzIuMTA1NSA5OC43NDk0IDMxLjM4NzVDOTkuNjg4IDMwLjgxMTEgMTAyLjAzNiAzMC44NDk0IDEwMy4wOTEgMzEuMTE4NUMxMDMuMzE0IDMxLjE3NTEgMTAzLjQzNSAzMS4yNjY5IDEwMy41NTMgMzEuNDYyNEMxMDMuOTMgMzIuOTM1NiA5Ni42Njg5IDQyLjUxNTYgOTcuNzcyOCA0NS4wMTZDOTcuODc1MyA0NS4yNDczIDk4LjUwNjMgNDUuNDQwNSA5OC43NjI2IDQ1LjUzMzJDMTAyLjggNDQuNjU3NyAxMDUuMzY1IDM3LjU5NSAxMDcuMjQ0IDM0LjMxMjRDMTA3Ljc2NCAzMy40MDU0IDEwOC4yNTUgMzIuMDY0MyAxMDkuMTc0IDMxLjQ0NzNDMTA5LjkxMyAzMC45NTEgMTEzLjI0MSAzMC42NDQyIDExMy45MTcgMzEuNDQxNUMxMTQuMjIgMzEuOTg5IDExMi45IDM0LjA2NjMgMTEyLjUzMyAzNC43Nzg3QzExMS4xMTQgMzcuNTM5OSAxMDkuMjgzIDQwLjMzNzIgMTA4LjMzNyA0My4zMTRDMTA3LjY3MiA0NS40MzUxIDEwOS4zMzUgNDYuMDIyNyAxMTAuOTE3IDQ0Ljk1NDNDMTE0LjE4NyA0Mi40NTIxIDExNi4wNTIgMzguMDM3MiAxMTcuNDY4IDM0LjI3MDdDMTE3Ljc0MiAzMy41NDQgMTE3LjkxNyAzMi4zNjkxIDExOC4wOCAzMS41NzgxQzExOC45MDggMzAuNzgzNyAxMTkuODIgMzAuMzk3NSAxMjAuOTU4IDMwLjY0NThDMTIxLjQzNCAzMC43NDczIDEyMS44NDcgMzEuMDQwNCAxMjIuMTAyIDMxLjQ1NjdDMTIyLjkxNyAzMi43Njk1IDEyMS43NDQgMzUuMDA5MSAxMjEuMTExIDM2LjI4NTNDMTE4LjkwOCA0MC43MzA4IDExNi4wMTcgNDUuNDc1NSAxMTEuNzkxIDQ4LjIwMjZDMTA5LjM5MyA0OS43NTA4IDEwNS40MDYgNTAuNDQxMiAxMDMuNzA1IDQ3LjY1MTVDMTAzLjQwOSA0Ny4wMjc5IDEwMy4yOCA0Ni43MDgzIDEwMy4wNjggNDYuMDUxQzEwMC42NTUgNDkuMTA4MyA5NC44NTU0IDUxLjgwMjcgOTIuNDcyNyA0Ni45ODQ3QzkyLjM0MSA0Ni43MTg2IDkyLjUyNTcgNDYuMzk0OCA5Mi4zMTQ1IDQ2LjA5MThDOTIuMDQ4NSA0Ni4xMjM5IDg5LjA1NiA0OS4wMTUgODcuMzY3OSA0OS4zMjU1Qzg1LjEyMDUgNDkuNzM5IDgyLjY3MjQgNDkuNDYxNCA4Mi4xMTU2IDQ2Ljg3MDJDODEuMjk4MSA0My4wNjg0IDg0LjM3MjggMzguNDQ4NCA4Ni4yMDY2IDM1LjI3MzhDODQuNjY0NCAzNS4wOTE0IDg0LjMyOTUgMzUuMTE3NyA4Mi44MzUgMzQuMzQ5N0M4Mi4xNzMgMzUuNjc2NyA4MC44NzgzIDM3Ljc3NzEgODAuMDYyNSAzOS4wODcyQzc3Ljc1ODUgNDIuNzkgNzQuNzkwNyA0Ny42Mjc4IDcwLjUxMDEgNDkuMjA4NkM2OS40MDYyIDQ5LjYxNjEgNjcuNzQxNyA0OS42Njg4IDY2LjY4MjIgNDkuMTExNkM2NS4zNzk0IDQ4LjQyNjQgNjUuMDUyMyA0Ny4yODg0IDY0LjYyNDkgNDYuMDA0MkM2Mi40NTE1IDQ4LjQ0NDMgNTguNzUzMSA1MC43ODI1IDU1LjQ5ODIgNDguOTU0OEM1NC40NzM2IDQ4LjM3MTcgNTMuNzIyOCA0Ny40MDEzIDUzLjQxMjggNDYuMjU5M0M1MS44MTUxIDQwLjU2OTQgNTcuNzM5NyAzMi4xMjY4IDYzLjI2MjkgMzAuODM3M0M2NS42OTc0IDMwLjI2ODkgNjguODgwOSAzMC41NDQgNjkuNjQ0NiAzMy4zN0M3MC45NTcxIDMwLjUxMTEgNzIuOTAwOCAzMC44MzYxIDc1LjY1NiAzMS4xNTY5Qzc2Ljc5ODcgMzEuMjkgNzQuNTczMyAzNC42NjY0IDc0LjMxMjYgMzUuMTM0M0M3My4zMTEyIDM2LjkyNDggNzIuMzMwMyAzOC43MjY4IDcxLjM3MDEgNDAuNTRDNzAuODU0NyA0MS41MjcxIDY5LjY1OTMgNDMuNzI3IDcwLjAzMTQgNDQuODQzNUM3MC4xMTY2IDQ1LjA5OTIgNzAuMjc3NiA0NS4yNjU5IDcwLjUxODMgNDUuMzgxN0M3MC44MjYzIDQ1LjUyOTkgNzEuMTMyMyA0NS40OTU4IDcxLjQ0NTIgNDUuMzg0OUM3NC44MTgxIDQ0LjE4OTggNzkuMTEyNSAzNS43Mjk2IDgwLjY5NTMgMzIuNDE5NkM4MC4wMjE5IDMwLjE4NiA4MC4xODYzIDI3LjQ1MjkgODIuOTMxMyAyNi45MjM1Wk01OS4wNjY3IDQ1LjEyMDFDNTkuOTYyIDQ1LjUwNzcgNjAuMjUyNiA0NS41Nzg3IDYxLjE5MyA0NS4yOTVDNjQuNDcxNyA0My44Njg4IDY2Ljc1MTkgMzguNjQ1MyA2OC41MDI5IDM1LjcyOThDNjkuMTA4OSAzNC43MjExIDY2Ljk0OTUgMzMuOTc3NiA2Ni4xMTM3IDM0LjAzMjdDNjQuMzg0NCAzNC4zODEgNjMuMzA1NSAzNC45NjMyIDYyLjEwNTcgMzYuMjg2MUM2MC4xMDk2IDM4LjQ4NjkgNTcuNzg1NSA0Mi4wOTcxIDU5LjA2NjcgNDUuMTIwMVoiIGZpbGw9IiNGRUZFRkUiLz4KPHBhdGggaWQ9IlZlY3Rvcl8yIiBkPSJNNjMuMjE3MiAxMi40NTM5QzY1LjE3NzMgMTIuMjMyMSA2Ny41MDc4IDEyLjcxNDMgNjkuMTk1IDEzLjc0MjZDNjguNjU5OSAxNC4xMDMxIDY3LjIzNzkgMTQuNzMwMyA2Ni41NjAxIDE1LjExMjJDNjQuMzYyMSAxNi4zNzYyIDYyLjM2MjEgMTcuOTYwMSA2MC42MjQ3IDE5LjgxMjFDNTguMTY5NiAyMi40MjEyIDU2LjEzNTggMjUuNDAwNiA1NC41OTcyIDI4LjY0MkM1MS4xMTkyIDM1LjgxMjYgNDkuMzE4NiA0NS4zNzQ3IDQyLjE4IDQ5LjgxNDhDMzkuMzQ0OCA1MS41Nzg0IDM1LjMzNzEgNTEuMzM0IDMzLjY3MjYgNDguMTJDMzEuOTMyOSA0NC43NjA2IDMyLjM1MDcgNDAuNDg0NCAzMy4zNTYxIDM2Ljk4MzZDMjkuOTkxOCA0Mi4wMzk0IDI1LjA0MDEgNDguNTU1NSAxOS4zODE2IDUxLjA4MjNDMTcuMjQyMSA1Mi4wMzc3IDEzLjc1MjggNTEuODU3NCAxMy4wMDU3IDQ5LjE5MjlDMTEuMzQyOSA0My4yNjMzIDE1LjM2OTIgMzYuNDM1NiAxNy45NzUyIDMxLjMwOEMxOC44NDMxIDI5LjYwMDMgMjAuMDM5NyAyNy45OTEgMjAuNzczOSAyNi4yNzI3QzE3LjA4OTcgMjYuMjg4IDEyLjY3MzQgMjcuMzM1MyA5LjEyMDc5IDI4LjM5MzNDMTAuMjcgMjcuMDk3MiAxMS4yNjMyIDI2LjM5NzcgMTIuNjU0MiAyNS4zODRDMTIuNjcwNCAyNS4zNzExIDEyLjY4NjggMjUuMzU4MyAxMi43MDMyIDI1LjM0NThDMTYuMzIyNyAyMi41NzE1IDIzLjA3ODYgMTkuODYwNyAyNy43ODM3IDIwLjE1NTJDMjguODg4MiAyMC4yMjQzIDMwLjU5MSAyMS4wOTUxIDI5LjgwMyAyMi4zNjg5QzI1LjgzNjEgMjguNzgxMyAyMS4yODA5IDM1LjIyMTYgMTkuMDY0OSA0Mi41MDg4QzE4LjgzMzUgNDMuMjY5NiAxOC4yMzEzIDQ0LjU2MDEgMTguNzU3NSA0NS4zMTQyQzE4LjkyNjQgNDUuMzk4NCAxOC45OTc2IDQ1LjQ0ODQgMTkuMTkwNyA0NS40MzM4QzIxLjM1MzcgNDUuMjcwMyAyOS4xNTQzIDM0LjMwMzIgMzAuODQwNyAzMi4wOTQ4QzMxLjUwODMgMzEuMjM2NSAzMi4xOTg5IDMwLjM5NjQgMzIuOTExOSAyOS41NzU3QzM0LjU4MzEgMjcuNjY3MSAzNi45MzA4IDI1LjQ3MDkgMzkuNTk5NSAyNS4zMTIxQzQwLjQyMTIgMjUuMjYzMiA0MS4yMDUyIDI1LjQ1MjcgNDEuODI5IDI2LjAxMjJDNDIuMjI1NSAyNi4zNjc5IDQyLjM4NTYgMjYuODE1OSA0Mi4zMTMgMjcuMzQ3NEM0Mi4xNTQyIDI4LjUwOTkgNDEuNDgwNiAyOS43MjU0IDQxLjEwMTUgMzAuODQxQzM5LjkwNSAzNC4zNjExIDM4LjM5MDUgMzkuMjQ0OCAzOC41ODc5IDQyLjk1MzdDMzguNjE1NyA0My40NzUzIDM4LjczNDQgNDQuNTMzMSAzOS4xNjA1IDQ0Ljg4MzNDMzkuMzIzOCA0NS4wMTc1IDM5LjQ4MjIgNDUuMDQ2NiAzOS42ODczIDQ1LjAyNDdDNDIuODEzNSA0NC42OSA0Ny4yMTAxIDI5LjA0ODEgNDguNTcwNSAyNS43ODMxQzQ5LjYyNDEgMjMuMjU0MyA1MC44NjQ3IDIwLjgzODQgNTIuNTk2OSAxOC43MDM5QzU1LjIzNDUgMTUuNDUzNiA1OC45ODUzIDEyLjg4NDcgNjMuMjE3MiAxMi40NTM5WiIgZmlsbD0iI0ZFRkVGRSIvPgo8cGF0aCBpZD0iVmVjdG9yXzMiIGQ9Ik0xNDYuMTM5IDMwLjU2OUMxNDcuMzM1IDMwLjQ5NzMgMTQ5LjA2MyAzMC44MDI3IDE0OS44MDkgMzEuODE0QzE1Mi43MjEgMzUuNzU0MyAxNDYuNzE3IDQwLjUxMTMgMTQ2LjI3NiA0NC4zNzQ0QzE0Ni4yNDkgNDQuNjE4OSAxNDYuMjk3IDQ1LjAyNjYgMTQ2LjQ3OCA0NS4yMTM4QzE0OC42MjQgNDYuODM5MSAxNTIuMzcyIDQxLjczODIgMTUzLjU4MiA0MS43MjlDMTU0LjE0NCA0Mi4wNTI1IDE1NC4wODUgNDMuNTQ5NSAxNTMuODg2IDQzLjgxOTRDMTUxLjc2IDQ2LjcxMzYgMTQ2Ljk0OSA1MC43MTY0IDE0My4wOTQgNDkuMjU1N0MxNDIuMjYzIDQ4Ljk0NTcgMTQxLjU4OCA0OC4zMTUyIDE0MS4yMjEgNDcuNTAzOEMxMzkuNjQxIDQzLjk3NDggMTQzLjY3MiAzOC45OTQ1IDE0NC45IDM1LjkxNThDMTQ1LjY3OSAzMy41NTMyIDE0My4xNTQgMzQuNTI5OCAxNDIuMTY5IDM1LjIyMjZDMTM4LjI1MSAzNy45NzYyIDEzNi4wNDYgNDIuMzU4OCAxMzQuMjIxIDQ2LjY3MTdDMTMzLjMxOSA0OC44MDU1IDEzMi4wNjMgNDkuOTI0MiAxMjkuNTggNDkuMjQyM0MxMjguMjAxIDQ4Ljc0NCAxMjguNzY5IDQ4LjIwNzUgMTI4LjcwNCA0Ny4zNDY4QzEyOC41MTYgNDcuMzgxMiAxMjcuMjYxIDQ4LjM2MDQgMTI2Ljk1IDQ4LjU2NzRDMTI0LjczMSA1MC4wNDI4IDEyMS41MDEgNTAuMTE4OCAxMjAuNDQ1IDQ3LjE5MzhDMTE5LjY1NiA0NS4wMTAxIDEyMC44ODkgNDIuMTM0MSAxMjEuODU2IDQwLjEwMDVDMTIyLjcxNiAzOC4zMTE1IDEyMy42MTQgMzYuNTQxMSAxMjQuNTQ4IDM0Ljc5MDRDMTI1LjA1MiAzMy44Mjk5IDEyNS41MzggMzIuNjgzMiAxMjYuMjMzIDMxLjg1MTRDMTI2LjQ4NCAzMS41NTEgMTI2Ljc2OCAzMS4zNjY2IDEyNy4xMzcgMzEuMjM4NUMxMjcuOTUyIDMwLjk1NDYgMTMwLjY1OCAzMC43NzM4IDEzMS40MTMgMzEuMTkyNUMxMzEuNTg1IDMxLjI4NzIgMTMxLjYxNCAzMS40NTUyIDEzMS42MDQgMzEuNjM4M0MxMzEuNTYgMzIuNTIxIDEzMC42ODUgMzMuNzQyOCAxMzAuMjYgMzQuNTE2OUMxMjkuMjM1IDM2LjM4MjEgMTI1LjA4IDQzLjMxNjIgMTI1LjU0OSA0NC44NzUyQzEyNS42MSA0NS4wODEgMTI1LjczNCA0NS4yNTIxIDEyNS45MjYgNDUuMzUzQzEyNi4yNDYgNDUuNTIxOSAxMjYuNjQzIDQ1LjQ4NjcgMTI2Ljk3NSA0NS4zNzM0QzEyOC4yNzEgNDQuOTMxNSAxMzAuMzgzIDQyLjcyNTUgMTMxLjEyIDQxLjU3MzhDMTMxLjY4MyA0MC42OTMxIDEzMi4wNzcgMzkuNjMxNyAxMzIuNTMgMzguNjg3OEwxMzUuMzM4IDMyLjk0NjhDMTM2LjU0IDMwLjUzOTkgMTM3LjkxMyAzMC45OTk0IDE0MC4zMzMgMzEuMDE1NUMxNDEuOTk4IDMxLjAyNjcgMTQwLjc5MiAzMi45NDI3IDE0MC4zODkgMzMuNjYxNkMxNDIuMDA1IDMyLjAxMTEgMTQzLjc5NSAzMC44NDA4IDE0Ni4xMzkgMzAuNTY5WiIgZmlsbD0iI0ZFRkVGRSIvPgo8cGF0aCBpZD0iVmVjdG9yXzQiIGQ9Ik00LjIyOTEzIDEzLjc1MjJDNC41NTQ2MyAxNC4xMzIgNy4xOTA2MiAxNC45MTcxIDcuODEyMjggMTUuMDgwM0MxMy41MDg4IDE2LjU3NiAxNC45NjU3IDEwLjE4NzcgMTUuNTcxOSA2LjAxMTE5QzE1LjU4MjMgNS45Mzk2MiAxNS41Njk1IDUuODI0MTggMTUuNTYwOCA1Ljc1MjQ5QzE0LjU5MDUgNS4wNjY4MSAxMy44MjYxIDQuNjE4MjIgMTQuNzY5NiAzLjM1MTM1QzE1LjAwNDEgMy4wMzY1MiAxNS4zNDk4IDIuODI2ODYgMTUuNzQyIDIuNzgwODJDMTYuMTQzNSAyLjczNTE3IDE2LjU0NjQgMi44NTM5MSAxNi44NTk5IDMuMTEwMjlDMTcuNzg0MiAzLjg2NTAyIDE3LjM5MzMgNC44NjY1MyAxNi40ODE5IDUuNDE4NjFDMTYuOTE3NCA2LjA1MzYxIDE3LjIzNTcgNi43NjQ5OCAxNy42MjIxIDcuNDQ0NThDMTkuNTAzNiAxMC43NTQyIDIyLjQwNjYgMTMuMTI2MiAyNi4xMDUyIDEwLjU0NzRDMjcuNTY4NCA5LjUyNzE2IDI4LjMwOTEgOC40MjAyMyAyOS41MzIyIDcuMzI3MTdDMjkuMTc5MSA3LjA2NTk2IDI4LjgxNTkgNi44MDA3OSAyOC43Nzg1IDYuMzI0NEMyOC43MTM1IDUuNDk3MDggMjkuMDk1OCA0LjY4MzM5IDMwLjAwMzIgNC42MzM0OUMzMC40MzcxIDQuNjExMzggMzAuODYxOCA0Ljc2NDEyIDMxLjE4MzIgNS4wNTc4NkMzMi4zMjE2IDYuMTE3MzQgMzEuMjMyIDcuMTEyMjMgMzAuMTY3NyA3LjQ4Nzk2QzI5LjY5MTggOS41NDkyIDI5LjE1ODUgMTEuNTUwNyAyOC42NTk0IDEzLjYwMjRDMjguNDU3OSAxNC40MzA0IDI4LjE3MTIgMTUuNDA0NyAyOC4wNjAzIDE2LjIyNjFDMjIuMjEwMSAxNi4xODIzIDE4LjI2MjUgMTcuNjUxIDEzLjE0MTkgMjAuNjQ4MkMxMS45NTgxIDIxLjM0MTEgMTAuNzU1NyAyMi4zMzE1IDkuNzIxOTcgMjIuOTUyQzkuMDg2ODcgMjIuMDc4OCAzLjg4MjI0IDE0LjQ1ODEgMy41NzY1NCAxNC4yMzFDMy4yMDAzMSAxNC4zMjM2IDIuNzUwNzMgMTQuMzMwNCAyLjM5OTQyIDE0LjE0NzdDMi4xMzk2NyAxNC4wMTQxIDEuOTQ1MjQgMTMuNzggMS44NjA5MyAxMy40OTkyQzEuNTM5OTQgMTIuNDMwMiAyLjM3NTY1IDExLjgzOTggMy4yNTUyOCAxMS41NTczQzQuNTExNSAxMi4wNzE2IDQuNzY4MTUgMTIuNDYxNSA0LjIyOTEzIDEzLjc1MjJaIiBmaWxsPSJ1cmwoI3BhaW50MF9saW5lYXJfMF8xNTgpIi8+CjxwYXRoIGlkPSJWZWN0b3JfNSIgZD0iTTEzMS4xNTQgMjIuMDQzQzEzNS4yMDMgMjEuNTIyOSAxMzUuNDk2IDI3LjMwMDUgMTMxLjI5MiAyOC44ODc2QzEyNy4xNzcgMjkuNjg2MyAxMjcuNTA0IDIzLjAyNzMgMTMxLjE1NCAyMi4wNDNaIiBmaWxsPSIjRkVGRUZFIi8+CjwvZz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQwX2xpbmVhcl8wXzE1OCIgeDE9IjkuNSIgeTE9IjIxIiB4Mj0iMzEuNjY3IiB5Mj0iOC45NDE3OSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjMUM3NkZGIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAwNEFCOSIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPgo=" x="84" y="20" width="442" height="150" mask="url(#wp-mask)" preserveAspectRatio="xMidYMid meet"/>
-    
-  </svg>
-</div>
-
-<script>
-(function () {
-  var ONCE_PER_SESSION = false;  // играть при каждой загрузке
-  var wp = document.getElementById('wp');
-  if (!wp) return;
-
-  /* Заслонка идёт до главного скрипта, поэтому обёртка над хранилищем здесь
-     своя. В приватном Safari и при запрете хранилища обращение бросает
-     исключение: раньше на нём обрывался этот IIFE, #wp никогда не получал
-     wp-off, и сайт не открывался вообще — белый экран навсегда. */
-  var seen = function (write) {
-    try {
-      if (write) { sessionStorage.setItem('wp-seen', '1'); return true; }
-      return !!sessionStorage.getItem('wp-seen');
-    } catch (e) { return false; }
-  };
-
-  if (ONCE_PER_SESSION && seen()) {
-    wp.classList.add('wp-off');
-    return;
-  }
-  seen(true);
-
-  var css = getComputedStyle(document.documentElement);
-  var ms  = function (n) { return parseInt(css.getPropertyValue(n)) || 0 };
-  var hold = Math.max(ms('--wp-draw'), ms('--wp-crown-delay') + 340);
-
-  /* Заслонка не должна держать сайт: собранная страница весит около 12 МБ, и
-     на медленной сети load приходит через десятки секунд — всё это время
-     нажать было нельзя ничего. Ждём либо load, либо потолок — что раньше. */
-  var CAP = 4000;
-  Promise.all([
-    Promise.race([
-      new Promise(function (r) {
-        document.readyState === 'complete' ? r() : addEventListener('load', r);
-      }),
-      new Promise(function (r) { setTimeout(r, CAP) })
-    ]),
-    new Promise(function (r) { setTimeout(r, hold) })
-  ]).then(function () {
-    wp.classList.add('wp-done');
-    setTimeout(function () { wp.classList.add('wp-off') }, ms('--wp-exit') + 50);
-  });
-})();
-</script>
-
 <div class="page">
 
   <!-- ═══════════ Шапка ═══════════ -->
@@ -16342,8 +16237,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
      ═══════════════════════════════════════════════════════════════════ */
 
   /* Хранилище. В приватном Safari и при запрете хранилища запись бросает
-     исключение. Раньше на этом обрывалась заслонка загрузки: #wp никогда не
-     получал wp-off, и сайт не открывался вообще. */
+     исключение, поэтому обе операции обёрнуты. */
   var safeStore = {
     get: function (key, session) {
       try { return (session ? sessionStorage : localStorage).getItem(key); }
