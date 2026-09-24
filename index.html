@@ -447,20 +447,18 @@ body {
    как у Stake, одной строкой в ширину колонки. Чтобы всё уместилось в
    228, у чипов ужато боковое поле и уменьшен бургер: без этого трём
    элементам нужно 252 при доступных 228. */
-/* Первая строка внутри карточки меню: бургер и два раздела верхнего уровня.
-   Отдельной плашки у неё нет — тот же фон и то же скругление, что у пунктов
-   ниже. Поля и зазоры ужаты: в 228 минус поля трём элементам иначе не хватает
-   места и подписи обрезаются. */
+/* Строка над карточкой меню: бургер и два раздела верхнего уровня. Лежит на
+   фоне страницы, своей плашки не имеет — так у Stake: на высоте чипов слева
+   от них цвет страницы, а не карточки. Высота ровно как у шапки, чтобы
+   встать с ней на один уровень. */
 .sidebar__top {
   display: flex; align-items: center; gap: var(--wl-sp-2);
-  flex: none; padding: var(--wl-sp-3) var(--wl-sp-2) 0;
+  flex: none; height: 74px; margin-bottom: var(--wl-sp-4);
 }
-.sidebar__top .nav-toggle { width: 28px; height: 28px; }
-.sidebar__top .nav-toggle::before { width: 20px; height: 20px; }
 .sidebar__top .cat-buttons { flex: 1 1 auto; min-width: 0; gap: var(--wl-sp-2); }
 .sidebar__top .cat-tab {
   flex: 1 1 0; min-width: 0; justify-content: center;
-  padding: var(--wl-sp-2) var(--wl-sp-1); gap: var(--wl-sp-1);
+  padding: var(--wl-sp-2); gap: var(--wl-sp-2);
 }
 /* Свёрнутая панель: остаётся один бургер по центру колонки */
 body.nav-rail .sidebar__top { justify-content: center; }
@@ -529,7 +527,9 @@ body.nav-rail .sidebar__top .cat-buttons { display: none; }
   position: fixed; left: 0; top: 0; bottom: 0;
   display: none; flex-direction: column;
   width: var(--wl-nav);
-  padding: var(--wl-sp-3);
+  /* Поле 8, а не 12: у Stake карточка отступает от края колонки на 16 при
+     колонке 490 — в наши 252 это ровно 8. */
+  padding: 0 var(--wl-sp-2) var(--wl-sp-2);
   transition: width .24s cubic-bezier(.4, 0, .2, 1);
   background: transparent;
   z-index: 2;
@@ -666,11 +666,12 @@ body.nav-rail .sidebar__rule { margin: var(--wl-sp-2) var(--wl-sp-2) var(--wl-sp
   width: 100%; flex: none; overflow: hidden;
   transition: grid-template-rows .3s cubic-bezier(.4, 0, .2, 1), opacity .22s ease;
 }
-.subcat.is-collapsed { grid-template-rows: 0fr; opacity: 0; }
-/* Свёрнутое подменю имеет нулевую высоту, но всё ещё съедает зазор колонки.
-   У подменю казино это заложено в замеры макета, а подменю спорта добавлено
-   позже — гасим зазор только у него, иначе пункты ниже уезжают на 4px. */
-[data-node-id="1029:29221"].is-collapsed { margin-bottom: -4px; }
+/* Свёрнутое подменю имеет нулевую высоту, но всё ещё съедает зазор колонки:
+   между двумя пунктами их получалось два вместо одного, и шаг выходил 52
+   вместо 48. Гасим зазор у всех свёрнутых — так шаг сходится с Stake, у них
+   в пересчёте на нашу колонку 49. Раньше это гасилось точечно у одного
+   подменю, теперь правило общее. */
+.subcat.is-collapsed { grid-template-rows: 0fr; opacity: 0; margin-bottom: calc(-1 * var(--wl-sp-1)); }
 .subcat__list { min-height: 0; overflow: hidden; }
 .subcat__list { display: flex; flex-direction: column; min-width: 0; }
 .sub-item {
@@ -6595,25 +6596,26 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
 
   <!-- ═══════════ Сайдбар ═══════════ -->
   <aside class="sidebar" id="sidebar" data-node-id="860:5895">
+    <!-- Бургер и два раздела верхнего уровня: отдельной строкой над
+         карточкой меню, на фоне страницы — как у Stake. -->
+    <div class="sidebar__top">
+      <button class="nav-toggle" type="button" aria-label="Collapse menu"
+              aria-expanded="true" aria-controls="sidebar"></button>
+      <nav class="cat-buttons">
+        <a class="cat-tab" href="#">
+          <span class="cat-tab__icon">
+            <img src="a/dd57cc1252.svg" alt="" style="inset:0 0 16.3% 46.46%">
+            <img src="a/1904eb85cf.svg" alt="" style="inset:14.22% 31.26% 0 0">
+          </span>
+          <span class="cat-tab__label">CASINO</span>
+        </a>
+        <a class="cat-tab" href="#">
+          <span class="cat-tab__icon"><img src="a/ca02f2e00c.svg" alt="" style="inset:0 0.03% 0 0.02%"></span>
+          <span class="cat-tab__label">SPORTS</span>
+        </a>
+      </nav>
+    </div>
     <div class="sidebar__menu" data-node-id="860:5897">
-      <!-- Бургер и разделы верхнего уровня живут в самом меню, а не в шапке -->
-      <div class="sidebar__top">
-        <button class="nav-toggle" type="button" aria-label="Collapse menu"
-                aria-expanded="true" aria-controls="sidebar"></button>
-        <nav class="cat-buttons">
-          <a class="cat-tab" href="#">
-            <span class="cat-tab__icon">
-              <img src="a/dd57cc1252.svg" alt="" style="inset:0 0 16.3% 46.46%">
-              <img src="a/1904eb85cf.svg" alt="" style="inset:14.22% 31.26% 0 0">
-            </span>
-            <span class="cat-tab__label">CASINO</span>
-          </a>
-          <a class="cat-tab" href="#">
-            <span class="cat-tab__icon"><img src="a/ca02f2e00c.svg" alt="" style="inset:0 0.03% 0 0.02%"></span>
-            <span class="cat-tab__label">SPORTS</span>
-          </a>
-        </nav>
-      </div>
       <!-- 860:5898 — две группы, между ними зазор 230 -->
       <div class="sidebar__inner" data-node-id="860:5898">
 
