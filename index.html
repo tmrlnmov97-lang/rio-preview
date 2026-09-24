@@ -1396,9 +1396,10 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   .topbar__brand { width: 235px; }
   /* 296 = 252 панели + 44 зазора. Считаем от --nav-w, чтобы при сворачивании
      колонка сама подъезжала влево без второго набора правил. */
-  .content { --edge: 40px; left: calc(var(--wl-nav) + 44px);
-            /* Потолок колонки: дальше растёт не контент, а поле по краям */
-            max-width: 1200px; margin-inline: auto; }
+  /* Потолка у колонки больше нет: у 1win контент идёт до самого края, поле
+     справа 27 при экране 1683. Раньше упирались в 1200 и на широком мониторе
+     справа оставалось 113 пустых пикселей при 1683 и 232 при 1920. */
+  .content { --edge: 40px; left: calc(var(--wl-nav) + 44px); }
   .topbar  { gap: 60px; padding-right: 41px; }
   /* Шапка идёт по той же колонке, что и контент */
   .header-desktop { margin-left: var(--gutter, 0px); margin-right: var(--gutter-r, 0px); }
@@ -2428,7 +2429,14 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
                 object-fit: contain; object-position: right bottom; pointer-events: none;
                 /* Подложка у арта перекрашена в тот же градиент прямо в файле,
                    поэтому маска по краю больше не нужна. */ }
-  .hero__bg { position: absolute; right: 0; top: 0; height: 100%; width: auto;
+  /* Раньше арт стоял по правому краю в натуральной пропорции: при колонке
+     шире 1440 слева от него открывалась полоса фона и был виден шов.
+     Теперь заполняет баннер целиком; по бокам арта есть запас, вертикальная
+     обрезка в него и уходит. */
+  .hero__bg { position: absolute; inset: 0; height: 100%; width: 100%;
+              /* По верху, а не по центру: при обрезке снизу уходят монеты,
+                 по центру срезало корону. */
+              object-fit: cover; object-position: center top;
               display: block; max-width: none; pointer-events: none; }
   /* У мобильной подложки тот же класс hero__bg, и правило выше включало её
      обратно на десктопе — она ложилась поверх и обрезала арт справа.
