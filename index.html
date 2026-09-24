@@ -525,7 +525,9 @@ body.nav-rail .sidebar__top .cat-buttons { display: none; }
   /* Поля есть: карточка вставлена внутрь колонки, и тёмная подложка
      обрамляет её слева, справа и снизу. У Stake поля 28 и 32 при колонке
      516 — в наши 252 это 14 и 16, берём 16 из шкалы. */
-  padding: var(--wl-sp-2);
+  /* Сверху поля нет: карточка начинается вровень с верхом шапки, щели
+     между ними не остаётся. По бокам и снизу — 8. */
+  padding: 0 var(--wl-sp-2) var(--wl-sp-2);
   transition: width .24s cubic-bezier(.4, 0, .2, 1);
   /* Фон страницы, а не отдельный тёмный: у Stake колонка и есть полотно,
      светлая только карточка. Отдельный тон давал шаг в 19 единиц —
@@ -540,7 +542,9 @@ body.nav-rail .sidebar__top .cat-buttons { display: none; }
    а не обрезается по содержимому. */
 .sidebar__menu {
   display: flex; flex-direction: column; align-items: stretch;
-  width: 100%; flex: 1 1 auto; min-height: 0; background: var(--wl-bg-chrome);
+  /* На ступень светлее: на --wl-bg-chrome карточка отличалась от полотна
+     всего на 9 единиц яркости и сливалась с ним. На --wl-bg-raised — 19. */
+  width: 100%; flex: 1 1 auto; min-height: 0; background: var(--wl-bg-raised);
   /* Карточка с шапкой больше не стыкуется — между ними тёмная полоса,
      поэтому скругление вернулось. */
   border-radius: var(--wl-r-sm); overflow: hidden;
