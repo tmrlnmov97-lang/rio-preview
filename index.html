@@ -421,9 +421,7 @@ body {
   position: fixed; left: 0; right: 0; top: 0;
   display: flex; align-items: center; gap: var(--wl-sp-6);
   width: auto; height: 74px; padding-right: var(--wl-sp-5);
-  /* У 1win шапка залита цветом полотна, а не сайдбара: она сливается
-     со страницей, и единственная выделенная поверхность слева. */
-  background: var(--wl-bg-page);
+  background: var(--wl-bg-chrome);
   z-index: 20;
 }
 /* 860:6106 — слот 235px, внутри 860:6113: только логотип, отступ 20 слева,
@@ -1549,9 +1547,12 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   100%     { transform: translateX(110%); }
 }
 
-/* --- Шапка отделяется от контента, когда под ней что-то проехало --- */
-.topbar { box-shadow: 0 0 0 0 rgba(0,0,0,0); transition: box-shadow .2s ease; }
-.topbar.is-scrolled { box-shadow: 0 6px 20px -6px rgba(0,0,0,.55); }
+/* --- Шапка отделяется от контента, когда под ней что-то проехало ---
+   Кант по нижнему краю виден всегда: между шапкой и полотном всего
+   9 единиц яркости, без него граница терялась. Тень при прокрутке
+   ложится поверх него и никуда не девается. */
+.topbar { box-shadow: inset 0 -1px 0 var(--wl-line-hover); transition: box-shadow .2s ease; }
+.topbar.is-scrolled { box-shadow: inset 0 -1px 0 var(--wl-line-hover), 0 6px 20px -6px rgba(0,0,0,.55); }
 
 /* --- Уважаем системную настройку «меньше движения» --- */
 @media (prefers-reduced-motion: reduce) {
