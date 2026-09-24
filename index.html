@@ -2414,7 +2414,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
     border-radius: var(--wl-r-xl); border: 0;
     /* 1647:19434 — тот же градиент, что залит в кадре: на ширинах больше 737
        картинка прижата вправо, и другим оттенком слева был бы виден стык. */
-    background-image: linear-gradient(182.18deg, #041b4b 2.83%, #061537 28.46%, #0a1b49 86.84%);
+    background-image: var(--wl-grad-hero);
   }
   /* image 597 — 522x317 на 350,3, низ уходит под обрез */
   /* Арт вписан по высоте баннера: в макете бокс 522x317 уходит на 45px под
@@ -2578,7 +2578,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
        не обрезает слой с mix-blend-mode и фильтром */
     clip-path: inset(0 round var(--hcard-r));
     /* Стопы из Figma: 0% 041B4B, 35% 061537, 100% 0A1B49 */
-    background-image: linear-gradient(182.46deg, #041b4b 0%, #061537 35%, #0a1b49 100%);
+    background-image: var(--wl-grad-hero);
     transition: transform .34s cubic-bezier(.4,0,.2,1);
   }
   .hcard > img { position: absolute; display: block; max-width: none; pointer-events: none; }
@@ -2589,7 +2589,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   .hcard--sport .hcard__pic { left: 99px;  top: -20px; width: 253px; height: 169px; overflow: hidden; }
   /* Частицы в файле бирюзовые (тон 197°). На SPORT разворачиваем их в
      оранжевый под сам сюжет карточки; на CASINO оставляем как есть. */
-  .hcard--sport .hcard__dust { filter: hue-rotate(208deg) saturate(1.3); }
+  .hcard--sport .hcard__dust { filter: none;  /* пыль больше не синяя — поворачивать тон нечего */ }
   .hcard__title {
     position: absolute; left: 19px; top: 31px; transform: translateY(-50%); margin: 0; z-index: 2;
     font-family: var(--wl-font-ui); font-weight: var(--wl-fw-bold);
@@ -2954,7 +2954,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   .hero__soc img { display: block; width: 20px; height: 20px; }
 
   .hcard { position: relative; isolation: isolate;
-           background-image: linear-gradient(182.46deg, #041b4b 0%, #061537 35%, #0a1b49 100%); }
+           background-image: var(--wl-grad-hero); }
   /* Обрезаем ещё и clip-path, а не только overflow: у пыли mix-blend-mode,
      у спортивной ещё и filter — WebKit уносит такой слой в отдельный и
      скругление родителя к нему не применяет. На десктопе углы выглядели
@@ -2970,7 +2970,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   .hcard__pic  { overflow: hidden; }
   .hcard__pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; }
   .hcard__dust { object-fit: cover; mix-blend-mode: lighten; }
-  .hcard--sport .hcard__dust { filter: hue-rotate(208deg) saturate(1.3); }
+  .hcard--sport .hcard__dust { filter: none;  /* пыль больше не синяя — поворачивать тон нечего */ }
   .hcard__title { position: absolute; margin: 0; z-index: 2; transform: translateY(-50%);
                   font-family: var(--wl-font-ui); font-weight: var(--wl-fw-bold);
                   line-height: 1; color: var(--wl-text); }
