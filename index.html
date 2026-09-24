@@ -72,11 +72,12 @@
   --wl-w-75:  rgba(255, 255, 255, .75);
 
   /* ---------- Акцент по прозрачности ----------
-     Было 8 ступеней, стало 4. */
-  --wl-a-10:  rgba(50, 115, 246, .10);
-  --wl-a-18:  rgba(50, 115, 246, .18);
-  --wl-a-30:  rgba(50, 115, 246, .30);
-  --wl-a-55:  rgba(50, 115, 246, .55);
+     Было 8 ступеней, стало 4. Идут за основным цветом: иначе выбранные
+     вкладки и чипы остались бы синими рядом с янтарными кнопками. */
+  --wl-a-10:  rgba(255, 184, 0, .10);
+  --wl-a-18:  rgba(255, 184, 0, .18);
+  --wl-a-30:  rgba(255, 184, 0, .30);
+  --wl-a-55:  rgba(255, 184, 0, .55);
 
 
   /* ==========================================================
@@ -110,11 +111,13 @@
   --wl-line-pick:   var(--wl-a-55);   /* кант выбранного */
 
   /* ---------- Главное действие ----------
-     Измерен на активной вкладке и на значке поддержки. */
-  --wl-primary:        #3273f6;
-  --wl-primary-hover:  #5389f8;  /* светлее на 12% */
-  --wl-primary-active: #2660d4;  /* темнее на 12%, заодно и «нажатие» героя */
-  --wl-focus:          #8fb2fa;
+     Янтарь вместо синего. На такой светлой заливке белая надпись даёт
+     контраст 1,8 — нечитаемо, поэтому у неё свой тёмный цвет. */
+  --wl-primary:        #ffb800;
+  --wl-primary-hover:  #ffc733;  /* светлее на 12% */
+  --wl-primary-active: #d99c00;  /* темнее на 12%, заодно и «нажатие» героя */
+  --wl-on-primary:     #1a1200;  /* текст и значки на янтарной заливке, контраст 12,4 */
+  --wl-focus:          #ffd166;
 
   /* ---------- Успех: регистрация, «выполнено», Live, выигрыш ----------
      Было 7 зелёных, стало 3 плюс прозрачности. */
@@ -490,7 +493,7 @@ body.nav-rail .nav-toggle::before { transform: scaleX(-1); }
   font-family: inherit; font-variation-settings: 'wdth' 100;
 }
 .btn--ghost { background: var(--wl-bg-field); }
-.btn--primary { background: var(--wl-primary); }
+.btn--primary { background: var(--wl-primary); color: var(--wl-on-primary); }
 
 /* ─────────────── Сайдбар · 252×1254, y=76 ─────────────── */
 .sidebar {
@@ -887,7 +890,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   display: flex; align-items: center; justify-content: center;
   width: 183px; height: 48px; padding: 10px var(--wl-sp-3);
   background: var(--wl-primary); border: 0; border-radius: var(--wl-r-md); cursor: pointer;
-  font-family: var(--wl-font); font-weight: var(--wl-fw-bold); font-size: var(--wl-fs-sm); line-height: 14px; color: var(--wl-text);
+  font-family: var(--wl-font); font-weight: var(--wl-fw-bold); font-size: var(--wl-fs-sm); line-height: 14px; color: var(--wl-on-primary);
   white-space: nowrap;
 }
 
@@ -1842,7 +1845,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
      колонке с зазором 16 под текстом — так и делаем, потоком */
   .bonus__cta {
     margin-left: 0; width: auto; min-width: 100px; height: 30px; padding: 0 var(--wl-sp-3);
-    border-radius: var(--wl-r-md); background: var(--wl-primary);
+    border-radius: var(--wl-r-md); background: var(--wl-primary); color: var(--wl-on-primary);
     font-family: var(--wl-font-ui); font-variation-settings: 'wdth' 100;
     font-weight: var(--wl-fw-bold); font-size: var(--wl-fs-sm); line-height: normal;
   }
@@ -2501,7 +2504,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
                            padding: var(--wl-sp-3); border-radius: var(--wl-r-md);
                            font-family: var(--wl-font-ui); font-weight: var(--wl-fw-bold);
                            font-size: var(--wl-fs-sm); line-height: normal;
-                           background: var(--wl-primary); }
+                           background: var(--wl-primary); color: var(--wl-on-primary); }
   .hero .hero__cta--join:hover  { background: var(--primary-hover, var(--wl-primary-hover)); }
   .hero .hero__cta--join:active { background: var(--primary-active, var(--wl-primary-active)); }
   /* 904:1982 — стрелки только после входа, в правом нижнем углу, отступы
@@ -2696,9 +2699,9 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 .lg__submit {
   display: flex; align-items: center; justify-content: center; padding: var(--wl-sp-3) var(--wl-sp-5);
   background: var(--wl-primary); border: 0; border-radius: var(--wl-r-sm); cursor: pointer;
-  filter: drop-shadow(0 0 4.4px rgba(2, 49, 191, .25));
+  filter: drop-shadow(0 0 4.4px rgba(255, 184, 0, .25));
   font-family: var(--wl-font-ui); font-weight: var(--wl-fw-bold);
-  font-size: var(--wl-fs-sm); line-height: var(--wl-lh-sm); color: var(--wl-text);
+  font-size: var(--wl-fs-sm); line-height: var(--wl-lh-sm); color: var(--wl-on-primary);
 }
 .lg__submit:hover { background: var(--wl-primary-hover); }
 .lg__switch { margin: 0; padding: var(--wl-sp-3) 0; text-align: center; font-size: var(--wl-fs-sm); line-height: 18px; color: var(--wl-text-muted); }
@@ -2725,7 +2728,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
            border-radius: var(--wl-r-lg) var(--wl-r-lg) 0 0; opacity: 0; transition: opacity .18s ease; }
 .lg__bar::after {
   content: ''; position: absolute; top: 0; bottom: 0; width: 40%;
-  background: linear-gradient(90deg, transparent, var(--wl-primary), #7ac4ff, transparent);
+  background: linear-gradient(90deg, transparent, var(--wl-primary), var(--wl-focus), transparent);
 }
 .lg__modal.is-busy .lg__bar { opacity: 1; }
 .lg__modal.is-busy .lg__bar::after { animation: lg-sweep 1.15s cubic-bezier(.45, 0, .55, 1) infinite; }
@@ -2895,7 +2898,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   /* 1653:13046 — кнопка 140x30, радиус 10, Instrument Sans Bold 14 */
   .mslide .hero__cta { box-sizing: border-box; margin-top: 0; width: 140px; height: 30px;
                        padding: var(--wl-sp-3); border-radius: var(--wl-r-md);
-                       background: var(--wl-primary);
+                       background: var(--wl-primary); color: var(--wl-on-primary);
                        font-family: var(--wl-font-ui); font-weight: var(--wl-fw-bold);
                        font-size: var(--wl-fs-sm); line-height: normal; }
   .mslide .hero__cta:hover  { background: var(--primary-hover, var(--wl-primary-hover)); }
