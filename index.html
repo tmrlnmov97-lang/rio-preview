@@ -7418,7 +7418,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
             <div class="prof__cell">
               <span class="prof__label">E-mail <em class="prof__badge prof__badge--ok">verified</em></span>
               <div class="prof__box">
-                <span class="prof__value">user@riobet.com</span>
+                <span class="prof__value">user@warwin.com</span>
                 <button class="prof__link" type="button" data-fgo="tab:general">Change</button>
               </div>
             </div>
@@ -7579,7 +7579,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
               <div class="vf__field">
                 <label class="vf__lab" for="vf-email">E-mail</label>
                 <div class="vf__ro">
-                  <input class="vf__inp" id="vf-email" type="email" value="user@riobet.com" readonly>
+                  <input class="vf__inp" id="vf-email" type="email" value="user@warwin.com" readonly>
                   <em class="vf__badge vf__badge--ok" data-vf-mailbadge>
                     <img loading="lazy" decoding="async" src="a/e09ef2fd57.svg" alt="" width="14" height="14"><span>Verified</span>
                   </em>
@@ -13904,7 +13904,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
           <div class="lg__field" data-node-id="4:14363">
             <label class="lg__input">
               <img loading="lazy" decoding="async" src="a/6c1377265b.svg" alt="" width="20" height="20">
-              <input type="email" placeholder="user@riobet.com" aria-label="Email">
+              <input type="email" placeholder="user@warwin.com" aria-label="Email">
             </label>
             <p class="lg__hint"></p>
           </div>
@@ -17546,7 +17546,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         lg.addEventListener('click', function (e) { if (e.target.closest('[data-close]')) closeLogin(); });
         addEventListener('keydown', function (e) { if (e.key === 'Escape' && !lg.hidden) closeLogin(); });
         /* Состояния входа. Верные данные заданы задачей. */
-        var OK_MAIL = 'user@riobet.com', OK_PASS = 'RioBet666';
+        var OK_MAIL = 'user@warwin.com', OK_PASS = 'Warwin666';
         var form   = lg.querySelector('.lg__fields');
         var mail   = lg.querySelector('input[type=email]');
         var pass   = lg.querySelector('.lg__field:nth-child(2) input');
@@ -19452,7 +19452,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         /* «Password changed.» появлялось мгновенно и всегда: отличить успех
            от несохранённого было нельзя. Теперь есть ожидание и есть отказ —
            текущий пароль сверяется с тем, под которым вошли. */
-        var CUR_PASS = 'RioBet666';
+        var CUR_PASS = 'Warwin666';
         secBtn.addEventListener('click', function () {
           if (secBtn.disabled) return;
           if (secInputs[0].value !== CUR_PASS) {
