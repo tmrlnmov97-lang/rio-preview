@@ -6542,6 +6542,11 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
 </style>
 </head>
 <body>
+<!-- Превью выкладывается по одному и тому же адресу, и браузер держал
+     прошлую сборку: правки были выложены, а на экране оставалось старое.
+     Запрещаем кэш — страница всегда берётся заново. -->
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
 
 <!-- Значок вкладки: знак логотипа на фоне шапки. Квадрат с подложкой,
      а не прозрачный знак: белая «W» пропадала бы на светлой вкладке.
