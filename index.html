@@ -1639,8 +1639,10 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   .content {
     --edge: 16px;
     position: static; width: auto;
-    /* карта баннера в макете начинается на 82, чипы на 308, секции на 365 */
-    padding: 0 var(--wl-sp-4); margin-top: var(--wl-sp-5); gap: var(--wl-sp-4);
+    /* карта баннера в макете начинается на 82, чипы на 308, секции на 365.
+       Нижнее поле — под нижнюю панель: раньше зазор давал футер, без него
+       последний ряд уходил под неё на 32 пикселя. Панель 107 плюс воздух. */
+    padding: 0 var(--wl-sp-4) 124px; margin-top: var(--wl-sp-5); gap: var(--wl-sp-4);
   }
   .content-body { gap: var(--wl-sp-6); }
   /* Все вертикальные зазоры между секциями в мобильном макете — 24 */
@@ -13637,106 +13639,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         </section>
         <button class="spmore" type="button" data-node-id="974:11954">Show more<img loading="lazy" decoding="async" src="a/e20dc84eee.svg" alt="" width="18" height="18"></button>
       </div>
-        <footer class="footer" data-node-id="851:3651">
-          <!-- Навигация футера: пять разделов по варфрейму заказчика -->
-          <nav class="fnav">
-            <div class="fnav__col">
-              <button class="fnav__head" type="button" aria-expanded="false">
-                <b>Casino</b>
-                <img loading="lazy" decoding="async" class="fnav__chev" src="a/e139209072.svg" alt="">
-              </button>
-              <ul class="fnav__list">
-                <li><button class="fnav__link" type="button" data-fgo="view:casino">Slots</button></li>
-                <li><button class="fnav__link" type="button" data-fgo="view:casino">Live Casino</button></li>
-                <li><button class="fnav__link" type="button" data-fgo="view:crash">Fast Games</button></li>
-                <li><button class="fnav__link" type="button" data-fgo="view:casino">Providers</button></li>
-              </ul>
-            </div>
-            <div class="fnav__col">
-              <button class="fnav__head" type="button" aria-expanded="false">
-                <b>Sports</b>
-                <img loading="lazy" decoding="async" class="fnav__chev" src="a/e139209072.svg" alt="">
-              </button>
-              <ul class="fnav__list">
-                <li><button class="fnav__link" type="button" data-fgo="view:sport">Sportsbook</button></li>
-                <li><button class="fnav__link" type="button" data-fgo="view:sport">Live Betting</button></li>
-              </ul>
-            </div>
-            <div class="fnav__col">
-              <button class="fnav__head" type="button" aria-expanded="false">
-                <b>RioBet</b>
-                <img loading="lazy" decoding="async" class="fnav__chev" src="a/e139209072.svg" alt="">
-              </button>
-              <ul class="fnav__list">
-                <li><button class="fnav__link" type="button" data-fgo="view:bonuses">Bonuses</button></li>
-                <li><button class="fnav__link" type="button" data-fgo="view:promo">Promotions</button></li>
-                <li data-auth-only><button class="fnav__link" type="button" data-fgo="view:vip">VIP Club</button></li>
-                <li><button class="fnav__link" type="button">Affiliate Program</button></li>
-                <li><button class="fnav__link" type="button" data-fgo="view:about">About Us</button></li>
-              </ul>
-            </div>
-            <div class="fnav__col">
-              <button class="fnav__head" type="button" aria-expanded="false">
-                <b>Help</b>
-                <img loading="lazy" decoding="async" class="fnav__chev" src="a/e139209072.svg" alt="">
-              </button>
-              <ul class="fnav__list">
-                <li><button class="fnav__link" type="button" data-fgo="view:helpFaq">Help Center / FAQ</button></li>
-                <li><button class="fnav__link" type="button" data-fgo="view:helpPay">Deposit &amp; Withdrawal</button></li>
-                <li><button class="fnav__link" type="button" data-fgo="view:helpKyc">Verification</button></li>
-                <li><button class="fnav__link" type="button" data-fgo="view:helpSup">Contact Support</button></li>
-              </ul>
-            </div>
-            <div class="fnav__col">
-              <button class="fnav__head" type="button" aria-expanded="false">
-                <b>Legal</b>
-                <img loading="lazy" decoding="async" class="fnav__chev" src="a/e139209072.svg" alt="">
-              </button>
-              <ul class="fnav__list">
-                <li><button class="fnav__link" type="button" data-fgo="view:legalTc">Terms &amp; Conditions</button></li>
-                <li><button class="fnav__link" type="button" data-fgo="view:legalPp">Privacy Policy</button></li>
-                <li><button class="fnav__link" type="button" data-fgo="view:legalCk">Cookie Policy</button></li>
-                <li><button class="fnav__link" type="button" data-fgo="view:legalRg">Responsible Gaming</button></li>
-                <li><button class="fnav__link" type="button" data-fgo="view:legalAml">AML / KYC Policy</button></li>
-              </ul>
-            </div>
-          </nav>
-
-          <!-- 891:22532 — виден только на мобильной ширине -->
-          <div class="footer__top" data-node-id="891:22532">
-            <img loading="lazy" decoding="async" class="footer__logo" src="a/cfa22cccd3.svg" alt="RioBet" width="234" height="73">
-            <p class="footer__join" data-node-id="891:22540">Join our Community!</p>
-            <div class="footer__socials" data-node-id="891:22541">
-              <a class="fsoc" href="https://x.com/riobet" target="_blank" rel="noopener noreferrer" aria-label="X"><img loading="lazy" decoding="async" src="a/86a8b0b29f.svg" alt=""></a>
-              <a class="fsoc" href="https://t.me/riobet" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><img loading="lazy" decoding="async" src="a/98e8aff388.svg" alt=""></a>
-              <a class="fsoc" href="https://instagram.com/riobet" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img loading="lazy" decoding="async" src="a/110c3b7474.svg" alt=""></a>
-              <a class="fsoc" href="https://tiktok.com/@riobet" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><img loading="lazy" decoding="async" src="a/1cc404657a.svg" alt=""></a>
-            </div>
-          </div>
-
-          <!-- Нижний блок: возрастной знак, права и реквизиты,
-               под ними ряд бейджей ответственной игры -->
-          <div class="fbot">
-            <span class="fbot__age" aria-label="Adults only">18+</span>
-            <div class="fbot__text">
-              <p class="fbot__copy">&#169; 2026 RioBet. All rights reserved</p>
-              <p class="fbot__co">Owned and&nbsp;operated by&nbsp;RioBet Group International Ltd (Registration No.&nbsp;000054736), registered at&nbsp;San Victor Street, Orange Walk Town, Belize.</p>
-              <div class="footer__partners" data-node-id="904:2788">
-                <img loading="lazy" decoding="async" class="footer__badges" src="a/53796263d7.webp" alt="Responsible Gambling, 18+, Gambling Therapy, BeGambleAware">
-                <img loading="lazy" decoding="async" class="footer__badges--mob" src="a/ee07665fa8.webp" alt="">
-              </div>
-            </div>
-            <!-- Соцсети десктопа. На мобильной свой блок выше, с логотипом -->
-            <div class="fsocs">
-              <a class="fsoc" href="https://x.com/riobet" target="_blank" rel="noopener noreferrer" aria-label="X"><img loading="lazy" decoding="async" src="a/86a8b0b29f.svg" alt=""></a>
-              <a class="fsoc" href="#" aria-label="LinkedIn"><img loading="lazy" decoding="async" src="a/c9c30c956f.svg" alt=""></a>
-              <a class="fsoc" href="https://instagram.com/riobet" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img loading="lazy" decoding="async" src="a/110c3b7474.svg" alt=""></a>
-              <a class="fsoc" href="https://tiktok.com/@riobet" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><img loading="lazy" decoding="async" src="a/1cc404657a.svg" alt=""></a>
-              <a class="fsoc" href="https://facebook.com/riobet" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img loading="lazy" decoding="async" src="a/94a086da44.svg" alt=""></a>
-              <a class="fsoc" href="https://t.me/riobet" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><img loading="lazy" decoding="async" src="a/98e8aff388.svg" alt=""></a>
-            </div>
-          </div>
-        </footer>
 
     </div><!-- /content-body -->
 
@@ -20347,18 +20249,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
           });
         });
       }
-
-      /* ── Аккордеоны футера на мобильной ── */
-      document.querySelectorAll('.fnav__head').forEach(function (h) {
-        h.addEventListener('click', function () {
-          if (innerWidth > 767) return;          /* на десктопе списки открыты всегда */
-          var open = h.getAttribute('aria-expanded') === 'true';
-          document.querySelectorAll('.fnav__head').forEach(function (o) {
-            o.setAttribute('aria-expanded', 'false');
-          });
-          h.setAttribute('aria-expanded', open ? 'false' : 'true');
-        });
-      });
 
       /* ── Валюта счёта ──
          Кнопка баланса раскрывает список под собой. Положение считаем по её
