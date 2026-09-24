@@ -1581,9 +1581,22 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 /* --- Шапка отделяется от контента, когда под ней что-то проехало ---
    Кант по нижнему краю виден всегда: между шапкой и полотном всего
    9 единиц яркости, без него граница терялась. Тень при прокрутке
-   ложится поверх него и никуда не девается. */
-.topbar { box-shadow: inset 0 -1px 0 var(--wl-line-hover); transition: box-shadow .2s ease; }
-.topbar.is-scrolled { box-shadow: inset 0 -1px 0 var(--wl-line-hover), 0 6px 20px -6px rgba(0,0,0,.55); }
+   ложится поверх него и никуда не девается.
+   Сам кант рисует ::after, а не inset-тень: тень легла бы во всю ширину
+   и прошла бы над колонкой меню, отрезая её от шапки щелью. Начинаем
+   его там же, где колонка контента. */
+.topbar { transition: box-shadow .2s ease; }
+.topbar::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: var(--wl-line-hover); pointer-events: none;
+}
+.topbar.is-scrolled { box-shadow: 0 6px 20px -6px rgba(0,0,0,.55); }
+/* Ниже 1024 колонки нет, кант идёт во всю ширину. На десктопе он
+   начинается после колонки меню: иначе проходит над ней и отрезает её
+   от шапки щелью. Правило стоит после базового — иначе не перебьёт. */
+@media (min-width: 1024px) {
+  .topbar::after { left: calc(var(--wl-nav) + 44px); }
+}
 
 /* --- Уважаем системную настройку «меньше движения» --- */
 @media (prefers-reduced-motion: reduce) {
