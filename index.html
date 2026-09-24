@@ -193,14 +193,18 @@
   --wl-r-round: 50%;
 
   /* ---------- Кегли и интерлиньяж ----------
-     Было 14 кеглей через каждый пиксель, стало 7. */
+     Было 14 кеглей через каждый пиксель, стало 7.
+     Шкала ужата примерно на десятую: крупные ступени отдали больше,
+     мелкие — меньше. Нижняя ступень осталась на 12: это порог, ниже
+     которого подписи на тёмном фоне перестают читаться. Интерлиньяж
+     сжат слабее кегля, иначе строки в абзацах слипаются. */
   --wl-fs-xs:   12px;  --wl-lh-xs:  16px;  /* микроподписи, метки */
-  --wl-fs-sm:   14px;  --wl-lh-sm:  20px;  /* основной UI-текст */
-  --wl-fs-md:   16px;  --wl-lh-md:  24px;  /* абзацы, поля ввода */
-  --wl-fs-lg:   18px;  --wl-lh-lg:  24px;  /* заголовок секции */
-  --wl-fs-xl:   22px;  --wl-lh-xl:  28px;  /* заголовок страницы */
-  --wl-fs-2xl:  28px;  --wl-lh-2xl: 34px;  /* название игры */
-  --wl-fs-3xl:  36px;  --wl-lh-3xl: 40px;  /* крупные суммы */
+  --wl-fs-sm:   13px;  --wl-lh-sm:  18px;  /* основной UI-текст */
+  --wl-fs-md:   15px;  --wl-lh-md:  22px;  /* абзацы, поля ввода */
+  --wl-fs-lg:   17px;  --wl-lh-lg:  24px;  /* заголовок секции */
+  --wl-fs-xl:   20px;  --wl-lh-xl:  26px;  /* заголовок страницы */
+  --wl-fs-2xl:  25px;  --wl-lh-2xl: 31px;  /* название игры */
+  --wl-fs-3xl:  32px;  --wl-lh-3xl: 38px;  /* крупные суммы */
 
   /* ---------- Начертания ----------
      300 убрано: встречалось дважды. */
@@ -881,7 +885,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 }
 .bonus__title {
   margin: 0; font-family: var(--wl-font-ui); font-weight: var(--wl-fw-bold);
-  font-size: 45px; line-height: 1;
+  font-size: 40px; line-height: 1;
 }
 .bonus__sub {
   margin: 0; font-weight: var(--wl-fw-regular); font-size: var(--wl-fs-xl); line-height: normal;
@@ -1081,7 +1085,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 .lgl { box-sizing: border-box; width: 100%; max-width: 860px; margin: 0 auto; }
 .lgl__doc[hidden] { display: none; }
 .lgl__h1 { margin: 0 0 var(--wl-sp-4); font-family: var(--wl-font-ui);
-          font-weight: var(--wl-fw-bold); font-size: 34px; line-height: 42px;
+          font-weight: var(--wl-fw-bold); font-size: 30px; line-height: 42px;
           color: var(--wl-text); text-wrap: balance; }
 /* Выходные данные документа: версия и даты одной строкой пар */
 .lgl__meta { display: flex; flex-wrap: wrap; gap: var(--wl-sp-2) 10px; margin: 0 0 28px; }
@@ -1170,10 +1174,10 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 
 @media (max-width: 1023px) { .lgl__h1 { font-size: var(--wl-fs-2xl); line-height: 36px; } }
 @media (max-width: 767px) {
-  .lgl__h1 { font-size: 23px; line-height: 31px; }
+  .lgl__h1 { font-size: 21px; line-height: 31px; }
   .lgl__meta { margin-bottom: 22px; }
   .lgl__toc { grid-template-columns: 1fr; padding: 14px var(--wl-sp-4); margin-bottom: 28px; }
-  .lgl__h2 { margin: var(--wl-sp-8) 0 var(--wl-sp-3); font-size: 19px; line-height: 27px; scroll-margin-top: 136px; }
+  .lgl__h2 { margin: var(--wl-sp-8) 0 var(--wl-sp-3); font-size: 17px; line-height: 27px; scroll-margin-top: 136px; }
   .lgl__h3 { margin: 22px 0 var(--wl-sp-2); font-size: var(--wl-fs-md); line-height: 22px; }
   .lgl__body p, .lgl__ul li, .lgl__orgs li { font-size: var(--wl-fs-sm); line-height: var(--wl-lh-md); }
   .lgl__contacts dt { min-width: 0; }
@@ -1271,7 +1275,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
                font-family: var(--wl-font); font-size: var(--wl-fs-xs); line-height: 18px;
                color: var(--wl-text-dim); }
 
-@media (max-width: 1023px) { .hc__h1 { font-size: 30px; line-height: 38px; } }
+@media (max-width: 1023px) { .hc__h1 { font-size: 27px; line-height: 38px; } }
 @media (max-width: 767px) {
   .hc__h1 { font-size: var(--wl-fs-xl); line-height: 32px; margin-bottom: 18px; }
   .hc__list { border-radius: var(--wl-r-lg); }
@@ -1311,7 +1315,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
             font-size: var(--wl-fs-xs); line-height: var(--wl-lh-xs); letter-spacing: .06em;
             text-transform: uppercase; color: var(--wl-text-dim); }
 .ab__h1 { margin: 0 0 var(--wl-sp-5); font-family: var(--wl-font-ui);
-          font-weight: var(--wl-fw-bold); font-size: 40px; line-height: 48px;
+          font-weight: var(--wl-fw-bold); font-size: 36px; line-height: 48px;
           color: var(--wl-text); text-wrap: balance; }
 /* Первый абзац крупнее прочих: он несёт всё обещание страницы */
 .ab__lead { margin: 0 0 22px; font-family: var(--wl-font); font-weight: var(--wl-fw-regular);
@@ -1332,7 +1336,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 .ab__sign { margin: var(--wl-sp-8) 0 0; padding-top: 28px;
             border-top: 1px solid var(--wl-w-08);
             font-family: var(--wl-font-ui); font-weight: var(--wl-fw-bold);
-            font-size: 26px; line-height: var(--wl-lh-2xl); color: var(--wl-text); text-wrap: balance; }
+            font-size: 23px; line-height: var(--wl-lh-2xl); color: var(--wl-text); text-wrap: balance; }
 .ab__doc > :last-child { margin-bottom: 0; }
 
 @media (max-width: 1023px) {
@@ -1340,7 +1344,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 }
 @media (max-width: 767px) {
   .ab { gap: var(--wl-sp-5); }
-  .ab__h1 { font-size: 26px; line-height: var(--wl-lh-2xl); margin-bottom: var(--wl-sp-4); }
+  .ab__h1 { font-size: 23px; line-height: var(--wl-lh-2xl); margin-bottom: var(--wl-sp-4); }
   .ab__lead { font-size: var(--wl-fs-md); line-height: 26px; margin-bottom: 18px; }
   .ab__p { font-size: var(--wl-fs-md); line-height: 25px; margin-bottom: 18px; }
   .ab__p--key { margin: 22px 0; padding: 18px; border-radius: var(--wl-r-lg);
@@ -1726,11 +1730,11 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
      y=51, «or register via» 189x10 на y=99; ниже 903:41981 214x32 на y=120. */
   .banner__copy { left: 20px; top: 29px; transform: none; width: 216px; align-items: center; gap: var(--wl-sp-2); }
   .banner__inner { width: 189px; align-items: center; gap: var(--wl-sp-3); }
-  .banner__title { margin: 3px 0 0; font-size: 19.4px; line-height: 22px; text-align: center; width: 189px; }
+  .banner__title { margin: 3px 0 0; font-size: 17.5px; line-height: 22px; text-align: center; width: 189px; }
   /* 903:41979 — var(--wl-ok), радиус 12, паддинг 14/28/14/26, Instrument Sans Bold 14 */
   .banner__cta { width: 148px; height: 36px; border-radius: var(--wl-r-md); padding: 14px 28px 14px 26px;
                  font-size: var(--wl-fs-sm); line-height: normal; }
-  .banner__or { margin: 0; font-size: 13.5px; line-height: 10px; align-self: center; }
+  .banner__or { margin: 0; font-size: 13px; line-height: 10px; align-self: center; }
   .socials { gap: var(--wl-sp-3); }
   /* 903:41982 / 903:41986 — фон, рамка и радиус те же, что на десктопе;
      на мобильной меняются только паддинг 4, иконка 20 и кегль 12/24.
@@ -1791,7 +1795,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   .lc > img.layer, .lc > .clip { transform: translate(-50%, -50%) scale(.735) !important; }
   .game { width: 114px; height: 151px; --tile-r: 10px; }
   .game__info { width: 116px; padding: 14px 6px 6px; }
-  .game__name { font-size: 21px; line-height: 17px; }
+  .game__name { font-size: 19px; line-height: 17px; }
   .game__provider { font-size: 8px; }
   .lc { width: 114px; height: 150px; --tile-r: 10px; }
   .lc__info { width: 116px; padding: 14px 6px 6px; }
@@ -2497,7 +2501,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
      языке свой (368 в английском, 375 и 422 в русском). Жёсткие 368 и 342 резали
      «СТАВЬ&ВЫИГРЫВАЙ» на третью строку, и она уезжала на арт. */
   .hero .hero__copy--authed .hero__title { margin: 0; width: max-content;
-                                           max-width: 440px; font-size: 40px;
+                                           max-width: 440px; font-size: 36px;
                                            line-height: 36px; font-weight: var(--wl-fw-medium);
                                            color: #fff; }
   /* 1647:19538 — кегль 20, интерлиньяж 120%: на 90% строки слипались.
@@ -2549,7 +2553,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
        остаётся настоящим, а высота блока совпадает с макетом. */
     margin: -4px 0; width: 333px;
     font-family: var(--wl-font-ui); font-weight: var(--wl-fw-medium);
-    font-size: 40px; line-height: var(--wl-lh-3xl); color: var(--wl-text);
+    font-size: 36px; line-height: var(--wl-lh-3xl); color: var(--wl-text);
   }
   .hero__sub {
     /* Ширина 342 из макета была рассчитана впритык под английскую строку, и
@@ -3306,7 +3310,7 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
 
 @media (max-width: 767px) {
   .view--vip { gap: var(--wl-sp-6); }
-  .vip__h1 { font-size: 30px; line-height: 36px; }
+  .vip__h1 { font-size: 27px; line-height: 36px; }
   .vipro { align-items: stretch; padding: var(--wl-sp-5); }
   .vipro__card { width: auto; max-width: none; padding: 18px; }
   /* Знак не показываем: в правый край он не влезает, а под карточкой
@@ -3469,7 +3473,7 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
 .bnwp__art { display: block; width: 100px; height: 100px; object-fit: contain;
              filter: drop-shadow(0 12px 20px rgba(0, 0, 0, .35)); }
 .bnwp__pct { margin-top: var(--wl-sp-1); font-family: var(--wl-font-ui); font-weight: var(--wl-fw-bold);
-             font-size: 30px; line-height: 38px; color: #fff; text-align: center; }
+             font-size: 27px; line-height: 38px; color: #fff; text-align: center; }
 .bnwp__cap { margin-top: var(--wl-sp-1); font-family: var(--wl-font); font-size: var(--wl-fs-sm);
              line-height: var(--wl-lh-sm); color: var(--wl-w-75); text-align: center; }
 /* Часы: разряды отдельными клетками, иначе цифры прыгают по ширине каждую секунду */
@@ -3713,7 +3717,7 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
                  align-items: center; gap: 14px var(--wl-sp-6); }
 }
 @media (max-width: 767px) {
-  .bn__h1 { font-size: 26px; line-height: 32px; }
+  .bn__h1 { font-size: 23px; line-height: 32px; }
   .bn__list { grid-template-columns: 1fr; gap: var(--wl-sp-3); }
   .bn__list--offers { gap: var(--wl-sp-6); }
   /* На узком экране лента выходит за поля страницы: соседняя карточка
@@ -4916,12 +4920,12 @@ body.dp-open .wallet__deposit { box-shadow: 0 0 0 2px var(--wl-money-glow),
                         text-transform: uppercase; letter-spacing: .04em; }
 .states__item { text-align: left; padding: 7px 10px; border: 0; border-radius: var(--wl-r-sm); cursor: pointer;
                 background: var(--wl-w-08); color: var(--modal-text-1, var(--wl-text-muted));
-                font-family: inherit; font-weight: var(--wl-fw-medium); font-size: 12.5px; line-height: var(--wl-lh-xs); }
+                font-family: inherit; font-weight: var(--wl-fw-medium); font-size: 12px; line-height: var(--wl-lh-xs); }
 .states__item:hover { background: var(--wl-w-12); color: var(--wl-text); }
 .states__item.is-current { background: var(--wl-primary); color: var(--wl-text); }
 .states__reset { padding: var(--wl-sp-2); border: 1px solid var(--wl-w-12); border-radius: var(--wl-r-sm);
                  background: none; cursor: pointer; color: var(--wl-text);
-                 font-family: inherit; font-weight: var(--wl-fw-semibold); font-size: 12.5px; }
+                 font-family: inherit; font-weight: var(--wl-fw-semibold); font-size: 12px; }
 .states__reset:hover { background: var(--wl-w-08); }
 @media (max-width: 767px) {
   .states { left: 8px; right: 8px; bottom: 8px; width: auto; max-height: 60vh; }
@@ -5137,7 +5141,7 @@ body.dp-open .wallet__deposit { box-shadow: 0 0 0 2px var(--wl-money-glow),
 /* Подписи выровнены по левому краю карточки — там же, где заголовки секций,
    поэтому колонка полей читается одной линией. */
 .prof__label { display: flex; align-items: center; gap: var(--wl-sp-2); padding: 0;
-               font-family: var(--wl-font); font-weight: var(--wl-fw-medium); font-size: 12.5px;
+               font-family: var(--wl-font); font-weight: var(--wl-fw-medium); font-size: 12px;
                line-height: var(--wl-lh-xs); color: var(--wl-text-muted); }
 /* Статус — нейтральная плашка с цветной точкой. Сплошные зелёная и кислотная
    жёлтая заливки перетягивали внимание с самих полей. */
