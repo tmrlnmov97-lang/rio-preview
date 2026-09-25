@@ -2075,7 +2075,8 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 @media (min-width: 1024px) {
   .rail > .game,
   .rail > .lc        { width: calc((100% - 6 * 8px) / 7); }
-  .providers-rail > .provider { width: calc((100% - 6 * 8px) / 7); }
+  /* Восемь в ряд вместо семи — плитки чуть уже. */
+  .providers-rail > .provider { width: calc((100% - 7 * 8px) / 8); }
 }
 
 /* ───────────────────────────────────────────────────────────────────
@@ -2434,7 +2435,8 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   /* Crash Games и New Slots — в макете по семь обложек, восьмой нет.
      Ряд заполняем своими семью, иначе справа зияет пустой слот. */
   .rail--cas > .game { width: calc((100% - 6 * 10px) / 7); height: auto; aspect-ratio: 154.2 / 204; }
-  .providers-rail > .provider { width: calc((100% - 7 * 10px) / 8); height: auto; aspect-ratio: 154.2 / 120; }
+  /* Девять в ряд вместо восьми — плитки чуть уже. Пропорция прежняя. */
+  .providers-rail > .provider { width: calc((100% - 8 * 10px) / 9); height: auto; aspect-ratio: 154.2 / 120; }
   /* Спорт остаётся на семи: в макете ровно семь дисциплин, восьмой нет */
   .rail--sport > .sport { width: calc((100% - 6 * 12px) / 7); }
 }
@@ -6611,18 +6613,13 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
 /* Карточки игр, лайв-казино и спорта — тем же приёмом: арт и подписи
    скрыты, остаётся залитый прямоугольник. Плитки провайдеров получают
    такую же подложку, иначе знаки висели в воздухе. */
-.rail > .game > *,
-.rail > .lc > *,
-.rail > .sport > * { display: none !important; }
-.rail > .game,
-.rail > .lc,
-.rail > .sport,
-.providers-rail > .provider {
+.game > *, .lc > *, .sport > * { display: none !important; }
+.game, .lc, .sport, .provider {
   background: #191a1c; background-image: none; border: 0;
 }
-.rail > .game::after,  .rail > .game::before,
-.rail > .lc::after,    .rail > .lc::before,
-.rail > .sport::after, .rail > .sport::before { display: none !important; }
+.game::after,  .game::before,
+.lc::after,    .lc::before,
+.sport::after, .sport::before { display: none !important; }
 
 </style>
 </head>
