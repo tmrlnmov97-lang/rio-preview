@@ -961,7 +961,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 }
 
 /* ─────────────── Провайдеры ─────────────── */
-.providers-rail { display: flex; align-items: flex-start; gap: var(--wl-sp-2); overflow-x: auto; scrollbar-width: none;
+.providers-rail { display: flex; align-items: flex-start; gap: var(--wl-sp-1); overflow-x: auto; scrollbar-width: none;
                   padding-block: 12px; margin-block: -12px; }
 .providers-rail::-webkit-scrollbar { display: none; }
 .provider {
@@ -973,6 +973,10 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   display: flex; align-items: center; justify-content: center;
 }
 .provider img { display: block; max-width: none; }
+/* Знаки набраны под плитку 154 и после сужения до 120 упирались в края.
+   Ограничить ширину нельзя: у части знаков жёсткие размеры и object-fit
+   cover — их бы срезало. Поэтому уменьшаем содержимое целиком, 120/154. */
+.providers-rail > .provider > * { transform: scale(.78); transform-origin: center; }
 
 /* ─────────────── Футер ─────────────── */
 /* 904:2421 «Footer Desktop» — низ 1104x169: поля 20, между блоками 16.
@@ -2075,9 +2079,9 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 @media (min-width: 1024px) {
   .rail > .game,
   .rail > .lc        { width: calc((100% - 6 * 8px) / 7); }
-  /* Та же ширина, что у карточек игр: семь в ряд при зазоре 8.
-     Высота у плиток своя, 120 — её не трогаем. */
-  .providers-rail > .provider { width: calc((100% - 6 * 8px) / 7); }
+  /* Плитки уже карточек игр и не растягиваются на всю колонку: ряд
+     получается короче, справа остаётся воздух. Высота прежняя, 120. */
+  .providers-rail > .provider { width: 120px; }
 }
 
 /* ───────────────────────────────────────────────────────────────────
@@ -2442,7 +2446,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
      зазоре 10. Раньше здесь расходились все три ряда — краш делил на
      восемь, спорт на семь с зазором 12, провайдеры на девять, — и на
      широком экране карточки выходили разной ширины, а крайняя резалась. */
-  .providers-rail > .provider { width: calc((100% - 6 * 10px) / 7); height: auto; aspect-ratio: 154.2 / 120; }
+  .providers-rail > .provider { width: 120px; height: 120px; aspect-ratio: auto; }
   .rail--sport { gap: 10px; }
   .rail--sport > .sport { width: calc((100% - 6 * 10px) / 7); height: auto; aspect-ratio: 154.2 / 204; }
 }
