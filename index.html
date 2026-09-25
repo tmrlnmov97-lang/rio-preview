@@ -2075,15 +2075,17 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 @media (min-width: 1024px) {
   .rail > .game,
   .rail > .lc        { width: calc((100% - 6 * 8px) / 7); }
-  /* Восемь в ряд вместо семи — плитки чуть уже. */
-  .providers-rail > .provider { width: calc((100% - 7 * 8px) / 8); }
+  /* Та же ширина, что у карточек игр: семь в ряд при зазоре 8.
+     Высота у плиток своя, 120 — её не трогаем. */
+  .providers-rail > .provider { width: calc((100% - 6 * 8px) / 7); }
 }
 
 /* ───────────────────────────────────────────────────────────────────
    Раздел Sport Bets · 1068:32551 — карточки 154.2x204, зазор 12,
    подпись одна, без строки провайдера.
    ─────────────────────────────────────────────────────────────────── */
-.rail--sport { gap: var(--wl-sp-3); }
+/* Зазор как у остальных рядов: при 12 карточки спорта выходили на 3px уже */
+.rail--sport { gap: var(--wl-sp-2); }
 .sport {
   position: relative; flex: none; isolation: isolate;
   width: 154.2px; height: 204px;
@@ -2123,7 +2125,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 
 /* Семь карточек ровно в ширину колонки, как у остальных рядов */
 @media (min-width: 1024px) {
-  .rail--sport > .sport { width: calc((100% - 6 * 12px) / 7); }
+  .rail--sport > .sport { width: calc((100% - 6 * 8px) / 7); }
 }
 @media (max-width: 767px) {
   .rail--sport { gap: var(--wl-sp-2); }
