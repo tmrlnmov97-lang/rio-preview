@@ -6608,6 +6608,22 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
 .hero__side .hcard::before { display: none !important; }
 .hero__banner { aspect-ratio: 1474 / 476; }
 
+/* Карточки игр, лайв-казино и спорта — тем же приёмом: арт и подписи
+   скрыты, остаётся залитый прямоугольник. Плитки провайдеров получают
+   такую же подложку, иначе знаки висели в воздухе. */
+.rail > .game > *,
+.rail > .lc > *,
+.rail > .sport > * { display: none !important; }
+.rail > .game,
+.rail > .lc,
+.rail > .sport,
+.providers-rail > .provider {
+  background: #191a1c; background-image: none; border: 0;
+}
+.rail > .game::after,  .rail > .game::before,
+.rail > .lc::after,    .rail > .lc::before,
+.rail > .sport::after, .rail > .sport::before { display: none !important; }
+
 </style>
 </head>
 <body>
