@@ -21934,5 +21934,45 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
   })();
 </script>
 
+<!-- ═══════════ Стрелки у рядов ═══════════
+     Кнопки рядом с «View All» стояли в разметке, но ни к чему не были
+     привязаны: скрипт был только у карусели героя. Листаем ленту на её
+     видимую ширину минус одна карточка, чтобы край не терялся. -->
+<script>
+  (function () {
+    var STEP_OVERLAP = 160;          /* сколько оставляем от прежнего кадра */
+
+    function railOf(section) {
+      return section.querySelector('.rail, .providers-rail');
+    }
+
+    function sync(rail, prev, next) {
+      var max = rail.scrollWidth - rail.clientWidth;
+      /* Допуск в пиксель: дробная ширина карточек даёт остаток вроде 0.4 */
+      prev.classList.toggle('slider-btn--off', rail.scrollLeft <= 1);
+      next.classList.toggle('slider-btn--off', rail.scrollLeft >= max - 1);
+    }
+
+    function wire(section) {
+      var rail = railOf(section);
+      var prev = section.querySelector('.slider-btn--prev');
+      var next = section.querySelector('.slider-btn--next');
+      if (!rail || !prev || !next || section.closest('.hero')) return;
+
+      function step(dir) {
+        var by = Math.max(120, rail.clientWidth - STEP_OVERLAP);
+        rail.scrollBy({ left: dir * by, behavior: 'smooth' });
+      }
+      prev.addEventListener('click', function () { step(-1); });
+      next.addEventListener('click', function () { step(1); });
+      rail.addEventListener('scroll', function () { sync(rail, prev, next); }, { passive: true });
+      addEventListener('resize', function () { sync(rail, prev, next); });
+      sync(rail, prev, next);
+    }
+
+    document.querySelectorAll('.section').forEach(wire);
+  })();
+</script>
+
 </body>
 </html>
