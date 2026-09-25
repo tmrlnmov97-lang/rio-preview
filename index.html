@@ -6595,31 +6595,22 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
 .pm__id.is-done::after { background: var(--wl-ok); }
 
 /* ─────────── Режим заглушек в блоке героя ───────────
-   Арт баннера и карточек CASINO/SPORT снят: он варвиновский. Содержимое
-   прячем, а не вырезаем из разметки — карусель, слайды после входа и
-   мобильная лента завязаны на эти узлы скриптом. Когда придёт свой арт,
-   хватит убрать этот блок. */
+   Арт баннера и карточек CASINO/SPORT снят: он варвиновский. По образцу
+   из Figma 80:58567 — просто залитые прямоугольники, без рамки и подписи.
+   Тон #191a1c, тот же, что у карточки меню.
+   Содержимое прячем, а не вырезаем из разметки: карусель, слайды после
+   входа и мобильная лента завязаны на эти узлы скриптом. Когда придёт
+   свой арт, хватит убрать этот блок. */
 .hero__banner > *,
 .hero__side .hcard > * { display: none !important; }
 .hero__banner,
 .hero__side .hcard {
-  display: flex; align-items: center; justify-content: center;
-  background: transparent; background-image: none;
-  border: 1px dashed var(--wl-line-strong);
+  background: #191a1c; background-image: none; border: 0;
 }
 .hero__banner::after,
-.hero__side .hcard::after {
-  /* Гасим прежний ::after баннера: он был абсолютной рамкой на весь блок
-     и уводил подпись в левый верхний угол. */
-  position: static; inset: auto; border: 0; background: none;
-  content: attr(data-ph);
-  color: var(--wl-text-dim); font-size: var(--wl-fs-sm);
-  font-weight: var(--wl-fw-semibold); letter-spacing: 2px; text-transform: uppercase;
-  user-select: none; pointer-events: none;
-}
-.hero__banner::after { font-size: var(--wl-fs-md); display: block; }
-/* Кант баннера рисуется отдельным ::after — в режиме заглушки он лишний */
-.hero__banner::before { display: none; }
+.hero__banner::before,
+.hero__side .hcard::after,
+.hero__side .hcard::before { display: none !important; }
 .hero__banner { aspect-ratio: 1474 / 476; }
 
 </style>
@@ -6798,7 +6789,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
     <!-- Баннер -->
     <!-- 1126:15053 «Hero» — баннер 737 + колонка карточек 351, зазор 16 -->
     <section class="hero" data-node-id="1126:15053">
-      <div class="hero__banner" data-ph="Здесь будет баннер" data-node-id="1118:12299">
+      <div class="hero__banner" data-node-id="1118:12299">
         <!-- 1118:12299 — фон баннера выгружен из Figma одним куском -->
         <img class="hero__bg hero__bg--guest" src="a/da81e07337.webp" alt="">
         <img class="hero__bg hero__bg--mob" src="a/82ed8cf07a.webp" alt="" data-node-id="903:41876">
@@ -6876,14 +6867,14 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
       </div>
       <div class="hero__dots" role="tablist" aria-label="Banners"></div>
       <div class="hero__side" data-node-id="1126:15052">
-        <a class="hcard hcard--cas" data-ph="Casino" href="#" data-node-id="1122:15006">
+        <a class="hcard hcard--cas" href="#" data-node-id="1122:15006">
           <img class="hcard__glow" src="a/91855a6b2e.svg" alt="">
           <img class="hcard__dust" src="a/b73244828f.webp" alt="">
           <span class="hcard__pic"><img src="a/6c5a0c6fd6.webp" alt=""></span>
           <h3 class="hcard__title">CASINO</h3>
           <span class="hcard__go"><img src="a/269dba37ff.svg" alt="" width="16" height="16"></span>
         </a>
-        <a class="hcard hcard--sport" data-ph="Sport" href="#" data-fgo="view:sport" data-node-id="1125:15026">
+        <a class="hcard hcard--sport" href="#" data-fgo="view:sport" data-node-id="1125:15026">
           <img class="hcard__glow" src="a/4a36cf1975.svg" alt="">
           <img class="hcard__dust" src="a/b73244828f.webp" alt="">
           <span class="hcard__pic"><img src="a/afffb197e4.webp" alt=""></span>
