@@ -930,15 +930,10 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
    подпись — видно, что место зарезервировано, а содержимого ещё нет.
    Внутренний отступ слева в 299 убираем: он был под арт с девушкой. */
 .bonus--ph {
-  justify-content: center; padding: var(--wl-sp-5);
-  background-image: none; background: transparent;
-  border: 1px dashed var(--wl-line-strong);
+  justify-content: center; padding: 0;
+  background-image: none; background: #191a1c; border: 0;
 }
-.bonus__ph-label {
-  color: var(--wl-text-dim); font-size: var(--wl-fs-md);
-  font-weight: var(--wl-fw-semibold); letter-spacing: 2px; text-transform: uppercase;
-  user-select: none;
-}
+.bonus__ph-label { display: none; }
 
 .bonus__bg { position: absolute; left: 0; right: 15px; top: 0; height: 206px; overflow: hidden; opacity: .2; pointer-events: none; }
 .bonus__bg img { position: absolute; left: -82.09%; top: -278.64%; width: 182.09%; height: 384.95%; max-width: none; display: block; }
@@ -1913,8 +1908,8 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   }
   /* Заглушка и на мобильной без градиента: правило .bonus выше перебивало
      общий стиль заглушки, потому что стоит ниже по файлу. */
-  .bonus--ph { padding: var(--wl-sp-4); align-items: center;
-               background-image: none; background: transparent; }
+  .bonus--ph { padding: 0; align-items: center;
+               background-image: none; background: #191a1c; }
   .bonus__bg { display: none; }
   /* 925:2742 — окно 103x272 на (23,2); картинка внутри сдвинута по процентам */
   .bonus__girl { left: 23px; top: 2px; width: 103px; height: 272px; }
