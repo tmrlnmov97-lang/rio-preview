@@ -2432,15 +2432,19 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
    ─────────────────────────────────────────────────────────────────── */
 @media (min-width: 1536px) {
   .rail, .rail--cas { gap: 10px; }
+  /* Все ряды одной меркой — семь в ряд. Раньше здесь Popular, Slots и
+     Live делили ширину на восемь, а Crash, спорт и провайдеры на семь:
+     на широком экране карточки соседних рядов выходили разной ширины. */
   .rail > .game,
-  .rail > .lc        { width: calc((100% - 7 * 10px) / 8); height: auto; aspect-ratio: 154.2 / 204; }
-  /* Crash Games и New Slots — в макете по семь обложек, восьмой нет.
-     Ряд заполняем своими семью, иначе справа зияет пустой слот. */
+  .rail > .lc,
   .rail--cas > .game { width: calc((100% - 6 * 10px) / 7); height: auto; aspect-ratio: 154.2 / 204; }
-  /* Девять в ряд вместо восьми — плитки чуть уже. Пропорция прежняя. */
-  .providers-rail > .provider { width: calc((100% - 8 * 10px) / 9); height: auto; aspect-ratio: 154.2 / 120; }
-  /* Спорт остаётся на семи: в макете ровно семь дисциплин, восьмой нет */
-  .rail--sport > .sport { width: calc((100% - 6 * 12px) / 7); }
+  /* Провайдеры и спорт — той же меркой, что Crash Games: семь в ряд при
+     зазоре 10. Раньше здесь расходились все три ряда — краш делил на
+     восемь, спорт на семь с зазором 12, провайдеры на девять, — и на
+     широком экране карточки выходили разной ширины, а крайняя резалась. */
+  .providers-rail > .provider { width: calc((100% - 6 * 10px) / 7); height: auto; aspect-ratio: 154.2 / 120; }
+  .rail--sport { gap: 10px; }
+  .rail--sport > .sport { width: calc((100% - 6 * 10px) / 7); height: auto; aspect-ratio: 154.2 / 204; }
 }
 
 /* 1104:13484 — поле поиска в шапке страницы казино. Оформление берём
@@ -7375,11 +7379,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
               </span>
             </div>
             <div class="provider"><img loading="lazy" decoding="async" src="a/d3418c1066.webp" alt="Ezugi" style="width:85.608px;height:39.487px;object-fit:cover"></div>
-            <div class="provider">
-              <span class="provider__box provider__box--yggdrasil" style="position:relative;display:block;width:125.5px;height:36px;overflow:hidden">
-                <img loading="lazy" decoding="async" src="a/4b6669bad5.webp" alt="Yggdrasil" style="position:absolute;left:1.1%;top:-37.83%;width:97.81%;height:175.65%;max-width:none">
-              </span>
-            </div>
           </div>
         </section>
 
@@ -13150,11 +13149,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
               </span>
             </div>
             <div class="provider"><img loading="lazy" decoding="async" src="a/d3418c1066.webp" alt="Ezugi" style="width:85.608px;height:39.487px;object-fit:cover"></div>
-            <div class="provider">
-              <span class="provider__box provider__box--yggdrasil" style="position:relative;display:block;width:125.5px;height:36px;overflow:hidden">
-                <img loading="lazy" decoding="async" src="a/4b6669bad5.webp" alt="Yggdrasil" style="position:absolute;left:1.1%;top:-37.83%;width:97.81%;height:175.65%;max-width:none">
-              </span>
-            </div>
           </div>
         </section>
         <section class="section" data-node-id="851:3200">
