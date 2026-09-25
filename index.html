@@ -966,7 +966,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 .providers-rail::-webkit-scrollbar { display: none; }
 .provider {
   position: relative; flex: none;
-  width: 154.2px; height: 120px;
+  width: 154.2px; height: 72px;
   /* Без подложки: серые плитки в нижнем блоке убраны, знаки провайдеров
      лежат прямо на полотне. */
   background: transparent; border-radius: var(--wl-r-md); overflow: hidden;
@@ -2079,9 +2079,19 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 @media (min-width: 1024px) {
   .rail > .game,
   .rail > .lc        { width: calc((100% - 6 * 8px) / 7); }
-  /* Плитки уже карточек игр и не растягиваются на всю колонку: ряд
-     получается короче, справа остаётся воздух. Высота прежняя, 120. */
-  .providers-rail > .provider { width: 120px; }
+  /* Ряд идёт по той же сетке, что карточки игр: семь колонок, зазор 8.
+     При жёстких 120 семь плиток занимали 864 из 1080 и справа оставалась
+     дыра в пятую часть ряда. Высота 72 — знаку хватает, а полоса читается
+     разделителем, а не ещё одним рядом карточек. */
+  .providers-rail { gap: 8px; }
+  .providers-rail > .provider { width: calc((100% - 6 * 8px) / 7); height: 72px; }
+}
+
+/* На 1024 колонка сетки — 88, и знак в масштабе .78 занимает её целиком,
+   упираясь в оба края. Ниже 1280 ужимаем содержимое ещё: поля важнее
+   кегля, иначе ряд читается сплошной строкой. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .providers-rail > .provider > * { transform: scale(.62); }
 }
 
 /* ───────────────────────────────────────────────────────────────────
@@ -2446,7 +2456,9 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
      зазоре 10. Раньше здесь расходились все три ряда — краш делил на
      восемь, спорт на семь с зазором 12, провайдеры на девять, — и на
      широком экране карточки выходили разной ширины, а крайняя резалась. */
-  .providers-rail > .provider { width: 120px; height: 120px; aspect-ratio: auto; }
+  .providers-rail { gap: 10px; }
+  .providers-rail > .provider { width: calc((100% - 6 * 10px) / 7); height: 72px;
+                                aspect-ratio: auto; }
   .rail--sport { gap: 10px; }
   .rail--sport > .sport { width: calc((100% - 6 * 10px) / 7); height: auto; aspect-ratio: 154.2 / 204; }
 }
