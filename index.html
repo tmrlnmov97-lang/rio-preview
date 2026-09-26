@@ -6357,18 +6357,6 @@ body.dp-open .wallet__deposit { box-shadow: 0 0 0 2px var(--wl-money-glow),
 /* вкладки — те же таблетки, что в поп-апе уведомлений */
 /* Кнопки Casino и Sports — те же таблетки, что были раньше: две равные
    половины, радиус 999. Ведут на страницы целиком. */
-.br__big { display: flex; gap: var(--wl-sp-3); }
-.br__big-btn { flex: 1 0 0; box-sizing: border-box; display: flex; align-items: center;
-               justify-content: center; gap: 10px; height: 48px; padding: 0 var(--wl-sp-3);
-               background: var(--wl-w-08); border: 0; border-radius: var(--wl-r-pill); cursor: pointer; }
-.br__big-btn:hover, .br__big-btn:active { background: var(--wl-w-12); }
-.br__big-btn b { font-family: var(--wl-font); font-weight: var(--wl-fw-semibold); font-size: var(--wl-fs-md);
-                 line-height: var(--wl-lh-sm); color: var(--wl-text); }
-.br__big-btn img, .br__big-btn .ico { width: 20px; height: 20px; display: block; flex: none; }
-.br__big-btn .ico--casino { background: var(--wl-text);
-  -webkit-mask: url(a/b1a95c845c.svg) center / contain no-repeat;
-          mask: url(a/b1a95c845c.svg) center / contain no-repeat; }
-
 /* список — как в боковом меню на десктопе */
 .br__nav, .br__foot { display: flex; flex-direction: column; gap: 2px; }
 .br__foot { margin-top: auto; padding-top: var(--wl-sp-2); }
@@ -13744,18 +13732,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
       </button>
       <button class="br__close" type="button" aria-label="Close" data-close>
         <img loading="lazy" decoding="async" src="a/2f90aff24b.svg" alt="" width="14" height="14">
-      </button>
-    </div>
-
-    <!-- крупные кнопки: открывают страницы целиком -->
-    <div class="br__big">
-      <button class="br__big-btn br__big-btn--casino" type="button" data-open="casino">
-        <span class="ico ico--casino" aria-hidden="true"></span>
-        <b>Casino</b>
-      </button>
-      <button class="br__big-btn br__big-btn--sport" type="button" data-open="sport">
-        <img loading="lazy" decoding="async" src="a/401e94f115.svg" alt="" width="28" height="28">
-        <b>Sports</b>
       </button>
     </div>
 
@@ -22053,13 +22029,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         if (e.target.closest('[data-close]')) brClose();
       });
       addEventListener('keydown', function (e) { if (e.key === 'Escape' && !brMenu.hidden) brClose(); });
-      /* крупные кнопки открывают страницы целиком */
-      brMenu.querySelectorAll('[data-open]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          brClose();
-          showView(btn.dataset.open);
-        });
-      });
       /* разделы со стрелкой раскрывают свой список */
       brMenu.querySelectorAll('[data-toggle]').forEach(function (row) {
         row.addEventListener('click', function () {
