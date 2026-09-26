@@ -2419,11 +2419,13 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 .rail--cas { gap: var(--wl-sp-3); }
 .rail--cas > .game { width: 154.2px; }
 .game--flat > img.layer { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.view--casino .section { animation: cas-card-in .34s cubic-bezier(.22,.61,.36,1) both; }
-.view--casino .section:nth-child(2) { animation-delay: .04s; }
-.view--casino .section:nth-child(3) { animation-delay: .09s; }
-.view--casino .section:nth-child(4) { animation-delay: .14s; }
-.view--casino .section:nth-child(n+5) { animation-delay: .19s; }
+/* Раньше разделы всплывали только на странице казино — остальные страницы
+   подменялись целиком и выглядели мёртвыми рядом с ней. */
+.view .section, .view .spleague { animation: cas-card-in .34s cubic-bezier(.22,.61,.36,1) both; }
+.view .section:nth-child(2), .view .spleague:nth-child(2) { animation-delay: .04s; }
+.view .section:nth-child(3), .view .spleague:nth-child(3) { animation-delay: .09s; }
+.view .section:nth-child(4), .view .spleague:nth-child(4) { animation-delay: .14s; }
+.view .section:nth-child(n+5), .view .spleague:nth-child(n+5) { animation-delay: .19s; }
 .banner[hidden] { display: none; }
 
 @keyframes cas-card-in {
@@ -2431,8 +2433,41 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ── Каскад карточек на всех страницах ──────────────────────────────
+   Так появлялась только сетка категории: у каждой её карточки в разметке
+   стоит --i, и задержка считается от него. Проставлять --i ещё четырёмстам
+   карточкам в лентах незачем — порядок в ряду даёт nth-child. Дальше
+   шестнадцатой не наращиваем: эти карточки и так за краем экрана, а
+   задержка в секунду читалась бы как подвисание.
+   backwards, а не both: both удерживает transform из кадра и после конца
+   анимации, и карточка перестаёт подниматься при наведении. */
+.rail > .game, .rail > .lc, .rail > .sport,
+.providers-rail > .provider {
+  animation: cas-card-in .34s cubic-bezier(.22,.61,.36,1) backwards;
+  animation-delay: calc(var(--i, 0) * 12ms);
+}
+.rail > :nth-child(2), .providers-rail > :nth-child(2) { --i: 1; }
+.rail > :nth-child(3), .providers-rail > :nth-child(3) { --i: 2; }
+.rail > :nth-child(4), .providers-rail > :nth-child(4) { --i: 3; }
+.rail > :nth-child(5), .providers-rail > :nth-child(5) { --i: 4; }
+.rail > :nth-child(6), .providers-rail > :nth-child(6) { --i: 5; }
+.rail > :nth-child(7), .providers-rail > :nth-child(7) { --i: 6; }
+.rail > :nth-child(8), .providers-rail > :nth-child(8) { --i: 7; }
+.rail > :nth-child(9), .providers-rail > :nth-child(9) { --i: 8; }
+.rail > :nth-child(10), .providers-rail > :nth-child(10) { --i: 9; }
+.rail > :nth-child(11), .providers-rail > :nth-child(11) { --i: 10; }
+.rail > :nth-child(12), .providers-rail > :nth-child(12) { --i: 11; }
+.rail > :nth-child(13), .providers-rail > :nth-child(13) { --i: 12; }
+.rail > :nth-child(14), .providers-rail > :nth-child(14) { --i: 13; }
+.rail > :nth-child(15), .providers-rail > :nth-child(15) { --i: 14; }
+.rail > :nth-child(16), .providers-rail > :nth-child(16) { --i: 15; }
 @media (prefers-reduced-motion: reduce) {
-  .view--casino .section { animation: none; }
+  .rail > .game, .rail > .lc, .rail > .sport,
+  .providers-rail > .provider { animation: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .view .section, .view .spleague { animation: none; }
 }
 
 @media (max-width: 1023px) { .cas-grid { grid-template-columns: repeat(4, 1fr); } }
@@ -6967,7 +7002,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
               <h2>Popular</h2>
             </div>
             <div class="section__nav">
-              <a class="view-all" href="#" data-fgo="view:casino">View All</a>
+              <a class="view-all" href="#">View All</a>
               <div class="slider-btns">
                 <button class="slider-btn slider-btn--prev slider-btn--off" aria-label="Back"><i><img loading="lazy" decoding="async" src="a/8196602e48.svg" alt=""></i></button>
                 <button class="slider-btn slider-btn--next" aria-label="Next"><i><img loading="lazy" decoding="async" src="a/e20dc84eee.svg" alt=""></i></button>
@@ -7071,7 +7106,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
               <h2>Slots</h2>
             </div>
             <div class="section__nav">
-              <a class="view-all" href="#" data-fgo="view:casino">View All</a>
+              <a class="view-all" href="#">View All</a>
               <div class="slider-btns">
                 <button class="slider-btn slider-btn--prev slider-btn--off" aria-label="Back"><i><img loading="lazy" decoding="async" src="a/8196602e48.svg" alt=""></i></button>
                 <button class="slider-btn slider-btn--next" aria-label="Next"><i><img loading="lazy" decoding="async" src="a/e20dc84eee.svg" alt=""></i></button>
@@ -7177,7 +7212,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
               <h2>Live Casino</h2>
             </div>
             <div class="section__nav">
-              <a class="view-all" href="#" data-fgo="view:casino">View All</a>
+              <a class="view-all" href="#">View All</a>
               <div class="slider-btns">
                 <button class="slider-btn slider-btn--prev slider-btn--off" aria-label="Back"><i><img loading="lazy" decoding="async" src="a/8196602e48.svg" alt=""></i></button>
                 <button class="slider-btn slider-btn--next" aria-label="Next"><i><img loading="lazy" decoding="async" src="a/e20dc84eee.svg" alt=""></i></button>
@@ -7286,7 +7321,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
               <h2>Crash Games</h2>
             </div>
             <div class="section__nav">
-              <a class="view-all" href="#" data-fgo="view:crash">View All</a>
+              <a class="view-all" href="#">View All</a>
               <div class="slider-btns">
                 <button class="slider-btn slider-btn--prev slider-btn--off" aria-label="Back"><i><img loading="lazy" decoding="async" src="a/8196602e48.svg" alt=""></i></button>
                 <button class="slider-btn slider-btn--next" aria-label="Next"><i><img loading="lazy" decoding="async" src="a/e20dc84eee.svg" alt=""></i></button>
@@ -7314,7 +7349,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
               <h2>Sport Bets</h2>
             </div>
             <div class="section__nav">
-              <a class="view-all" href="#" data-fgo="view:sport">View All</a>
+              <a class="view-all" href="#">View All</a>
               <div class="slider-btns">
                 <button class="slider-btn slider-btn--prev slider-btn--off" aria-label="Back"><i><img loading="lazy" decoding="async" src="a/8196602e48.svg" alt=""></i></button>
                 <button class="slider-btn slider-btn--next" aria-label="Next"><i><img loading="lazy" decoding="async" src="a/e20dc84eee.svg" alt=""></i></button>
@@ -7369,7 +7404,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
               <h2>Providers</h2>
             </div>
             <div class="section__nav">
-              <a class="view-all" href="#" data-fgo="view:casino">View All</a>
+              <a class="view-all" href="#">View All</a>
               <div class="slider-btns">
                 <button class="slider-btn slider-btn--prev slider-btn--off" aria-label="Back"><i><img loading="lazy" decoding="async" src="a/8196602e48.svg" alt=""></i></button>
                 <button class="slider-btn slider-btn--next" aria-label="Next"><i><img loading="lazy" decoding="async" src="a/e20dc84eee.svg" alt=""></i></button>
@@ -18589,7 +18624,8 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
        Crash Games переключают между этими двумя страницами. */
     /* Upcoming и Outrights — разделы спорта, а не казино: ведут на страницу
        спорта, а не на сетку игровых карточек. */
-    var chipView = { 'lobby': 'casino', 'upcoming': 'sport', 'outrights': 'sport' };
+    var chipView = { 'lobby': 'casino', 'upcoming': 'sport', 'outrights': 'sport',
+                     'sport bets': 'sport' };
     /* Категории. Ключ — подпись кнопки, значение — значок в шапке раздела.
        Кнопка ведёт на общую страницу категории: сетка у всех одна, меняются
        заголовок и значок. Раньше из тринадцати чипов работали два, остальные
@@ -18607,7 +18643,9 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
       'blackjack': 'table games', 'baccarat': 'table games',
       'poker': 'video poker', 'mines': 'crash games', 'plinko': 'crash games',
       'dice': 'crash games', 'limbo': 'crash games', 'wheel': 'crash games',
-      'keno': 'crash games'
+      'keno': 'crash games',
+      /* Заголовки разделов главной — по ним работают ссылки «View All» */
+      'popular': 'slots', 'popular slots': 'slots'
     };
     var catView = document.getElementById('view-category');
     var catTitle = catView && catView.querySelector('[data-cat-title]');
@@ -18734,6 +18772,32 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         e.preventDefault();
         if (catOpen(key)) return;
         showView(chipView[key]);
+      });
+    });
+    /* «View All» открывает страницу своего же раздела. Имя берём из
+       заголовка рядом: дублировать его ещё и в атрибуте незачем, а
+       единственный data-fgo, который там стоял, вёл на снятый ключ. */
+    /* Часть заголовков разведена по ширине экрана: «New Games» на десктопе,
+       «New Slots» на мобильной. textContent склеил бы оба — берём видимый. */
+    var visText = function (el) {
+      if (!el) return '';
+      var parts = el.querySelectorAll('.only-desktop, .only-mobile');
+      for (var i = 0; i < parts.length; i++) {
+        if (parts[i].offsetParent !== null) return (parts[i].textContent || '').trim();
+      }
+      return (el.textContent || '').trim();
+    };
+    document.querySelectorAll('.view-all').forEach(function (a) {
+      var sec = a.closest('.section');
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        var label = visText(sec && sec.querySelector('.section__title h2'));
+        var key = label.toLowerCase();
+        if (CATS[key] && !catLabel[key]) catLabel[key] = label;
+        if (catOpen(key)) return;
+        if (chipView[key]) { showView(chipView[key]); return; }
+        /* Незнакомый раздел ведём туда же, куда вёл прежний обработчик */
+        showView(/sport|match/i.test(label) ? 'sport' : 'casino');
       });
     });
     var casCard = document.querySelector('.hcard--cas');
@@ -20537,15 +20601,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         }
       });
 
-      /* ── «View All» в шапках рядов ведёт в казино ── */
-      document.querySelectorAll('.view-all').forEach(function (a) {
-        a.addEventListener('click', function (e) {
-          e.preventDefault();
-          var sec = a.closest('.section');
-          var name = sec ? (sec.querySelector('h2') || {}).textContent : '';
-          showView(/sport|match/i.test(name || '') ? 'sport' : 'casino');
-        });
-      });
     })();
 
     /* ═══ Страница игры ═══
