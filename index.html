@@ -74,10 +74,10 @@
   /* ---------- Акцент по прозрачности ----------
      Было 8 ступеней, стало 4. Идут за основным цветом: иначе выбранные
      вкладки и чипы остались бы синими рядом с янтарными кнопками. */
-  --wl-a-10:  rgba(255, 184, 0, .10);
-  --wl-a-18:  rgba(255, 184, 0, .18);
-  --wl-a-30:  rgba(255, 184, 0, .30);
-  --wl-a-55:  rgba(255, 184, 0, .55);
+  --wl-a-10:  rgba(104, 225, 181, .10);
+  --wl-a-18:  rgba(104, 225, 181, .18);
+  --wl-a-30:  rgba(104, 225, 181, .30);
+  --wl-a-55:  rgba(104, 225, 181, .55);
 
 
   /* ==========================================================
@@ -113,11 +113,24 @@
   /* ---------- Главное действие ----------
      Янтарь вместо синего. На такой светлой заливке белая надпись даёт
      контраст 1,8 — нечитаемо, поэтому у неё свой тёмный цвет. */
-  --wl-primary:        #ffb800;
-  --wl-primary-hover:  #ffc733;  /* светлее на 12% */
-  --wl-primary-active: #d99c00;  /* темнее на 12%, заодно и «нажатие» героя */
-  --wl-on-primary:     #1a1200;  /* текст и значки на янтарной заливке, контраст 12,4 */
-  --wl-focus:          #ffd166;
+  /* Основной цвет — градиент. Снят с образца по вертикали: прямая между
+     крайними точками ложится на замер с отклонением 5 из 255 (2%), поэтому
+     двух остановок достаточно, середина не нужна.
+
+     Сплошной --wl-primary — это верхняя точка градиента. Им красится всё,
+     что заливкой быть не может: метки, канты, полосы в 2px, текст. Градиент
+     идёт только на крупные заливки — главные кнопки. */
+  --wl-primary:        #68e1b5;  /* верх градиента */
+  --wl-primary-hover:  #84e9c4;  /* светлее на 12% */
+  --wl-primary-active: #4ec79a;  /* темнее на 12% */
+  --wl-grad-primary:        linear-gradient(180deg, #68e1b5 0%, #1a3d34 100%);
+  --wl-grad-primary-hover:  linear-gradient(180deg, #7ce8c1 0%, #234e43 100%);
+  --wl-grad-primary-active: linear-gradient(180deg, #55cda2 0%, #142e28 100%);
+  /* Текст на заливке. Ни один цвет не держит 4.5 по всей высоте градиента:
+     наверху он светлый, внизу тёмный. Тёмный проигрывает меньше — по полосе,
+     где реально стоит подпись, от 3.1 до 7.5 против 2.6…6.2 у белого. */
+  --wl-on-primary:     #0e1011;
+  --wl-focus:          #9af0d2;
 
   /* ---------- Успех: регистрация, «выполнено», Live, выигрыш ----------
      Было 7 зелёных, стало 3 плюс прозрачности. */
@@ -536,7 +549,8 @@ body.nav-rail .sidebar__top .cat-buttons { display: none; }
   font-family: inherit; font-variation-settings: 'wdth' 100;
 }
 .btn--ghost { background: var(--wl-bg-field); }
-.btn--primary { background: var(--wl-primary); color: var(--wl-on-primary); }
+.btn--primary { background-color: var(--wl-primary); background-image: var(--wl-grad-primary);
+                color: var(--wl-on-primary); }
 
 /* ─────────────── Сайдбар · 252×1254, y=76 ─────────────── */
 .sidebar {
@@ -957,7 +971,8 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   flex: none; margin-left: auto;
   display: flex; align-items: center; justify-content: center;
   width: 183px; height: 48px; padding: 10px var(--wl-sp-3);
-  background: var(--wl-primary); border: 0; border-radius: var(--wl-r-md); cursor: pointer;
+  background-color: var(--wl-primary); background-image: var(--wl-grad-primary);
+  border: 0; border-radius: var(--wl-r-md); cursor: pointer;
   font-family: var(--wl-font); font-weight: var(--wl-fw-bold); font-size: var(--wl-fs-sm); line-height: 14px; color: var(--wl-on-primary);
   white-space: nowrap;
 }
@@ -1512,11 +1527,15 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 .nav-toggle { transition: background-color .12s ease, color .12s ease; }
 
 /* --- Основное действие --- */
-.bonus__cta:hover { background: var(--wl-primary-hover); }
-.bonus__cta:active { background: var(--wl-primary-active); transform: translateY(1px); }
+.bonus__cta:hover { background-color: var(--wl-primary-hover);
+                    background-image: var(--wl-grad-primary-hover); }
+.bonus__cta:active { background-color: var(--wl-primary-active);
+                     background-image: var(--wl-grad-primary-active); transform: translateY(1px); }
 
-.btn--primary:hover { background: var(--wl-primary-hover); }
-.btn--primary:active { background: var(--wl-primary-active); transform: translateY(1px); }
+.btn--primary:hover { background-color: var(--wl-primary-hover);
+                      background-image: var(--wl-grad-primary-hover); }
+.btn--primary:active { background-color: var(--wl-primary-active);
+                       background-image: var(--wl-grad-primary-active); transform: translateY(1px); }
 
 .banner__cta:hover { background: var(--wl-ok-hover); }
 .banner__cta:active { background: var(--wl-ok-active); transform: translateY(1px); }
@@ -1940,7 +1959,8 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
      колонке с зазором 16 под текстом — так и делаем, потоком */
   .bonus__cta {
     margin-left: 0; width: auto; min-width: 100px; height: 30px; padding: 0 var(--wl-sp-3);
-    border-radius: var(--wl-r-md); background: var(--wl-primary); color: var(--wl-on-primary);
+    border-radius: var(--wl-r-md); background-color: var(--wl-primary);
+    background-image: var(--wl-grad-primary); color: var(--wl-on-primary);
     font-family: var(--wl-font-ui); font-variation-settings: 'wdth' 100;
     font-weight: var(--wl-fw-bold); font-size: var(--wl-fs-sm); line-height: normal;
   }
@@ -2666,9 +2686,10 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
                            padding: var(--wl-sp-3); border-radius: var(--wl-r-md);
                            font-family: var(--wl-font-ui); font-weight: var(--wl-fw-bold);
                            font-size: var(--wl-fs-sm); line-height: normal;
-                           background: var(--wl-primary); color: var(--wl-on-primary); }
-  .hero .hero__cta--join:hover  { background: var(--primary-hover, var(--wl-primary-hover)); }
-  .hero .hero__cta--join:active { background: var(--primary-active, var(--wl-primary-active)); }
+                           background-color: var(--wl-primary);
+                           background-image: var(--wl-grad-primary); color: var(--wl-on-primary); }
+  .hero .hero__cta--join:hover  { background-image: var(--wl-grad-primary-hover); }
+  .hero .hero__cta--join:active { background-image: var(--wl-grad-primary-active); }
   /* 904:1982 — стрелки только после входа, в правом нижнем углу, отступы
      те же 32, что у копи-блока; поверх канта, у него z-index 5. */
   body.is-authed .hero__nav { display: flex; }
@@ -2892,12 +2913,14 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 .lg__foot { display: flex; flex-direction: column; gap: 10px; padding: var(--wl-sp-4); }
 .lg__submit {
   display: flex; align-items: center; justify-content: center; padding: var(--wl-sp-3) var(--wl-sp-5);
-  background: var(--wl-primary); border: 0; border-radius: var(--wl-r-sm); cursor: pointer;
-  filter: drop-shadow(0 0 4.4px rgba(255, 184, 0, .25));
+  background-color: var(--wl-primary); background-image: var(--wl-grad-primary);
+  border: 0; border-radius: var(--wl-r-sm); cursor: pointer;
+  filter: drop-shadow(0 0 4.4px rgba(104, 225, 181, .25));
   font-family: var(--wl-font-ui); font-weight: var(--wl-fw-bold);
   font-size: var(--wl-fs-sm); line-height: var(--wl-lh-sm); color: var(--wl-on-primary);
 }
-.lg__submit:hover { background: var(--wl-primary-hover); }
+.lg__submit:hover { background-color: var(--wl-primary-hover);
+                    background-image: var(--wl-grad-primary-hover); }
 .lg__switch { margin: 0; padding: var(--wl-sp-3) 0; text-align: center; font-size: var(--wl-fs-sm); line-height: 18px; color: var(--wl-text-muted); }
 .lg__switch a { color: var(--wl-text); text-decoration: underline; }
 @media (prefers-reduced-motion: reduce) { .lg__wrap { animation: none; } }
@@ -3092,11 +3115,12 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   /* 1653:13046 — кнопка 140x30, радиус 10, Instrument Sans Bold 14 */
   .mslide .hero__cta { box-sizing: border-box; margin-top: 0; width: 140px; height: 30px;
                        padding: var(--wl-sp-3); border-radius: var(--wl-r-md);
-                       background: var(--wl-primary); color: var(--wl-on-primary);
+                       background-color: var(--wl-primary);
+                       background-image: var(--wl-grad-primary); color: var(--wl-on-primary);
                        font-family: var(--wl-font-ui); font-weight: var(--wl-fw-bold);
                        font-size: var(--wl-fs-sm); line-height: normal; }
-  .mslide .hero__cta:hover  { background: var(--primary-hover, var(--wl-primary-hover)); }
-  .mslide .hero__cta:active { background: var(--primary-active, var(--wl-primary-active)); }
+  .mslide .hero__cta:hover  { background-image: var(--wl-grad-primary-hover); }
+  .mslide .hero__cta:active { background-image: var(--wl-grad-primary-active); }
   /* 920:31068 — точки 5px с шагом 7 под лентой */
   body.is-authed .hero__dots { display: flex; justify-content: center; gap: 2px;
                                margin-top: var(--wl-sp-2); }
@@ -3439,8 +3463,10 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
              font-weight: var(--wl-fw-semibold); font-size: var(--wl-fs-md); line-height: var(--wl-lh-md);
              transition: background .15s ease, border-color .15s ease; }
 .vsup__btn:hover { background: var(--wl-w-08); }
-.vsup__btn--primary { background: var(--wl-primary); border-color: transparent; }
-.vsup__btn--primary:hover { background: var(--wl-primary-hover); }
+.vsup__btn--primary { background-color: var(--wl-primary);
+                      background-image: var(--wl-grad-primary); border-color: transparent; }
+.vsup__btn--primary:hover { background-color: var(--wl-primary-hover);
+                            background-image: var(--wl-grad-primary-hover); }
 .vip__terms { align-self: center; padding: 6px var(--wl-sp-2); border: 0; background: none; cursor: pointer;
               font-family: var(--wl-font); font-size: var(--wl-fs-md); line-height: var(--wl-lh-md);
               color: var(--wl-text-dim); transition: color .15s ease; }
@@ -3527,9 +3553,12 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
            line-height: var(--wl-lh-sm); white-space: nowrap;
            transition: background .15s ease, border-color .15s ease; }
 .bn__btn:hover { background: var(--wl-w-08); }
-.bn__btn--primary { background: var(--wl-primary); border-color: transparent; }
-.bn__btn--primary:hover { background: var(--wl-primary-hover); }
-.bn__btn--primary:active { background: var(--wl-primary-active); }
+.bn__btn--primary { background-color: var(--wl-primary);
+                    background-image: var(--wl-grad-primary); border-color: transparent; }
+.bn__btn--primary:hover { background-color: var(--wl-primary-hover);
+                          background-image: var(--wl-grad-primary-hover); }
+.bn__btn--primary:active { background-color: var(--wl-primary-active);
+                           background-image: var(--wl-grad-primary-active); }
 .bn__btn--ghost { color: var(--wl-text-muted); }
 .bn__btn--bad { border-color: var(--wl-bad-line); color: var(--wl-bad-text); }
 .bn__btn--bad:hover { background: var(--wl-bad-bg); }
