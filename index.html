@@ -549,7 +549,7 @@ body.nav-rail .sidebar__top .cat-buttons { display: none; }
   font-family: inherit; font-variation-settings: 'wdth' 100;
 }
 .btn--ghost { background: var(--wl-bg-field); }
-.btn--primary { background-color: var(--wl-primary); background-image: var(--wl-grad-primary);
+.btn--primary { background-color: var(--wl-primary); background-image: var(--wl-grad-primary); background-origin: border-box;
                 color: var(--wl-on-primary); }
 
 /* ─────────────── Сайдбар · 252×1254, y=76 ─────────────── */
@@ -971,7 +971,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   flex: none; margin-left: auto;
   display: flex; align-items: center; justify-content: center;
   width: 183px; height: 48px; padding: 10px var(--wl-sp-3);
-  background-color: var(--wl-primary); background-image: var(--wl-grad-primary);
+  background-color: var(--wl-primary); background-image: var(--wl-grad-primary); background-origin: border-box;
   border: 0; border-radius: var(--wl-r-md); cursor: pointer;
   font-family: var(--wl-font); font-weight: var(--wl-fw-bold); font-size: var(--wl-fs-sm); line-height: 14px; color: var(--wl-on-primary);
   white-space: nowrap;
@@ -1960,7 +1960,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   .bonus__cta {
     margin-left: 0; width: auto; min-width: 100px; height: 30px; padding: 0 var(--wl-sp-3);
     border-radius: var(--wl-r-md); background-color: var(--wl-primary);
-    background-image: var(--wl-grad-primary); color: var(--wl-on-primary);
+    background-image: var(--wl-grad-primary); background-origin: border-box; color: var(--wl-on-primary);
     font-family: var(--wl-font-ui); font-variation-settings: 'wdth' 100;
     font-weight: var(--wl-fw-bold); font-size: var(--wl-fs-sm); line-height: normal;
   }
@@ -2687,7 +2687,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
                            font-family: var(--wl-font-ui); font-weight: var(--wl-fw-bold);
                            font-size: var(--wl-fs-sm); line-height: normal;
                            background-color: var(--wl-primary);
-                           background-image: var(--wl-grad-primary); color: var(--wl-on-primary); }
+                           background-image: var(--wl-grad-primary); background-origin: border-box; color: var(--wl-on-primary); }
   .hero .hero__cta--join:hover  { background-image: var(--wl-grad-primary-hover); }
   .hero .hero__cta--join:active { background-image: var(--wl-grad-primary-active); }
   /* 904:1982 — стрелки только после входа, в правом нижнем углу, отступы
@@ -2913,7 +2913,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 .lg__foot { display: flex; flex-direction: column; gap: 10px; padding: var(--wl-sp-4); }
 .lg__submit {
   display: flex; align-items: center; justify-content: center; padding: var(--wl-sp-3) var(--wl-sp-5);
-  background-color: var(--wl-primary); background-image: var(--wl-grad-primary);
+  background-color: var(--wl-primary); background-image: var(--wl-grad-primary); background-origin: border-box;
   border: 0; border-radius: var(--wl-r-sm); cursor: pointer;
   filter: drop-shadow(0 0 4.4px rgba(104, 225, 181, .25));
   font-family: var(--wl-font-ui); font-weight: var(--wl-fw-bold);
@@ -3116,7 +3116,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   .mslide .hero__cta { box-sizing: border-box; margin-top: 0; width: 140px; height: 30px;
                        padding: var(--wl-sp-3); border-radius: var(--wl-r-md);
                        background-color: var(--wl-primary);
-                       background-image: var(--wl-grad-primary); color: var(--wl-on-primary);
+                       background-image: var(--wl-grad-primary); background-origin: border-box; color: var(--wl-on-primary);
                        font-family: var(--wl-font-ui); font-weight: var(--wl-fw-bold);
                        font-size: var(--wl-fs-sm); line-height: normal; }
   .mslide .hero__cta:hover  { background-image: var(--wl-grad-primary-hover); }
@@ -3464,7 +3464,7 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
              transition: background .15s ease, border-color .15s ease; }
 .vsup__btn:hover { background: var(--wl-w-08); }
 .vsup__btn--primary { background-color: var(--wl-primary);
-                      background-image: var(--wl-grad-primary); border-color: transparent; }
+                      background-image: var(--wl-grad-primary); background-origin: border-box; border-color: transparent; }
 .vsup__btn--primary:hover { background-color: var(--wl-primary-hover);
                             background-image: var(--wl-grad-primary-hover); }
 .vip__terms { align-self: center; padding: 6px var(--wl-sp-2); border: 0; background: none; cursor: pointer;
@@ -3554,7 +3554,7 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
            transition: background .15s ease, border-color .15s ease; }
 .bn__btn:hover { background: var(--wl-w-08); }
 .bn__btn--primary { background-color: var(--wl-primary);
-                    background-image: var(--wl-grad-primary); border-color: transparent; }
+                    background-image: var(--wl-grad-primary); background-origin: border-box; border-color: transparent; }
 .bn__btn--primary:hover { background-color: var(--wl-primary-hover);
                           background-image: var(--wl-grad-primary-hover); }
 .bn__btn--primary:active { background-color: var(--wl-primary-active);
@@ -6707,6 +6707,19 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
 .game::after,  .game::before,
 .lc::after,    .lc::before,
 .sport::after, .sport::before { display: none !important; }
+
+/* Карточки бонусов — такими же заглушками, как карточки игр: плоская
+   подложка, внутри ничего. Пропорцию держит aspect-ratio — без содержимого
+   карточка схлопнулась бы в ноль. Селекторы с атрибутом нужны, чтобы
+   перебить цветные плашки ступеней: у них специфичность выше голого класса. */
+.bnwp__c > *, .bncard > *, .bnact > * { display: none !important; }
+.bnwp__c, .bnwp__c[data-step], .bnwp__c[data-st],
+.bncard, .bncard:hover, .bncard.is-taken, .bnact {
+  background: #191a1c; background-image: none; border: 0; box-shadow: none;
+}
+.bnwp__c { aspect-ratio: 216 / 298; height: auto; }
+.bncard  { aspect-ratio: 268 / 308; height: auto; }
+.bnact   { aspect-ratio: 1080 / 314; height: auto; }
 
 </style>
 </head>
