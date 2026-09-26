@@ -459,41 +459,27 @@ body {
 /* Кнопка сворачивания сидит на правом крае панели, как у 1win: половина
    круга заходит на панель, половина в зазор до контента. Стрелки смотрят
    в ту сторону, куда панель уедет. */
-/* Бургер в верху колонки, слева от чипов — как у Stake. Прежде это был
-   круг на правом крае панели: он наезжал на пункты меню. Ниже 1024
-   панели нет, поэтому и кнопки нет. */
+/* Сворачивание — последней строкой карточки меню, значком и подписью.
+   Стояло наверху рядом с разделами «казино/спорт»: разделы убраны, а сама
+   кнопка среди пунктов читалась как ещё один пункт. Внизу она не спорит
+   с навигацией и подписана словом, а не одним значком.
+   Ниже 1024 панели нет, поэтому и кнопки нет. */
 .nav-toggle {
   display: none; flex: none;
-  align-items: center; justify-content: center;
-  width: 32px; height: 32px; border-radius: var(--wl-r-md);
+  align-items: center; gap: var(--wl-sp-2);
+  /* Поля и высота как у пунктов меню — кнопка встаёт с ними в одну колонку */
+  height: 40px; margin: var(--wl-sp-1) var(--wl-sp-2) var(--wl-sp-2);
+  padding: 0 var(--wl-sp-3); border-radius: var(--wl-r-md);
   background: transparent; border: 0; box-shadow: none;
-  color: var(--wl-text-muted);
+  color: var(--wl-text-muted); cursor: pointer;
 }
-/* Строка над карточкой: бургер и два раздела верхнего уровня. Высота как
-   у шапки, чтобы встать на один уровень с логотипом. */
-/* Первая строка карточки меню: бургер и два раздела верхнего уровня.
-   Живёт внутри карточки, на её фоне — колонка так читается одним тоном,
-   без стыка между «чёрным верхом» и «серым низом». */
-.sidebar__top {
-  display: flex; align-items: center; gap: var(--wl-sp-1);
-  /* Боковое поле 16 — как у пунктов меню: бургер встаёт по одной линии
-     с их иконками. Сверху 20: при 12 над строкой оставалось 15, а под
-     ней 27, и она выглядела прижатой к краю. Высота по содержимому,
-     иначе жёсткие 56 съедали часть верхнего поля. */
-  flex: none; height: auto;
-  padding: var(--wl-sp-5) var(--wl-sp-4) 0; margin-bottom: var(--wl-sp-2);
+.nav-toggle__label {
+  font-family: var(--wl-font); font-weight: var(--wl-fw-semibold);
+  font-size: var(--wl-fs-sm); line-height: var(--wl-lh-sm); white-space: nowrap;
 }
-/* Иконки у чипов внутри колонки сняты: при поле 16 подписи с ними
-   не помещаются. У Stake эти кнопки тоже без значков. */
-.sidebar__top .cat-tab__icon { display: none; }
-.sidebar__top .cat-buttons { flex: 1 1 auto; min-width: 0; gap: var(--wl-sp-1); }
-.sidebar__top .cat-tab {
-  flex: 1 1 0; min-width: 0; justify-content: center;
-  padding: var(--wl-sp-2) var(--wl-sp-1); gap: var(--wl-sp-1);
-}
-/* Свёрнутая панель: остаётся один бургер по центру колонки */
-body.nav-rail .sidebar__top { justify-content: center; padding-inline: 0; }
-body.nav-rail .sidebar__top .cat-buttons { display: none; }
+/* Свёрнутая панель: остаётся один значок по центру колонки */
+body.nav-rail .nav-toggle { justify-content: center; padding-inline: 0; }
+body.nav-rail .nav-toggle__label { display: none; }
 .nav-toggle::before {
   content: ''; width: 22px; height: 22px; background: currentColor;
   -webkit-mask: url(a/7aae139d08.svg) center / contain no-repeat;
@@ -588,7 +574,10 @@ body.nav-rail .sidebar__top .cat-buttons { display: none; }
 }
 /* 860:5898. В макете между группами зазор 230px и нижняя группа прижата к низу.
    По решению заказчика язык и поддержка подняты к навигации — расхождение осознанное. */
-.sidebar__inner  { display: flex; flex-direction: column; gap: 6px; width: 100%; flex: 1 1 auto; min-height: 0; padding: var(--wl-sp-2) 0; }
+/* Сверху 16: строки с разделами над карточкой больше нет, и при поле в 8
+   первый пункт прилипал к краю — на это уже жаловались. */
+.sidebar__inner  { display: flex; flex-direction: column; gap: 6px; width: 100%; flex: 1 1 auto; min-height: 0;
+                   padding: var(--wl-sp-4) 0 var(--wl-sp-2); }
 /* 860:5900 — сама навигация, шаг 2.
    min-height равен высоте раскрытого меню из макета (600). Благодаря этому
    при сворачивании раздела нижняя группа остаётся на месте, а не подпрыгивает.
@@ -6783,23 +6772,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
     <div class="sidebar__menu" data-node-id="860:5897">
       <!-- Бургер и разделы верхнего уровня: верх тёмной колонки, на одном
            уровне с логотипом — как у Stake. -->
-      <div class="sidebar__top">
-        <button class="nav-toggle" type="button" aria-label="Collapse menu"
-                aria-expanded="true" aria-controls="sidebar"></button>
-        <nav class="cat-buttons">
-          <a class="cat-tab" href="#">
-            <span class="cat-tab__icon">
-              <img src="a/dd57cc1252.svg" alt="" style="inset:0 0 16.3% 46.46%">
-              <img src="a/1904eb85cf.svg" alt="" style="inset:14.22% 31.26% 0 0">
-            </span>
-            <span class="cat-tab__label">CASINO</span>
-          </a>
-          <a class="cat-tab" href="#">
-            <span class="cat-tab__icon"><img src="a/ca02f2e00c.svg" alt="" style="inset:0 0.03% 0 0.02%"></span>
-            <span class="cat-tab__label">SPORTS</span>
-          </a>
-        </nav>
-      </div>
       <!-- 860:5898 — две группы, между ними зазор 230 -->
       <div class="sidebar__inner" data-node-id="860:5898">
 
@@ -6888,6 +6860,12 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
 
 
       </div>
+      <!-- Сворачивание — последней строкой карточки, значком и подписью:
+           наверху оно стояло рядом с разделами и читалось как ещё один
+           раздел. В свёрнутой панели подпись уходит, значок остаётся. -->
+      <button class="nav-toggle" type="button" aria-label="Collapse menu"
+              aria-expanded="true" aria-controls="sidebar"><span
+              class="nav-toggle__label">Collapse</span></button>
     </div>
   </aside>
 
@@ -17370,7 +17348,8 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
       document.body.classList.toggle('nav-rail', on);
       if (navToggle) {
         navToggle.setAttribute('aria-expanded', String(!on));
-        navToggle.setAttribute('aria-label', on ? 'Развернуть меню' : 'Свернуть меню');
+        /* Подпись для читалки шла по-русски при любом языке, мимо словаря */
+        navToggle.setAttribute('aria-label', T(on ? 'Expand menu' : 'Collapse menu'));
       }
       if (save) { try { localStorage.setItem('ww-nav-rail', on ? '1' : '0'); } catch (e) {} }
       fit();
