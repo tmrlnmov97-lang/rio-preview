@@ -848,6 +848,8 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 .section__head { display: flex; align-items: flex-end; justify-content: space-between; width: 100%; }
 .section__title { display: flex; align-items: center; gap: var(--wl-sp-1); }
 .section__title img { width: 24px; height: 24px; display: block; }
+/* display перебивает атрибут hidden: значки категорий лежат все сразу */
+.section__title img[hidden] { display: none; }
 .section__title h2 {
   margin: 0; font-family: var(--wl-font-ui); font-weight: var(--wl-fw-bold);
   font-size: var(--wl-fs-xl); line-height: 26px; color: var(--wl-text);
@@ -2488,18 +2490,18 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 
 /* 1105:51503 — сетка страницы Crash Games: 7 колонок по 154.2 с зазором 12,
    ряды с тем же шагом. Выше 1536 переходим на восемь, как в лентах. */
-.crash-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: var(--wl-sp-3); }
-.crash-grid > .game { width: auto; height: auto; aspect-ratio: 154.2 / 204; }
-@media (max-width: 1023px) { .crash-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (min-width: 1536px) { .crash-grid { grid-template-columns: repeat(8, 1fr); gap: 10px; } }
+.category-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: var(--wl-sp-3); }
+.category-grid > .game { width: auto; height: auto; aspect-ratio: 154.2 / 204; }
+@media (max-width: 1023px) { .category-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1536px) { .category-grid { grid-template-columns: repeat(8, 1fr); gap: 10px; } }
 .game--flat > img.layer { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
 /* Карточки Crash Games появляются тем же каскадом, что и ряды лобби */
 /* backwards, а не both: both удерживал transform из кадра и после конца
    анимации, из-за чего карточка переставала подниматься при наведении. */
-.crash-grid > .game { animation: cas-card-in .34s cubic-bezier(.22,.61,.36,1) backwards;
+.category-grid > .game { animation: cas-card-in .34s cubic-bezier(.22,.61,.36,1) backwards;
                       animation-delay: calc(var(--i, 0) * 12ms); }
-@media (prefers-reduced-motion: reduce) { .crash-grid > .game { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .category-grid > .game { animation: none; } }
 
 /* ───────────────────────────────────────────────────────────────────
    1126:15053 «Hero» — баннер 737 и колонка из двух карточек 351,
@@ -13125,9 +13127,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
           <span class="chip">Table Games</span>
           <span class="chip">Video Poker</span>
           <span class="chip">Live Casino</span>
-          <span class="chip">Live Casino</span>
-          <span class="chip">Live Casino</span>
-          <span class="chip">Live Casino</span>
         </nav>
         </div>
         <section class="section section--nav" data-node-id="851:3474">
@@ -13518,8 +13517,10 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
       </div>
 
 
-      <!-- 1105:51503 «Crash Games» — сетка 7x8, карточка 154.2x204, зазор 12 -->
-      <div class="view view--crash" id="view-crash" hidden data-node-id="1105:51503">
+      <!-- 1105:51503 — одна страница на все категории: сетка у них общая,
+           меняются только значок и заголовок. Тринадцать копий одной
+           разметки под каждый чип держать незачем. -->
+      <div class="view view--category" id="view-category" hidden data-node-id="1105:51503">
         <div class="cas-head">
         <!-- 1104:13484 — поиск в шапке страницы казино -->
         <button type="button" class="srch__field cas-search" data-node-id="1104:13484" aria-haspopup="dialog">
@@ -13536,19 +13537,30 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
           <span class="chip">Table Games</span>
           <span class="chip">Video Poker</span>
           <span class="chip">Live Casino</span>
-          <span class="chip">Live Casino</span>
-          <span class="chip">Live Casino</span>
-          <span class="chip">Live Casino</span>
         </nav>
         </div>
         <section class="section" data-node-id="1105:54739">
           <div class="section__head">
             <div class="section__title">
-              <img loading="lazy" decoding="async" src="a/21ad8ec927.svg" alt="">
-              <h2>Crash Games</h2>
+              <!-- Значок каждой категории лежит в разметке, показан один:
+                   сборщик переписывает пути только в атрибутах, собранный
+                   в скрипте адрес в сборке не находится. -->
+              <img loading="lazy" decoding="async" src="a/21ad8ec927.svg" alt="" data-cat-ico="crash games">
+              <img loading="lazy" decoding="async" src="a/c46f4569fb.svg" alt="" data-cat-ico="new slots" hidden>
+              <img loading="lazy" decoding="async" src="a/d4505ffade.svg" alt="" data-cat-ico="popular slots buy" hidden>
+              <img loading="lazy" decoding="async" src="a/86c1a44d79.svg" alt="" data-cat-ico="high rtp" hidden>
+              <img loading="lazy" decoding="async" src="a/6b1e44858b.svg" alt="" data-cat-ico="bonus buy" hidden>
+              <img loading="lazy" decoding="async" src="a/c1845085c1.svg" alt="" data-cat-ico="table games" hidden>
+              <img loading="lazy" decoding="async" src="a/39eacc80c9.svg" alt="" data-cat-ico="video poker" hidden>
+              <img loading="lazy" decoding="async" src="a/c0ba02d44b.svg" alt="" data-cat-ico="live casino" hidden>
+              <img loading="lazy" decoding="async" src="a/6476cc4cce.svg" alt="" data-cat-ico="game shows" hidden>
+              <img loading="lazy" decoding="async" src="a/46d277f6b4.svg" alt="" data-cat-ico="providers" hidden>
+              <img loading="lazy" decoding="async" src="a/d4505ffade.svg" alt="" data-cat-ico="slots" hidden>
+              <img loading="lazy" decoding="async" src="a/60e8a2f99e.svg" alt="" data-cat-ico="lobby" hidden>
+              <h2 data-cat-title>Crash Games</h2>
             </div>
           </div>
-          <div class="crash-grid">
+          <div class="category-grid">
             <article class="game game--flat" style="--i:0"><img loading="lazy" decoding="async" class="layer" src="a/937ae6b6e3.webp" alt=""><span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
             <article class="game game--flat" style="--i:1"><img loading="lazy" decoding="async" class="layer" src="a/66cfa4194f.webp" alt=""><span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
             <article class="game game--flat" style="--i:2"><img loading="lazy" decoding="async" class="layer" src="a/8fd2ce2c26.webp" alt=""><span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
@@ -18550,7 +18562,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
        странице. Баннер живёт только на главной, поэтому прячется вместе с ней. */
     var views = { home: document.getElementById('view-home'),
                     casino: document.getElementById('view-casino'),
-                    crash: document.getElementById('view-crash'),
+                    category: document.getElementById('view-category'),
                     sport: document.getElementById('view-sport'),
                     profile: document.getElementById('view-profile'),
                     history: document.getElementById('view-history'),
@@ -18575,7 +18587,55 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
     var tabs = document.querySelectorAll('.cat-tab');
     /* Кнопка CASINO в шапке открывает лобби; чипы внутри лобби и страницы
        Crash Games переключают между этими двумя страницами. */
-    var chipView = { 'lobby': 'casino', 'crash games': 'crash' };
+    /* Upcoming и Outrights — разделы спорта, а не казино: ведут на страницу
+       спорта, а не на сетку игровых карточек. */
+    var chipView = { 'lobby': 'casino', 'upcoming': 'sport', 'outrights': 'sport' };
+    /* Категории. Ключ — подпись кнопки, значение — значок в шапке раздела.
+       Кнопка ведёт на общую страницу категории: сетка у всех одна, меняются
+       заголовок и значок. Раньше из тринадцати чипов работали два, остальные
+       были нарисованными и молчали. */
+    var CATS = {
+      'crash games': 'crash games', 'new slots': 'new slots',
+      'popular slots buy': 'popular slots buy', 'high rtp': 'high rtp',
+      'bonus buy': 'bonus buy', 'table games': 'table games',
+      'video poker': 'video poker', 'live casino': 'live casino',
+      'game shows': 'game shows', 'providers': 'providers',
+      /* Пункты бокового меню: свой значок есть не у каждого, остальным
+         даём ближайший по смыслу из того же набора. */
+      'slots': 'slots', 'popular games': 'slots', 'jackpots': 'slots',
+      'new games': 'new slots', 'roulette': 'table games',
+      'blackjack': 'table games', 'baccarat': 'table games',
+      'poker': 'video poker', 'mines': 'crash games', 'plinko': 'crash games',
+      'dice': 'crash games', 'limbo': 'crash games', 'wheel': 'crash games',
+      'keno': 'crash games'
+    };
+    var catView = document.getElementById('view-category');
+    var catTitle = catView && catView.querySelector('[data-cat-title]');
+    var catNow = 'crash games';        /* какая категория открыта сейчас */
+    var catPaint = function () {
+      if (!catTitle) return;
+      /* Заголовок ставим через словарь: язык берётся из браузера, и без
+         перевода страница «Новые слоты» называлась бы по-английски. */
+      catTitle.textContent = T(catLabel[catNow] || catLabel['crash games']);
+      catView.querySelectorAll('[data-cat-ico]').forEach(function (img) {
+        img.hidden = img.dataset.catIco !== (CATS[catNow] || 'crash games');
+      });
+    };
+    /* Английские подписи категорий — исходник для словаря */
+    var catLabel = {};
+    /* Переводчик обходит разметку и вернул бы заголовку исходное
+       «Crash Games»; наш обработчик идёт после него и ставит нужный. */
+    document.addEventListener('ww:lang', function () {
+      if (catView && !catView.hidden) catPaint();
+    });
+    var catOpen = function (name) {
+      var key = (name || '').trim().toLowerCase();
+      if (!CATS[key]) return false;
+      catNow = key;
+      catPaint();
+      showView('category');
+      return true;
+    };
     /* Что было с панелью до входа в игру — чтобы вернуть на выходе */
     var gameRailWas = false;
     /* Страницы, которые нельзя показывать гостю: там чужие данные. Раньше
@@ -18607,12 +18667,13 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
       tabs.forEach(function (t) {
         var name = (t.textContent || '').trim().toLowerCase();
         t.classList.toggle('is-active',
-          name === 'casino' ? (key === 'casino' || key === 'crash') : key === 'sport');
+          name === 'casino' ? (key === 'casino' || key === 'category') : key === 'sport');
       });
       /* Подсветка того, где мы находимся: чипы и пункты бокового меню */
       document.querySelectorAll('.chip, .sub-item').forEach(function (el) {
+        var label = (el.textContent || '').trim().toLowerCase();
         el.classList.toggle('is-active',
-          chipView[(el.textContent || '').trim().toLowerCase()] === key);
+          key === 'category' ? label === catNow : chipView[label] === key);
       });
       /* На бонусах гостю оставляем витрину предложений и убираем личные вкладки */
       if (key === 'bonuses' && bnSync) bnSync();
@@ -18645,7 +18706,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
     /* Вкладок CASINO/SPORTS в шапке больше нет, поэтому боковое меню —
        единственный вход в разделы: заголовок и раскрывает список, и
        открывает саму страницу. */
-    var sideView = { 'casino': 'casino', 'sport': 'sport', 'fast games': 'crash' };
+    var sideView = { 'casino': 'casino', 'sport': 'sport', 'fast games': 'category' };
     document.querySelectorAll('.side-item').forEach(function (it) {
       var label = it.querySelector('.side-item__label');
       var target = sideView[((label && label.textContent) || '').trim().toLowerCase()];
@@ -18665,17 +18726,30 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
     });
     /* Пункты бокового меню открывают те же страницы, что и чипы */
     document.querySelectorAll('.sub-item').forEach(function (it) {
-      var target = chipView[(it.textContent || '').trim().toLowerCase()];
-      if (!target) return;
-      it.addEventListener('click', function (e) { e.preventDefault(); showView(target); });
+      var label = (it.textContent || '').trim();
+      var key = label.toLowerCase();
+      if (CATS[key] && !catLabel[key]) catLabel[key] = label;
+      if (!CATS[key] && !chipView[key]) return;
+      it.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (catOpen(key)) return;
+        showView(chipView[key]);
+      });
     });
     var casCard = document.querySelector('.hcard--cas');
     if (casCard) casCard.addEventListener('click', function (e) { e.preventDefault(); showView('casino'); });
     document.querySelectorAll('.chip').forEach(function (c) {
-      var target = chipView[(c.textContent || '').trim().toLowerCase()];
-      if (!target) return;
+      var label = (c.textContent || '').trim();
+      var key = label.toLowerCase();
+      /* Подписи запоминаем по-английски: переводчик меняет текст узла, и
+         после переключения языка ключ по нему уже не найдёшь. */
+      if (CATS[key] && !catLabel[key]) catLabel[key] = label;
+      if (!CATS[key] && !chipView[key]) return;
       c.style.cursor = 'pointer';
-      c.addEventListener('click', function () { showView(target); });
+      c.addEventListener('click', function () {
+        if (catOpen(key)) return;
+        showView(chipView[key]);
+      });
     });
     var brand = document.querySelector('.topbar__brand');
     if (brand) {
