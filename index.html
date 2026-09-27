@@ -3534,8 +3534,13 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
 .bnwp::-webkit-scrollbar, .bnp::-webkit-scrollbar { display: none; }
 .bnwp__c, .bnp .bncard { scroll-snap-align: start; }
 .bnwp__c { flex: 0 0 216px; }
-.bnp .bncard { flex: 0 0 268px; height: auto; }
 .bnp[hidden], .bnwp[hidden] { display: none; }
+/* Карточки бонусов идут сеткой, а не лентой: попросили без прокрутки —
+   ряд заполняется до конца и переносится на следующий. Правило стоит после
+   общего с .bnwp: приветственный пакет остаётся лентой, у него три ступени. */
+.bnp { display: grid; grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
+       overflow: visible; margin: 0; padding: 2px 0 6px; }
+.bnp .bncard { width: auto; height: auto; scroll-snap-align: none; }
 
 .bn__empty { grid-column: 1 / -1; box-sizing: border-box; display: flex; flex-direction: column;
              align-items: center; gap: var(--wl-sp-2); padding: 48px var(--wl-sp-8); border-radius: var(--wl-r-lg);
@@ -3819,11 +3824,15 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
   .bn__list--offers { gap: var(--wl-sp-6); }
   /* На узком экране лента выходит за поля страницы: соседняя карточка
      выглядывает у края, и подсказка «тянется вбок» остаётся. */
-  .bnwp, .bnp { gap: var(--wl-sp-3); margin: 0 calc(-1 * var(--edge, 16px));
-                padding: 2px var(--edge, 16px) 6px;
-                scroll-padding-inline: var(--edge, 16px); }
+  .bnwp { gap: var(--wl-sp-3); margin: 0 calc(-1 * var(--edge, 16px));
+          padding: 2px var(--edge, 16px) 6px;
+          scroll-padding-inline: var(--edge, 16px); }
   .bnwp__c { flex: 0 0 196px; }
-  .bnp .bncard { flex: 0 0 248px; }
+  /* Сетка бонусов остаётся в полях страницы: выносить её за край незачем,
+     листать вбок больше нечего. Колонок ровно две: auto-fill на 390 оставил
+     бы одну, и карточка занимала бы пол-экрана в высоту. */
+  .bnp { gap: var(--wl-sp-3); margin: 0; padding: 2px 0 6px;
+         grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .bnsec__h { font-size: var(--wl-fs-lg); line-height: var(--wl-lh-md); }
   .bn__chip { font-size: var(--wl-fs-sm); padding: 7px 14px; }
   /* На узком экране полоса складывается в столбец: три колонки в 390 не живут */
