@@ -682,12 +682,6 @@ body.nav-rail .sidebar__rule { margin: var(--wl-sp-2) var(--wl-sp-2) var(--wl-sp
   transition: transform .3s cubic-bezier(.4, 0, .2, 1);
 }
 .side-item--active .chev { transform: rotate(180deg); }
-/* У спорта шеврон смотрит вправо, а не вниз — так в варфрейме. Берём тот же
-   файл, что у соседей, и разворачиваем: chevron-right.svg нарисован тёмным
-   (#515151, он для строки языка) и рядом выглядел бы блёклым.
-   На раскрытии стрелка возвращается вниз, иначе указывала бы влево. */
-.side-item--chev-right .chev { transform: rotate(-90deg); }
-.side-item--chev-right.side-item--active .chev { transform: rotate(0deg); }
 
 /* Отступ 48 живёт на самом пункте, а не на контейнере — тогда подсветка
    при наведении идёт во всю ширину панели, а не начинается от иконки. */
@@ -6392,8 +6386,6 @@ body.dp-open .wallet__deposit { box-shadow: 0 0 0 2px var(--wl-money-glow),
 .br__row[aria-expanded="true"] .br__chev { transform: rotate(180deg); }
 /* У спорта стрелка смотрит вправо, как в боковом меню на вебе: берём тот же
    файл и разворачиваем, на раскрытии она возвращается вниз. */
-.br__row .br__chev--turn { width: 12px; height: 7px; transform: rotate(-90deg); }
-.br__row[aria-expanded="true"] .br__chev--turn { transform: rotate(0deg); }
 .br__row--accent { background: var(--wl-w-08); font-weight: var(--wl-fw-bold); }
 /* подпункты раскрываются под своим разделом */
 .br__subs { display: flex; flex-direction: column; gap: 2px; padding: 2px 0 6px var(--wl-sp-3); }
@@ -6773,6 +6765,13 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         <!-- Первая группа: игровая -->
         <nav class="sidebar__nav" data-node-id="860:5900">
 
+          <!-- Лобби — первый пункт: главная страница. Подменю у него нет,
+               поэтому и шеврона нет. -->
+          <div class="side-item">
+            <img class="ico" src="a/60e8a2f99e.svg" alt="">
+            <span class="side-item__label">Lobby</span>
+          </div>
+
           <div class="side-item" data-node-id="860:5902">
             <span class="ico ico--casino" aria-hidden="true"></span>
             <span class="side-item__label">Casino</span>
@@ -6823,7 +6822,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
             </div>
           </div>
 
-          <div class="side-item side-item--chev-right" data-node-id="894:29019">
+          <div class="side-item" data-node-id="894:29019">
             <img class="ico" src="a/401e94f115.svg" alt="">
             <span class="side-item__label">Sport</span>
             <img class="chev" src="a/346630b640.svg" alt="">
@@ -13740,6 +13739,10 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
 
     <!-- Порядок и состав те же, что в боковом меню на вебе -->
     <nav class="br__nav">
+      <button class="br__row" type="button">
+        <img loading="lazy" decoding="async" class="ico" src="a/60e8a2f99e.svg" alt="" width="20" height="20">
+        <span class="br__row-label">Lobby</span>
+      </button>
       <button class="br__row" type="button" data-toggle="br-casino" aria-expanded="false">
         <span class="ico ico--casino" aria-hidden="true"></span>
         <span class="br__row-label">Casino</span>
@@ -13784,7 +13787,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
       <button class="br__row" type="button" data-toggle="br-sport" aria-expanded="false">
         <img loading="lazy" decoding="async" class="ico" src="a/401e94f115.svg" alt="" width="20" height="20">
         <span class="br__row-label">Sport</span>
-        <img loading="lazy" decoding="async" class="br__chev br__chev--turn" src="a/346630b640.svg" alt="" width="12" height="12">
+        <img loading="lazy" decoding="async" class="br__chev" src="a/346630b640.svg" alt="" width="12" height="12">
       </button>
       <div class="br__subs" id="br-sport" hidden>
           <button class="br__sub" type="button"><img loading="lazy" decoding="async" src="a/0eec65d4be.svg" alt="" width="20" height="20"><span>Upcoming</span></button>
@@ -18749,6 +18752,17 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
       var target = sideView[((label && label.textContent) || '').trim().toLowerCase()];
       if (!target) return;
       it.addEventListener('click', function () { showView(target); });
+    });
+    /* Лобби ведёт на главную. Один обработчик на боковое меню и мобильный
+       лист: подпись у пункта в обоих одна. */
+    document.querySelectorAll('.side-item, .br__row').forEach(function (it) {
+      var label = it.querySelector('.side-item__label, .br__row-label');
+      if (((label && label.textContent) || '').trim().toLowerCase() !== 'lobby') return;
+      it.addEventListener('click', function () {
+        var br = document.getElementById('browse-menu');
+        if (br && !br.hidden) { br.hidden = true; lockScroll(false); }
+        showView('home');
+      });
     });
     /* Бонусы и VIP — свои страницы */
     document.querySelectorAll('.side-item, .br__row').forEach(function (it) {
