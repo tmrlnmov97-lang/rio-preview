@@ -6710,13 +6710,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         <!-- Первая группа: игровая -->
         <nav class="sidebar__nav" data-node-id="860:5900">
 
-          <!-- Лобби — первый пункт: главная страница. Подменю у него нет,
-               поэтому и шеврона нет. -->
-          <div class="side-item">
-            <img class="ico" src="a/60e8a2f99e.svg" alt="">
-            <span class="side-item__label">Lobby</span>
-          </div>
-
           <div class="side-item" data-node-id="860:5902">
             <span class="ico ico--casino" aria-hidden="true"></span>
             <span class="side-item__label">Casino</span>
@@ -13655,10 +13648,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
 
     <!-- Порядок и состав те же, что в боковом меню на вебе -->
     <nav class="br__nav">
-      <button class="br__row" type="button">
-        <img loading="lazy" decoding="async" class="ico" src="a/60e8a2f99e.svg" alt="" width="20" height="20">
-        <span class="br__row-label">Lobby</span>
-      </button>
       <button class="br__row" type="button" data-toggle="br-casino" aria-expanded="false">
         <span class="ico ico--casino" aria-hidden="true"></span>
         <span class="br__row-label">Casino</span>
@@ -18659,17 +18648,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
       var target = sideView[((label && label.textContent) || '').trim().toLowerCase()];
       if (!target) return;
       it.addEventListener('click', function () { showView(target); });
-    });
-    /* Лобби ведёт на главную. Один обработчик на боковое меню и мобильный
-       лист: подпись у пункта в обоих одна. */
-    document.querySelectorAll('.side-item, .br__row').forEach(function (it) {
-      var label = it.querySelector('.side-item__label, .br__row-label');
-      if (((label && label.textContent) || '').trim().toLowerCase() !== 'lobby') return;
-      it.addEventListener('click', function () {
-        var br = document.getElementById('browse-menu');
-        if (br && !br.hidden) { br.hidden = true; lockScroll(false); }
-        showView('home');
-      });
     });
     /* Бонусы и VIP — свои страницы */
     document.querySelectorAll('.side-item, .br__row').forEach(function (it) {
