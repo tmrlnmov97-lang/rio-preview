@@ -3189,13 +3189,12 @@ body.is-authed .authed { display: flex; }
    группы сами встают на 0 / 470 / 960 внутри колонки 1104, как в макете. */
 .wallet { display: none; align-items: center; overflow: hidden; border-radius: var(--wl-r-sm); }
 body.is-authed .wallet { display: flex; }
-/* Кошелёк — по центру шапки, а не в потоке за логотипом: логотип слева и
-   действия справа занимают разную ширину, и в потоке центр уезжал бы вслед
-   за ними. Отсчёт от .topbar — она закреплена и тянется во всю ширину.
-   Только на десктопе: на мобильной кошелёк растянут во всю ширину полосы,
-   и центрирование сдвигало бы его за левый край. */
+/* Кошелёк стоит вплотную к правой группе — сразу слева от поиска, одним
+   блоком с ним. Поэтому у .header-desktop прижим вправо и общий зазор,
+   а не space-between: при нём кошелёк уезжал к логотипу. */
 @media (min-width: 1024px) {
-  .wallet { position: absolute; left: 50%; transform: translateX(-50%); }
+  .header-desktop { justify-content: flex-end; gap: var(--wl-sp-3); }
+  .header-actions { margin-left: 0; }
 }
 /* Сумма набиралась Work Sans 14 против Cora 14 у кнопки: при одном кегле
    капитель Cora крупнее, и баланс читался мельче соседа. Даём цифрам тот же
