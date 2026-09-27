@@ -3507,22 +3507,6 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
 /* ── гость: 1471:13193, карточка 1103x282 ── */
 /* Полоса-приглашение над списком: карточки гость теперь видит, и заглушка
    во весь кадр здесь больше не нужна — нужен повод завести аккаунт. */
-.bn__guest { box-sizing: border-box; display: flex; align-items: center; gap: var(--wl-sp-4);
-             margin-bottom: var(--wl-sp-5); padding: 18px var(--wl-sp-5); border-radius: var(--wl-r-lg);
-             background: linear-gradient(90deg, var(--wl-a-18), var(--wl-a-10));
-             border: 1px solid var(--wl-a-30); }
-.bn__guest[hidden] { display: none; }
-.bn__guest-ico { display: grid; place-items: center; flex: none; width: 44px; height: 44px;
-                 border-radius: var(--wl-r-round); background: var(--wl-a-18); }
-.bn__guest-ico::after { content: ''; width: 24px; height: 24px; background: var(--wl-primary);
-                        -webkit-mask: var(--ico-gift) center / contain no-repeat;
-                                mask: var(--ico-gift) center / contain no-repeat; }
-.bn__guest-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: var(--wl-sp-1); }
-.bn__guest b { font-family: var(--wl-font); font-weight: var(--wl-fw-semibold);
-               font-size: var(--wl-fs-lg); line-height: var(--wl-lh-md); color: var(--wl-text); }
-.bn__guest-text span { font-family: var(--wl-font); font-size: var(--wl-fs-md);
-                       line-height: 21px; color: var(--wl-text-muted); }
-.bn__guest-btns { display: flex; flex: none; gap: 10px; }
 
 /* ── списки вкладок ── */
 .bn__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--wl-sp-5);
@@ -3843,10 +3827,6 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
   .bnsec__h { font-size: var(--wl-fs-lg); line-height: var(--wl-lh-md); }
   .bn__chip { font-size: var(--wl-fs-sm); padding: 7px 14px; }
   /* На узком экране полоса складывается в столбец: три колонки в 390 не живут */
-  .bn__guest { flex-wrap: wrap; padding: var(--wl-sp-4); }
-  .bn__guest-text { flex-basis: calc(100% - 60px); }
-  .bn__guest-btns { width: 100%; }
-  .bn__guest-btns .bn__btn { flex: 1 1 0; padding: 0; }
   .bnact { padding: 18px; gap: var(--wl-sp-4); }
   .bnact__art { width: 92px; height: 58px; }
   .bnact__title h2 { font-size: var(--wl-fs-lg); line-height: var(--wl-lh-md); }
@@ -8104,22 +8084,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
           </div>
         </div>
 
-        <!-- 1471:13193 — гостю: раньше здесь стояла заглушка вместо списка, и
-             человек до регистрации не видел ни одного предложения. Теперь это
-             полоса-приглашение НАД карточками: сами бонусы видны всем, ради
-             них сюда и заходят, а закрыто только личное. -->
-        <div class="bn__guest" hidden>
-          <span class="bn__guest-ico" aria-hidden="true"></span>
-          <div class="bn__guest-text">
-            <b>Sign up and take the welcome package</b>
-            <span>Three deposits, three bonuses — the first one lands on your first deposit.</span>
-          </div>
-          <div class="bn__guest-btns">
-            <button class="bn__btn bn__btn--primary" type="button" data-bn-go="signup">Sign up</button>
-            <button class="bn__btn" type="button" data-bn-go="signin">Log in</button>
-          </div>
-        </div>
-
         <div class="bn__body">
           <div class="bn__list bn__list--offers" id="bn-available" role="tabpanel" tabindex="0" data-bnset="available">
             <!-- Приветственный пакет тремя ступенями. Проценты, потолки, срок
@@ -8204,6 +8168,45 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
                   <div class="bncard__foot">
                     <button class="bn__btn bn__btn--primary" type="button" data-bn-act>Receive</button>
                     <button class="bn__btn" type="button" data-bn-terms="cash">View Details</button>
+                  </div>
+                </div>
+              </article>
+              <article class="bncard" data-key="welcome" data-days="3">
+                <div class="bncard__body">
+                  <div class="bncard__tags">
+                    <span class="bn__tag">Casino</span><span class="bn__tag">Active for registration</span>
+                  </div>
+                  <h2>Welcome Free Spins</h2>
+                  <p>100 Free Spins for&nbsp;new players, valid 3 days after issue.</p>
+                  <div class="bncard__foot">
+                    <button class="bn__btn bn__btn--primary" type="button" data-bn-act>Receive</button>
+                    <button class="bn__btn" type="button" data-bn-terms="welcome">View Details</button>
+                  </div>
+                </div>
+              </article>
+              <article class="bncard" data-key="zeus" data-days="7">
+                <div class="bncard__body">
+                  <div class="bncard__tags">
+                    <span class="bn__tag">Casino</span><span class="bn__tag">Every Friday &middot; UTC</span>
+                  </div>
+                  <h2>Zeus Friday</h2>
+                  <p>Play 50 spins of&nbsp;1.00 AZN on&nbsp;Gates of&nbsp;Olympus — get 20 Free Spins.</p>
+                  <div class="bncard__foot">
+                    <button class="bn__btn bn__btn--primary" type="button" data-bn-act>Receive</button>
+                    <button class="bn__btn" type="button" data-bn-terms="zeus">View Details</button>
+                  </div>
+                </div>
+              </article>
+              <article class="bncard" data-key="deposit" data-days="30">
+                <div class="bncard__body">
+                  <div class="bncard__tags">
+                    <span class="bn__tag">Deposit</span><span class="bn__tag">First deposit only</span>
+                  </div>
+                  <h2>First Deposit Bonus</h2>
+                  <p>100% bonus up&nbsp;to&nbsp;150 AZN on&nbsp;your first successful deposit.</p>
+                  <div class="bncard__foot">
+                    <button class="bn__btn bn__btn--primary" type="button" data-bn-act>Receive</button>
+                    <button class="bn__btn" type="button" data-bn-terms="deposit">View Details</button>
                   </div>
                 </div>
               </article>
@@ -20889,7 +20892,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
     if (bnView) {
       var bnChips = [].slice.call(bnView.querySelectorAll('[data-bn]'));
       var bnLists = [].slice.call(bnView.querySelectorAll('[data-bnset]'));
-      var bnGuest = bnView.querySelector('.bn__guest');
       var bnChipsBox = bnView.querySelector('.bn__chips');
       var bnBody = bnView.querySelector('.bn__body');
 
@@ -20898,7 +20900,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         /* Гостю показываем сами предложения: это витрина, и прятать её значит
            прятать главный повод завести аккаунт. Закрыты только личные вкладки —
            своих бонусов и своей истории у него нет. */
-        bnGuest.hidden = !guest;
         bnChipsBox.hidden = guest;
         bnBody.hidden = false;
         bnChips.forEach(function (c) {
