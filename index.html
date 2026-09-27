@@ -14089,11 +14089,17 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
       </button>
       <div class="pm__subs" id="pm-acc" hidden>
         <button class="pm__sub" type="button" data-pm-go="profile">Profile</button>
-        <button class="pm__sub" type="button" data-pm-go="favourites">Favourites</button>
         <button class="pm__sub" type="button" data-pm-go="verification">Verification</button>
         <button class="pm__sub" type="button" data-pm-go="responsible">Responsible Gaming</button>
         <button class="pm__sub" type="button" data-pm-go="bonuses">Bonuses</button>
       </div>
+
+      <!-- Избранное — строкой верхнего уровня, а не внутри «My account»:
+           подпунктов у него нет, разворачивать нечего. Шеврона поэтому тоже
+           нет, а обработчик [data-pm-go] ведёт на вкладку в профиле. -->
+      <button class="pm__item" type="button" data-pm-go="favourites">
+        <img loading="lazy" decoding="async" class="pm__ico" src="a/8bef749109.svg" alt="" width="20" height="18"><span>Favourites</span>
+      </button>
 
       <button class="pm__item" type="button" aria-expanded="false" aria-controls="pm-hist-subs">
         <img loading="lazy" decoding="async" class="pm__ico" src="a/a7bd385498.svg" alt="" width="20" height="20"><span>History</span>
