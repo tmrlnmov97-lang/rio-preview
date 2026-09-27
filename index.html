@@ -3892,7 +3892,9 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
 .promo__card { display: flex; flex-direction: column; overflow: hidden; border-radius: var(--wl-r-lg);
                background: var(--wl-bg-chrome); border: 1px solid var(--wl-w-08); }
 .promo__card[hidden] { display: none; }
-.promo__art { display: block; width: 100%; height: 150px; object-fit: cover; }
+/* Картинки акций сняты: на их месте та же плоская подложка, что
+   у карточек игр и бонусов. Слот держит высоту, карточки не скачут. */
+.promo__card::before { content: ''; display: block; flex: none; height: 150px; background: #191a1c; }
 .promo__body { display: flex; flex-direction: column; justify-content: space-between; gap: var(--wl-sp-4);
                flex: 1 1 auto; padding: var(--wl-sp-4); }
 .promo__head { display: flex; flex-direction: column; gap: 6px; }
@@ -3921,12 +3923,9 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
                      box-shadow: 0 18px 34px -18px rgba(0, 0, 0, .9); }
 .promo__card:active { transform: translateY(-2px); }
 .promo__card:focus-visible { outline: 2px solid var(--wl-primary); outline-offset: 3px; }
-.promo__card:hover .promo__art { transform: scale(1.04); }
-.promo__art { transition: transform .3s cubic-bezier(.4,0,.2,1); }
 @media (prefers-reduced-motion: reduce) {
-  .promo__card, .promo__art { transition: none; }
+  .promo__card { transition: none; }
   .promo__card:hover { transform: none; }
-  .promo__card:hover .promo__art { transform: none; }
 }
 
 /* ── Страница одной акции ── */
@@ -3940,7 +3939,10 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
 .pone__crumb { display: flex; align-items: center; height: 44px; padding: 0 var(--wl-sp-5); border-radius: var(--wl-r-md);
                background: var(--wl-w-08); font-family: var(--wl-font); font-weight: var(--wl-fw-semibold);
                font-size: var(--wl-fs-md); color: var(--wl-text); }
-.pone__art { display: block; width: 100%; height: 320px; object-fit: cover; border-radius: var(--wl-r-lg); }
+/* Картинка акции снята: слот на её месте держит высоту той же плоской
+   подложкой, что у карточек игр, бонусов и акций. */
+.pone__art { display: block; width: 100%; height: 320px;
+             border-radius: var(--wl-r-lg); background: #191a1c; }
 .pone__when { margin-top: var(--wl-sp-5); font-family: var(--wl-font); font-size: var(--wl-fs-sm);
               line-height: 18px; color: var(--wl-text-dim); }
 .pone__h1 { margin: var(--wl-sp-3) 0 0; font-family: var(--wl-font-ui); font-weight: var(--wl-fw-bold);
@@ -4190,7 +4192,7 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
   .promo__chips::-webkit-scrollbar { display: none; }
   .promo__chip { flex: none; height: 34px; padding: 0 14px; font-size: var(--wl-fs-sm); }
   .promo__grid { grid-template-columns: repeat(2, 1fr); gap: var(--wl-sp-3); }
-  .promo__art { height: 110px; }
+  .promo__card::before { height: 110px; }
   .promo__body { padding: var(--wl-sp-3); gap: 10px; }
   .promo__head h2 { min-height: 40px; font-size: var(--wl-fs-md); line-height: var(--wl-lh-sm); }
   .promo__head p { display: none; }
@@ -8326,7 +8328,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         </div>
         <div class="promo__grid">
           <article class="promo__card" data-key="welcome" tabindex="0" role="button" data-cat="casino">
-            <img loading="lazy" decoding="async" class="promo__art" src="a/626b4d6d2e.webp" alt="">
             <div class="promo__body">
               <div class="promo__head">
                 <h2>Welcome Free Spins</h2>
@@ -8339,7 +8340,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
             </div>
           </article>
           <article class="promo__card" data-key="zeus" tabindex="0" role="button" data-cat="casino">
-            <img loading="lazy" decoding="async" class="promo__art" src="a/03924d6e72.webp" alt="">
             <div class="promo__body">
               <div class="promo__head">
                 <h2>Zeus Friday</h2>
@@ -8352,7 +8352,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
             </div>
           </article>
           <article class="promo__card" data-key="deposit" tabindex="0" role="button" data-cat="deposit">
-            <img loading="lazy" decoding="async" class="promo__art" src="a/025bad859f.webp" alt="">
             <div class="promo__body">
               <div class="promo__head">
                 <h2>First Deposit Bonus</h2>
@@ -8365,7 +8364,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
             </div>
           </article>
           <article class="promo__card" data-key="unlock" tabindex="0" role="button" data-cat="deposit">
-            <img loading="lazy" decoding="async" class="promo__art" src="a/0635c77f60.webp" alt="">
             <div class="promo__body">
               <div class="promo__head">
                 <h2>5% Bonus Unlock</h2>
@@ -8378,7 +8376,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
             </div>
           </article>
           <article class="promo__card" data-key="cash" tabindex="0" role="button" data-cat="cashback">
-            <img loading="lazy" decoding="async" class="promo__art" src="a/87dce3340a.webp" alt="">
             <div class="promo__body">
               <div class="promo__head">
                 <h2>Weekly Loss&nbsp;Cashback</h2>
@@ -8391,7 +8388,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
             </div>
           </article>
           <article class="promo__card" data-key="invite" tabindex="0" role="button" data-cat="referral">
-            <img loading="lazy" decoding="async" class="promo__art" src="a/aeca538fef.webp" alt="">
             <div class="promo__body">
               <div class="promo__head">
                 <h2>Invite a Friend</h2>
@@ -8418,7 +8414,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
           </button>
           <span class="pone__crumb"></span>
         </div>
-        <img loading="lazy" decoding="async" class="pone__art" src="a/626b4d6d2e.webp" alt="">
+        <span class="pone__art" aria-hidden="true"></span>
         <span class="pone__when"></span>
         <h1 class="pone__h1"></h1>
         <div class="pone__lead"></div>
@@ -20220,7 +20216,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
           var title = card.querySelector('h2').textContent;
           pone.querySelector('.pone__crumb').textContent = title;
           pone.querySelector('.pone__h1').textContent = title;
-          pone.querySelector('.pone__art').src = card.querySelector('.promo__art').getAttribute('src');
           pone.querySelector('.pone__when').textContent = data.when;
           var lead = pone.querySelector('.pone__lead');
           lead.innerHTML = '';
