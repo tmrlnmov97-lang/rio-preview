@@ -3184,7 +3184,9 @@ body.is-authed .wallet { display: flex; }
    блоком с ним. Поэтому у .header-desktop прижим вправо и общий зазор,
    а не space-between: при нём кошелёк уезжал к логотипу. */
 @media (min-width: 1024px) {
-  .header-desktop { justify-content: flex-end; gap: var(--wl-sp-3); }
+  /* Зазор до правой группы шире внутреннего (12): кошелёк — отдельный
+     блок, а не ещё одна круглая кнопка в ряду. */
+  .header-desktop { justify-content: flex-end; gap: var(--wl-sp-5); }
   .header-actions { margin-left: 0; }
 }
 /* Сумма набиралась Work Sans 14 против Cora 14 у кнопки: при одном кегле
