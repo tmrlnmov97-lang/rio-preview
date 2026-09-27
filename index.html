@@ -2429,11 +2429,11 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 .game--flat > img.layer { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 /* Раньше разделы всплывали только на странице казино — остальные страницы
    подменялись целиком и выглядели мёртвыми рядом с ней. */
-.view .section, .view .spleague { animation: cas-card-in .34s cubic-bezier(.22,.61,.36,1) both; }
-.view .section:nth-child(2), .view .spleague:nth-child(2) { animation-delay: .04s; }
-.view .section:nth-child(3), .view .spleague:nth-child(3) { animation-delay: .09s; }
-.view .section:nth-child(4), .view .spleague:nth-child(4) { animation-delay: .14s; }
-.view .section:nth-child(n+5), .view .spleague:nth-child(n+5) { animation-delay: .19s; }
+.view .section { animation: cas-card-in .34s cubic-bezier(.22,.61,.36,1) both; }
+.view .section:nth-child(2) { animation-delay: .04s; }
+.view .section:nth-child(3) { animation-delay: .09s; }
+.view .section:nth-child(4) { animation-delay: .14s; }
+.view .section:nth-child(n+5) { animation-delay: .19s; }
 .banner[hidden] { display: none; }
 
 @keyframes cas-card-in {
@@ -2475,7 +2475,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .view .section, .view .spleague { animation: none; }
+  .view .section { animation: none; }
 }
 
 @media (max-width: 1023px) { .cas-grid { grid-template-columns: repeat(4, 1fr); } }
@@ -2982,59 +2982,6 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   .lg__foot { flex: none; padding-bottom: max(16px, env(safe-area-inset-bottom)); }
 }
 
-/* ───────────────────────────────────────────────────────────────────
-   974:8942 «Sport page» — фильтры, блок лиги с карточками 348x249,
-   свёрнутые лиги и кнопка «показать ещё».
-   ─────────────────────────────────────────────────────────────────── */
-.spchips { display: flex; gap: var(--wl-sp-4); align-items: flex-start; padding: var(--wl-sp-1) 0;
-           overflow-x: auto; scrollbar-width: none;
-           -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 56px), transparent 100%);
-           mask-image: linear-gradient(to right, #000 calc(100% - 56px), transparent 100%); }
-.spchips::-webkit-scrollbar { display: none; }
-.spchip { display: flex; align-items: center; justify-content: center; gap: var(--wl-sp-2); flex: none;
-          padding: var(--wl-sp-2) var(--wl-sp-4); border: 0; border-radius: var(--wl-r-pill); cursor: pointer;
-          background: var(--wl-w-12); color: var(--wl-text); white-space: nowrap;
-          font-family: inherit; font-weight: var(--wl-fw-semibold); font-size: var(--wl-fs-md);
-          transition: background .2s ease; }
-.spchip img { display: block; }
-.spchip:hover { background: var(--wl-w-18); }
-.spchip.is-active { background: var(--wl-bg-pick); box-shadow: inset 0 0 0 1px var(--wl-line-pick); color: var(--wl-text); }
-
-.sphead { display: flex; align-items: center; gap: 7px; }
-.sphead h2 { margin: 0; font-size: var(--wl-fs-md); line-height: 21px; color: var(--wl-text); }
-
-.spleague { display: flex; flex-direction: column; }
-.spleague__head { display: flex; align-items: center; justify-content: space-between; padding: var(--wl-sp-5) var(--wl-sp-4); }
-.spleague__title { display: flex; align-items: center; gap: 7px; font-size: var(--wl-fs-md); color: var(--wl-text); }
-.spleague__title i { width: 14px; height: 14px; flex: none;
-  background: currentColor; opacity: .6;
-  -webkit-mask: url(a/e20dc84eee.svg) no-repeat center / contain;
-  mask: url(a/e20dc84eee.svg) no-repeat center / contain; }
-.spleague__toggle { display: flex; align-items: center; justify-content: center; flex: none;
-                    width: 40px; height: 40px; border: 0; border-radius: var(--wl-r-md);
-                    background: none; cursor: pointer; }
-.spleague__toggle:hover { background: var(--wl-w-08); }
-.spleague__toggle b { position: relative; width: 16px; height: 16px; display: block; }
-.spleague__toggle b::before, .spleague__toggle b::after {
-  content: ''; position: absolute; background: var(--wl-text-muted); border-radius: 2px;
-  transition: transform .2s ease, opacity .2s ease; }
-.spleague__toggle b::before { left: 0; right: 0; top: 7px; height: 2px; }
-.spleague__toggle b::after  { top: 0; bottom: 0; left: 7px; width: 2px; }
-.spleague:not(.is-collapsed) .spleague__toggle b::after { transform: scaleY(0); opacity: 0; }
-
-.spgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--wl-sp-3); padding: 0 var(--wl-sp-4) var(--wl-sp-5); }
-.spmatch { border-radius: var(--wl-r-md); overflow: hidden; line-height: 0; }
-.spmatch img { display: block; width: 100%; height: auto; }
-@media (hover: hover) { .spmatch { transition: transform .3s cubic-bezier(.4,0,.2,1); }
-                        .spmatch:hover { transform: translateY(-4px); } }
-@media (max-width: 1023px) { .spgrid { grid-template-columns: 1fr; } }
-
-.spmore { display: flex; align-items: center; justify-content: center; gap: var(--wl-sp-2);
-          height: 48px; border: 0; border-radius: var(--wl-r-md); cursor: pointer;
-          background: var(--wl-w-08); color: var(--wl-text);
-          font-family: inherit; font-weight: var(--wl-fw-semibold); font-size: var(--wl-fs-md); }
-.spmore:hover { background: var(--wl-w-12); }
-.spmore img { display: block; }
 
 /* ───────────────────────────────────────────────────────────────────
    891:20194 — мобильная главная. Баннер 370x210 (903:41876), копи-блок
@@ -6703,6 +6650,13 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
 .bncard  { aspect-ratio: 268 / 308; height: auto; }
 .bnact   { aspect-ratio: 1080 / 314; height: auto; }
 
+/* Пункты снятого раздела: остаются в списке, но не нажимаются.
+   Гасим фильтром, а не opacity: раскрытие подменю анимирует opacity
+   с заливкой both, и анимированное свойство перебило бы обычное. */
+.sub-item.is-off, .br__sub.is-off, .bnav__item.is-off {
+  filter: grayscale(1) opacity(.45); cursor: default; pointer-events: none;
+}
+
 </style>
 </head>
 <body>
@@ -6827,10 +6781,14 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
             <span class="side-item__label">Sport</span>
             <img class="chev" src="a/346630b640.svg" alt="">
           </div>
+          <!-- Страницы спорта нет: раздел оставлен заглушкой. Пункты на месте,
+               чтобы структура читалась, но не нажимаются. Лобби — первым,
+               как в разделах казино и живого казино. -->
           <div class="subcat is-collapsed" data-node-id="1029:29221">
             <div class="subcat__list">
-              <a class="sub-item" href="#"><img src="a/0eec65d4be.svg" alt=""><span>Upcoming</span></a>
-              <a class="sub-item" href="#"><img src="a/eed79b599e.svg" alt=""><span>Outrights</span></a>
+              <span class="sub-item is-off" aria-disabled="true"><img src="a/60e8a2f99e.svg" alt=""><span>Lobby</span></span>
+              <span class="sub-item is-off" aria-disabled="true"><img src="a/0eec65d4be.svg" alt=""><span>Upcoming</span></span>
+              <span class="sub-item is-off" aria-disabled="true"><img src="a/eed79b599e.svg" alt=""><span>Outrights</span></span>
             </div>
           </div>
 
@@ -13667,56 +13625,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         </section>
       </div>
 
-      <!-- 974:8942 «Sport page Login» — фильтры, блок лиги, свёрнутые лиги -->
-      <div class="view view--sport" id="view-sport" hidden data-node-id="974:8942">
-        <nav class="spchips" data-node-id="974:12594">
-          <button class="spchip is-active" type="button"><img loading="lazy" decoding="async" src="a/017f06528e.svg" alt="" width="20" height="20"><span>Soccer</span></button>
-          <button class="spchip" type="button"><img loading="lazy" decoding="async" src="a/574dd2ffa6.svg" alt="" width="20" height="20"><span>Tennis</span></button>
-          <button class="spchip" type="button"><img loading="lazy" decoding="async" src="a/96e279ac2f.svg" alt="" width="20" height="20"><span>Golf</span></button>
-          <button class="spchip" type="button"><img loading="lazy" decoding="async" src="a/cf20505490.svg" alt="" width="20" height="20"><span>Basketball</span></button>
-          <button class="spchip" type="button"><img loading="lazy" decoding="async" src="a/f7b2346b2b.svg" alt="" width="20" height="20"><span>Badminton</span></button>
-          <button class="spchip" type="button"><img loading="lazy" decoding="async" src="a/88458b0b61.svg" alt="" width="20" height="20"><span>Baseball</span></button>
-          <button class="spchip" type="button"><img loading="lazy" decoding="async" src="a/1a6811a353.svg" alt="" width="20" height="20"><span>Cricket</span></button>
-          <button class="spchip" type="button"><img loading="lazy" decoding="async" src="a/f27b04b850.svg" alt="" width="20" height="20"><span>American Football</span></button>
-          <button class="spchip" type="button"><img loading="lazy" decoding="async" src="a/279c6823fe.svg" alt="" width="20" height="20"><span>Boxing</span></button>
-          <button class="spchip" type="button"><img loading="lazy" decoding="async" src="a/8ad0602eee.svg" alt="" width="20" height="20"><span>Handball</span></button>
-          <button class="spchip" type="button"><img loading="lazy" decoding="async" src="a/59bedcd2f3.svg" alt="" width="20" height="20"><span>Hockey</span></button>
-          <button class="spchip" type="button"><img loading="lazy" decoding="async" src="a/b08b40ca96.svg" alt="" width="20" height="20"><span>MMA</span></button>
-          <button class="spchip" type="button"><img loading="lazy" decoding="async" src="a/970b9a4ffc.svg" alt="" width="20" height="20"><span>Volleyball</span></button>
-          <button class="spchip" type="button"><img loading="lazy" decoding="async" src="a/8326aa2eda.svg" alt="" width="20" height="20"><span>Table Tennis</span></button>
-        </nav>
-        <div class="sphead" data-node-id="974:11912">
-          <img loading="lazy" decoding="async" src="a/683a54f182.svg" alt="" width="24" height="24"><h2>Popular Games</h2>
-        </div>
-        <section class="spleague" data-node-id="985:8187">
-          <div class="spleague__head" data-node-id="985:11278">
-            <div class="spleague__title"><span>England</span><i></i><span>Premier League</span></div>
-            <button class="spleague__toggle" type="button" aria-label="Collapse"><b></b></button>
-          </div>
-          <div class="spgrid" data-node-id="985:9132">
-            <article class="spmatch"><img loading="lazy" decoding="async" src="a/30c991a6c8.webp" alt=""></article>
-            <article class="spmatch"><img loading="lazy" decoding="async" src="a/6b38bada0d.webp" alt=""></article>
-            <article class="spmatch"><img loading="lazy" decoding="async" src="a/1e78fde376.webp" alt=""></article>
-            <article class="spmatch"><img loading="lazy" decoding="async" src="a/517e7f1574.webp" alt=""></article>
-            <article class="spmatch"><img loading="lazy" decoding="async" src="a/87f29cfe48.webp" alt=""></article>
-            <article class="spmatch"><img loading="lazy" decoding="async" src="a/5f3fdb413f.webp" alt=""></article>
-            <article class="spmatch"><img loading="lazy" decoding="async" src="a/663ab93e9b.webp" alt=""></article>
-          </div>
-        </section>
-        <section class="spleague is-collapsed" data-node-id="974:11940">
-          <div class="spleague__head">
-            <div class="spleague__title"><span>Spain</span><i></i><span>La Liga</span></div>
-            <button class="spleague__toggle" type="button" aria-label="Expand"><b></b></button>
-          </div>
-        </section>
-        <section class="spleague is-collapsed" data-node-id="974:11947">
-          <div class="spleague__head">
-            <div class="spleague__title"><span>Italy</span><i></i><span>Serie A</span></div>
-            <button class="spleague__toggle" type="button" aria-label="Expand"><b></b></button>
-          </div>
-        </section>
-        <button class="spmore" type="button" data-node-id="974:11954">Show more<img loading="lazy" decoding="async" src="a/e20dc84eee.svg" alt="" width="18" height="18"></button>
-      </div>
 
     </div><!-- /content-body -->
 
@@ -13790,8 +13698,9 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         <img loading="lazy" decoding="async" class="br__chev" src="a/346630b640.svg" alt="" width="12" height="12">
       </button>
       <div class="br__subs" id="br-sport" hidden>
-          <button class="br__sub" type="button"><img loading="lazy" decoding="async" src="a/0eec65d4be.svg" alt="" width="20" height="20"><span>Upcoming</span></button>
-          <button class="br__sub" type="button"><img loading="lazy" decoding="async" src="a/eed79b599e.svg" alt="" width="20" height="20"><span>Outrights</span></button>
+          <button class="br__sub is-off" type="button" disabled><img loading="lazy" decoding="async" src="a/60e8a2f99e.svg" alt="" width="20" height="20"><span>Lobby</span></button>
+          <button class="br__sub is-off" type="button" disabled><img loading="lazy" decoding="async" src="a/0eec65d4be.svg" alt="" width="20" height="20"><span>Upcoming</span></button>
+          <button class="br__sub is-off" type="button" disabled><img loading="lazy" decoding="async" src="a/eed79b599e.svg" alt="" width="20" height="20"><span>Outrights</span></button>
       </div>
       <div class="br__line"></div>
       <button class="br__row" type="button">
@@ -18352,12 +18261,14 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         bnavCloseSheet();
         showView('casino');
       });
+      /* Вкладка «Sport»: страницы нет, поэтому она только гасит нажатие
+         и помечена неактивной — вести ей некуда. */
       var bnavSport = bnavItem(/sport/i);
-      if (bnavSport) bnavSport.addEventListener('click', function (e) {
-        e.preventDefault();
-        bnavCloseSheet();
-        showView('sport');
-      });
+      if (bnavSport) {
+        bnavSport.classList.add('is-off');
+        bnavSport.setAttribute('aria-disabled', 'true');
+        bnavSport.addEventListener('click', function (e) { e.preventDefault(); });
+      }
       var bnavHome = document.querySelector('.bnav__home');
       if (bnavHome) bnavHome.addEventListener('click', function (e) {
         e.preventDefault();
@@ -18600,7 +18511,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
     var views = { home: document.getElementById('view-home'),
                     casino: document.getElementById('view-casino'),
                     category: document.getElementById('view-category'),
-                    sport: document.getElementById('view-sport'),
                     profile: document.getElementById('view-profile'),
                     history: document.getElementById('view-history'),
                     transactions: document.getElementById('view-transactions'),
@@ -18626,8 +18536,9 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
        Crash Games переключают между этими двумя страницами. */
     /* Upcoming и Outrights — разделы спорта, а не казино: ведут на страницу
        спорта, а не на сетку игровых карточек. */
-    var chipView = { 'lobby': 'casino', 'upcoming': 'sport', 'outrights': 'sport',
-                     'sport bets': 'sport' };
+    /* Страницы спорта нет: раздел оставлен заглушкой, его пункты не ведут
+       никуда и помечены is-off. */
+    var chipView = { 'lobby': 'casino' };
     /* Категории. Ключ — подпись кнопки, значение — значок в шапке раздела.
        Кнопка ведёт на общую страницу категории: сетка у всех одна, меняются
        заголовок и значок. Раньше из тринадцати чипов работали два, остальные
@@ -18686,6 +18597,9 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
        игрока, и гостю страница показала бы чужой прогресс. */
     var NEEDS_AUTH = { profile: 1, history: 1, transactions: 1, vip: 1 };
     var showView = function (key) {
+      /* Вида может не быть — раздел спорта снят. Раньше такой вызов прятал
+         все виды и оставлял пустое полотно. */
+      if (!views[key]) return;
       if (NEEDS_AUTH[key] && !document.body.classList.contains('is-authed')) {
         var enter = document.querySelector('.header-actions .btn--ghost');
         if (enter) enter.click();
@@ -18724,29 +18638,14 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
     };
     tabs.forEach(function (t) {
       var label = (t.textContent || '').trim().toLowerCase();
-      var target = label === 'casino' ? 'casino' : (label === 'sports' ? 'sport' : null);
+      var target = label === 'casino' ? 'casino' : null;
       if (!target) return;
       t.addEventListener('click', function (e) { e.preventDefault(); showView(target); });
-    });
-    /* Фильтры видов спорта: активный — один */
-    document.querySelectorAll('.spchip').forEach(function (c) {
-      c.addEventListener('click', function () {
-        document.querySelectorAll('.spchip').forEach(function (x) { x.classList.remove('is-active'); });
-        c.classList.add('is-active');
-      });
-    });
-    /* Свернуть и развернуть лигу */
-    document.querySelectorAll('.spleague__toggle').forEach(function (b) {
-      b.addEventListener('click', function () {
-        var sec = b.closest('.spleague');
-        sec.classList.toggle('is-collapsed');
-        b.setAttribute('aria-label', sec.classList.contains('is-collapsed') ? 'Развернуть' : 'Свернуть');
-      });
     });
     /* Вкладок CASINO/SPORTS в шапке больше нет, поэтому боковое меню —
        единственный вход в разделы: заголовок и раскрывает список, и
        открывает саму страницу. */
-    var sideView = { 'casino': 'casino', 'sport': 'sport', 'fast games': 'category' };
+    var sideView = { 'casino': 'casino', 'fast games': 'category' };
     document.querySelectorAll('.side-item').forEach(function (it) {
       var label = it.querySelector('.side-item__label');
       var target = sideView[((label && label.textContent) || '').trim().toLowerCase()];
@@ -18777,6 +18676,9 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
     });
     /* Пункты бокового меню открывают те же страницы, что и чипы */
     document.querySelectorAll('.sub-item').forEach(function (it) {
+      /* Пункты снятого раздела не ведут никуда. pointer-events их уже
+         не пускает, но обработчик вешать всё равно не на что. */
+      if (it.classList.contains('is-off')) return;
       var label = (it.textContent || '').trim();
       var key = label.toLowerCase();
       if (CATS[key] && !catLabel[key]) catLabel[key] = label;
@@ -18810,7 +18712,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         if (catOpen(key)) return;
         if (chipView[key]) { showView(chipView[key]); return; }
         /* Незнакомый раздел ведём туда же, куда вёл прежний обработчик */
-        showView(/sport|match/i.test(label) ? 'sport' : 'casino');
+        showView('casino');
       });
     });
     var casCard = document.querySelector('.hcard--cas');
@@ -20063,19 +19965,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
 
     /* ═══ Кнопки, которые раньше ничего не делали ═══ */
     (function () {
-      /* ── «Show more» в спорте ──
-         Свёрнутые лиги в разметке пустые, догружать нечего: кнопка
-         разворачивает их все и уходит, потому что дальше показывать нечего. */
-      var spMore = document.querySelector('.spmore');
-      if (spMore) spMore.addEventListener('click', function () {
-        var rest = document.querySelectorAll('.spleague.is-collapsed');
-        rest.forEach(function (sec) {
-          sec.classList.remove('is-collapsed');
-          var t = sec.querySelector('.spleague__toggle');
-          if (t) t.setAttribute('aria-label', 'Collapse');
-        });
-        spMore.hidden = true;
-      });
 
       /* ── Responsible Gambling: Set ставит лимит, крестик снимает ── */
       var rgPanel = document.getElementById('prof-responsible');
