@@ -3620,10 +3620,10 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
 /* Закрытая ступень цвет сохраняет: она не потеряна, а ждёт своей очереди,
    и гасить её значило бы прятать предложение. Гасим только то, чего уже нет. */
 .bnwp__c[data-st="MISSED"], .bnwp__c[data-st="USED"] { filter: saturate(.4) brightness(.7); }
+/* Свечение на наведении снято — остаётся только подъём на 2px. */
 .bnwp__c[data-st="AVAILABLE"]:hover,
 .bnwp__c[data-st="ACTIVE"]:hover,
-.bnwp__c[data-st="READY"]:hover { transform: translateY(-2px);
-                                  box-shadow: 0 14px 30px -14px var(--wl-a-55); }
+.bnwp__c[data-st="READY"]:hover { transform: translateY(-2px); }
 /* Отыгранная ступень ждёт одного действия — обмена, и подсвечена под него */
 .bnwp__c[data-st="READY"] { box-shadow: inset 0 0 0 2px var(--wl-w-45); }
 /* «i» — только там, где условия ещё можно применить к себе */
