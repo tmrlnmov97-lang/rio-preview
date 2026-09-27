@@ -5185,6 +5185,15 @@ body.dp-open .wallet__deposit { box-shadow: 0 0 0 2px var(--wl-money-glow),
    блока вместо одной колонки. Нижний отступ — место под липкую полосу
    сохранения, иначе она накрывала последнее поле с ошибкой. */
 .prof__panel { display: flex; flex-direction: column; gap: var(--wl-sp-6); padding-bottom: var(--wl-sp-2); }
+/* Шапка раздела внутри вкладки профиля — как у разделов витрины */
+.prof__sec-head h2 { margin: 0; font-family: var(--wl-font); font-weight: var(--wl-fw-bold);
+                     font-size: var(--wl-fs-xl); line-height: 26px; color: var(--wl-text); }
+.prof__sec-head p { margin: 6px 0 0; font-family: var(--wl-font); font-size: var(--wl-fs-md);
+                    line-height: var(--wl-lh-md); color: var(--wl-text-dim); }
+.prof__fav-empty { margin: 0; padding: var(--wl-sp-8) 0; text-align: center;
+                   font-family: var(--wl-font); font-size: var(--wl-fs-md);
+                   line-height: var(--wl-lh-md); color: var(--wl-text-dim); }
+.prof__fav-empty[hidden], .prof__panel .category-grid[hidden] { display: none; }
 /* display перебивает атрибут hidden — гасим адресно, иначе пустые
    панели Verification и Security видны под карточками */
 .prof__panel[hidden] { display: none; }
@@ -7390,6 +7399,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         <h1 class="prof__h1">Profile</h1>
         <div class="prof__tabs" role="tablist">
           <button class="prof__tab is-active" type="button" role="tab" aria-selected="true" data-tab="general">General</button>
+          <button class="prof__tab" type="button" role="tab" aria-selected="false" data-tab="favourites">Favourites</button>
           <button class="prof__tab" type="button" role="tab" aria-selected="false" data-tab="verification">Verification</button>
           <button class="prof__tab" type="button" role="tab" aria-selected="false" data-tab="responsible">Responsible Gambling</button>
         </div>
@@ -7528,6 +7538,17 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         <!-- Верификация идёт тремя шагами: почта, тип документа, загрузка.
              Одним экраном она была короче, но требования к снимку и слоты
              загрузки зависят от типа документа, а его надо выбрать раньше. -->
+        <!-- Избранное. Сердечко на странице игры уже складывало названия
+             в хранилище, но посмотреть их было негде — здесь список. -->
+        <div class="prof__panel" id="prof-favourites" role="tabpanel" hidden>
+          <div class="prof__sec-head">
+            <h2>Favourites</h2>
+            <p>Games you marked with the&nbsp;heart on&nbsp;the game screen.</p>
+          </div>
+          <div class="category-grid" data-fav-grid hidden></div>
+          <p class="prof__fav-empty" data-fav-empty>Nothing here yet. Open a&nbsp;game and&nbsp;tap the&nbsp;heart to&nbsp;add it.</p>
+        </div>
+
         <div class="prof__panel" id="prof-verification" role="tabpanel" hidden>
           <div class="vf" data-vf>
             <div class="vf__intro">
@@ -14068,6 +14089,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
       </button>
       <div class="pm__subs" id="pm-acc" hidden>
         <button class="pm__sub" type="button" data-pm-go="profile">Profile</button>
+        <button class="pm__sub" type="button" data-pm-go="favourites">Favourites</button>
         <button class="pm__sub" type="button" data-pm-go="verification">Verification</button>
         <button class="pm__sub" type="button" data-pm-go="responsible">Responsible Gaming</button>
         <button class="pm__sub" type="button" data-pm-go="bonuses">Bonuses</button>
@@ -17423,7 +17445,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
           if (seg && !seg.classList.contains('is-active')) seg.click();
           return;
         }
-        if (go === 'verification' || go === 'responsible') {
+        if (go === 'verification' || go === 'responsible' || go === 'favourites') {
           showView('profile');
           var tab = document.querySelector('.prof__tab[data-tab="' + go + '"]');
           if (tab) tab.click();
@@ -17680,6 +17702,52 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
           profPanels.forEach(function (p) { p.hidden = p.id !== 'prof-' + t.dataset.tab; });
         });
       });
+
+      /* ── Избранное ──
+         Сердечко на странице игры складывает названия в хранилище. Раздел
+         показывает эти игры настоящими карточками из лобби: находим по
+         названию и клонируем — вид и размеры те же, ничего не дублируем.
+         Нажатие переадресуем оригиналу: обработчик навешен на элемент при
+         загрузке, а не делегирован, и на копии его бы не оказалось. */
+      var favPanel = document.getElementById('prof-favourites');
+      if (favPanel) {
+        var favGrid = favPanel.querySelector('[data-fav-grid]');
+        var favEmptyMsg = favPanel.querySelector('[data-fav-empty]');
+        var favGame = document.getElementById('view-game');
+        var favNames = function () {
+          try { return JSON.parse(safeStore.get('ww-fav') || '[]') || []; }
+          catch (e) { return []; }
+        };
+        var favCardName = function (c) {
+          var t = c.querySelector('.game__name, .lc__name');
+          return t ? (t.textContent || '').replace(/\s+/g, ' ').trim() : '';
+        };
+        var favPaint = function () {
+          favGrid.innerHTML = '';
+          favNames().forEach(function (n) {
+            var src = null;
+            document.querySelectorAll('.game, .lc').forEach(function (c) {
+              if (src || favPanel.contains(c) || (favGame && favGame.contains(c))) return;
+              if (favCardName(c) === n) src = c;
+            });
+            if (!src) return;
+            var copy = src.cloneNode(true);
+            copy.removeAttribute('id');
+            copy.addEventListener('click', function () { src.click(); });
+            favGrid.appendChild(copy);
+          });
+          var has = favGrid.children.length > 0;
+          favGrid.hidden = !has;
+          favEmptyMsg.hidden = has;
+        };
+        favPaint();
+        /* Список мог измениться, пока игрок был в игре */
+        document.addEventListener('ww:view', function (e) {
+          if (e.detail === 'profile') favPaint();
+        });
+        var favTabBtn = profView.querySelector('.prof__tab[data-tab="favourites"]');
+        if (favTabBtn) favTabBtn.addEventListener('click', favPaint);
+      }
 
       /* Верификация: выбранный файл показываем в карточке, значок переходит
          в «In review». Replace возвращает зону загрузки. */
