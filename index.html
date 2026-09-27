@@ -4876,14 +4876,9 @@ body.dp-open .wallet__deposit { box-shadow: 0 0 0 2px var(--wl-money-glow),
                  margin-bottom: var(--wl-sp-1); border-radius: var(--wl-r-md); }
 /* Арт бонуса. Фон у картинки прозрачный, поэтому ни подложки, ни рамки
    клетке не нужно — сундук стоит прямо на карточке. */
-.dp__bonus-pic--art { width: 80px; height: 66px; }
-.dp__bonus-pic--art img[hidden] { display: none; }
-.dp__bonus-pic--art img { display: block; width: 100%; height: 100%;
-                          object-fit: contain; transition: opacity .16s ease; }
 /* Когда бонус не выбран, арт приглушаем: иначе отказ рядом с ярким сундуком
    выглядит как ошибка, а не как равный вариант. */
-.dp__bonus[data-bonus="declined"] .dp__bonus-pic--art img { opacity: .45; }
-/* Знак запрета — кружок с косой чертой, рисуем сами: файла нет, а форма
+.dp__bonus[data-bonus="declined"] /* Знак запрета — кружок с косой чертой, рисуем сами: файла нет, а форма
    простая и одинаково читается на любой ширине. */
 .dp__bonus-pic--no { color: var(--wl-w-75); }
 .dp__bonus-pic--no::before, .dp__bonus-pic--no::after {
@@ -4915,9 +4910,7 @@ body.dp-open .wallet__deposit { box-shadow: 0 0 0 2px var(--wl-money-glow),
 .dp__bonus[data-pick=""] .dp__bonus-offer { flex-direction: row; justify-content: flex-start;
                                             gap: var(--wl-sp-3); min-height: 0; padding: var(--wl-sp-3) 14px;
                                             text-align: left; flex-wrap: wrap; }
-.dp__bonus[data-pick=""] .dp__bonus-pic--art { width: 44px; height: 44px; flex: none; }
-.dp__bonus[data-pick=""] .dp__bonus-pic--art img { width: 44px; height: 44px; }
-.dp__bonus[data-pick=""] .dp__bonus-name { flex: none; }
+.dp__bonus[data-pick=""] .dp__bonus[data-pick=""] .dp__bonus-name { flex: none; }
 .dp__bonus[data-pick=""] .dp__bonus-sub { flex: 1 1 auto; }
 .dp__bonus-in:focus-visible ~ .dp__bonus-name { outline: 2px solid var(--wl-focus);
                                                 outline-offset: 4px; border-radius: var(--wl-r-xs); }
@@ -4929,7 +4922,6 @@ body.dp-open .wallet__deposit { box-shadow: 0 0 0 2px var(--wl-money-glow),
 @media (max-width: 767px) {
   .dp__bonus-offer, .dp__bonus-none { min-height: 62px; padding: 10px var(--wl-sp-2); }
   .dp__bonus-pic { width: 40px; height: 40px; margin-bottom: 2px; }
-  .dp__bonus-pic--art { width: 64px; height: 54px; }
   .dp__bonus-pic--no::before { width: 26px; height: 26px; margin: -13px 0 0 -13px; }
   .dp__bonus-pic--no::after { height: 26px; margin: -13px 0 0 -1.5px; }
   .dp__bonus-name { font-size: var(--wl-fs-sm); line-height: 17px; }
@@ -8090,7 +8082,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
               <h2 class="bnsec__h" data-wp-head></h2>
               <div class="bnwp" data-wp>
               <article class="bnwp__c" data-step="1">
-                <img loading="lazy" decoding="async" class="bnwp__art" src="a/732e3d081a.webp" alt="" width="100" height="100">
                 <b class="bnwp__pct"></b>
                 <span class="bnwp__cap"></span>
                 <span class="bnwp__time" role="timer" aria-live="off"></span>
@@ -8100,7 +8091,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
                 <button class="bnwp__i" type="button" data-wp-info="1" aria-label="Bonus details"></button>
               </article>
               <article class="bnwp__c" data-step="2">
-                <img loading="lazy" decoding="async" class="bnwp__art" src="a/a5b1a959aa.webp" alt="" width="100" height="100">
                 <b class="bnwp__pct"></b>
                 <span class="bnwp__cap"></span>
                 <span class="bnwp__time" role="timer" aria-live="off"></span>
@@ -8110,7 +8100,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
                 <button class="bnwp__i" type="button" data-wp-info="2" aria-label="Bonus details"></button>
               </article>
               <article class="bnwp__c" data-step="3">
-                <img loading="lazy" decoding="async" class="bnwp__art" src="a/ff848de004.webp" alt="" width="100" height="100">
                 <b class="bnwp__pct"></b>
                 <span class="bnwp__cap"></span>
                 <span class="bnwp__time" role="timer" aria-live="off"></span>
@@ -14386,17 +14375,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
                   <input class="dp__bonus-in" type="radio" name="dp-bonus" value="take" checked>
                   <!-- Арт лежит картинкой, а не фоном в стилях: сборка меряет
                        именно теги img и пережимает их под показанный размер. -->
-                  <!-- Коробка своей ступени, те же три, что на странице бонусов.
-                       Сундук отсюда убран: в него запечён «+100% BONUS», и на
-                       ступенях 120 и 130 он спорил с подписью карточки. Все три
-                       лежат в разметке и переключаются видимостью — сборка
-                       переименовывает файлы, и подстановка пути скриптом дала
-                       бы битую картинку. -->
-                  <span class="dp__bonus-pic dp__bonus-pic--art" aria-hidden="true">
-                    <img loading="lazy" decoding="async" data-dp-gift="1" src="a/732e3d081a.webp" alt="" width="66" height="66">
-                    <img loading="lazy" decoding="async" data-dp-gift="2" src="a/a5b1a959aa.webp" alt="" width="66" height="66" hidden>
-                    <img loading="lazy" decoding="async" data-dp-gift="3" src="a/ff848de004.webp" alt="" width="66" height="66" hidden>
-                  </span>
                   <b class="dp__bonus-name dp__bonus-pct">+100%</b>
                   <span class="dp__bonus-sub dp__bonus-cap">up to 150,000.00 ARS</span>
                 </label>
@@ -14452,17 +14430,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
                 <input class="dp__bonus-in" type="radio" name="dp-bonus-crypto" value="take" checked>
                 <!-- Арт лежит картинкой, а не фоном в стилях: сборка меряет
                      именно теги img и пережимает их под показанный размер. -->
-                <!-- Коробка своей ступени, те же три, что на странице бонусов.
-                     Сундук отсюда убран: в него запечён «+100% BONUS», и на
-                     ступенях 120 и 130 он спорил с подписью карточки. Все три
-                     лежат в разметке и переключаются видимостью — сборка
-                     переименовывает файлы, и подстановка пути скриптом дала
-                     бы битую картинку. -->
-                <span class="dp__bonus-pic dp__bonus-pic--art" aria-hidden="true">
-                  <img loading="lazy" decoding="async" data-dp-gift="1" src="a/732e3d081a.webp" alt="" width="66" height="66">
-                  <img loading="lazy" decoding="async" data-dp-gift="2" src="a/a5b1a959aa.webp" alt="" width="66" height="66" hidden>
-                  <img loading="lazy" decoding="async" data-dp-gift="3" src="a/ff848de004.webp" alt="" width="66" height="66" hidden>
-                </span>
                 <b class="dp__bonus-name dp__bonus-pct">+100%</b>
                 <span class="dp__bonus-sub dp__bonus-cap">up to 150,000.00 ARS</span>
               </label>
