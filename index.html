@@ -684,7 +684,7 @@ body.nav-rail .sidebar__rule { margin: var(--wl-sp-2) var(--wl-sp-2) var(--wl-sp
 .side-item--active .chev { transform: rotate(180deg); }
 /* У спорта шеврон смотрит вправо, а не вниз — так в варфрейме. Берём тот же
    файл, что у соседей, и разворачиваем: chevron-right.svg нарисован тёмным
-   (#42535E, он для строки языка) и рядом выглядел бы блёклым.
+   (#515151, он для строки языка) и рядом выглядел бы блёклым.
    На раскрытии стрелка возвращается вниз, иначе указывала бы влево. */
 .side-item--chev-right .chev { transform: rotate(-90deg); }
 .side-item--chev-right.side-item--active .chev { transform: rotate(0deg); }
@@ -911,7 +911,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   /* Было 28 под узкое начертание Instrument Sans. У Inter оси ширины нет,
      на 28 обрезались все 28 названий на экране, на 22 — восемь. */
   font-size: var(--wl-fs-xl); line-height: var(--wl-lh-md); text-align: center; text-transform: uppercase; width: 100%;
-  text-shadow: 0 0 4px #00535c, 0 0 20px #000;
+  text-shadow: 0 0 4px #4b4b4b, 0 0 20px #000;
 }
 .game__provider {
   margin: 0; font-weight: var(--wl-fw-bold); font-size: var(--wl-fs-xs); line-height: normal;
@@ -1069,7 +1069,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
         width: 40px; height: 40px; flex: none;
         background: var(--wl-bg-raised); border: 1px solid var(--wl-w-08);
         border-radius: var(--wl-r-md); transition: background-color .15s ease; }
-.fsoc:hover { background: #2a2038; }
+.fsoc:hover { background: var(--wl-gray-3); }
 .fsoc img { width: 20px; height: 20px; object-fit: contain; display: block; }
 .fbot__age { display: flex; align-items: center; justify-content: center; flex: none;
              width: 44px; height: 44px; border-radius: var(--wl-r-round);
@@ -1100,7 +1100,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
    ═══════════════════════════════════════════════════════════════════ */
 .lang { position: fixed; inset: 0; z-index: 69; }
 .lang[hidden] { display: none; }
-.lang__scrim { position: absolute; inset: 0; background: rgba(4, 10, 26, .55); }
+.lang__scrim { position: absolute; inset: 0; background: rgba(10, 10, 10, .55); }
 .lang__pop { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
              box-sizing: border-box; width: 320px; max-width: calc(100vw - 32px);
              padding: var(--wl-sp-2); border-radius: var(--wl-r-lg); background: var(--wl-bg-chrome);
@@ -1435,7 +1435,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   --tile-r: 12px;
   border: 2px solid #494e00; border-radius: var(--tile-r); overflow: hidden;
   clip-path: inset(0 round var(--tile-r));
-  background-image: linear-gradient(to bottom, #001f28, #003e52);
+  background-image: linear-gradient(to bottom, var(--wl-gray-2), var(--wl-gray-5));
 }
 .lc--violet { background: #be9cff; background-image: none; border-color: #000; }
 .lc--black  { background: var(--wl-bg-sunken); background-image: none; }
@@ -1548,8 +1548,8 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 .slider-btn--off { pointer-events: none; }
 
 /* --- Кнопки соцвхода --- */
-.social:hover { background: rgba(38, 49, 85, .55); border-color: var(--wl-line-hover); }
-.social:active { background: rgba(38, 49, 85, .75); transform: translateY(1px); }
+.social:hover { background: rgba(51, 51, 51, .55); border-color: var(--wl-line-hover); }
+.social:active { background: rgba(51, 51, 51, .75); transform: translateY(1px); }
 
 /* --- Пункты сайдбара ---
    Свой переход: общий .12s для строки меню читается как щелчок,
@@ -1616,6 +1616,9 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 
 /* --- Фокус с клавиатуры. В макете не задан, но без него интерфейс
        недоступен с клавиатуры — добавлен осознанно. --- */
+/* Запасной цвет обводки: где нашего кольца нет, браузер рисует свою синюю —
+   так она появлялась на крестике кассы, когда он получает фокус. */
+:focus-visible { outline-color: var(--wl-focus); }
 .btn:focus-visible, .btn-search:focus-visible, .nav-toggle:focus-visible, .banner__cta:focus-visible,
 .bonus__cta:focus-visible, .chip:focus-visible, .cat-tab:focus-visible,
 .view-all:focus-visible, .slider-btn:focus-visible, .social:focus-visible,
@@ -2137,7 +2140,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   font-family: var(--wl-font-ui); font-stretch: 75%;
   font-variation-settings: 'wdth' 75; font-weight: var(--wl-fw-bold);
   font-size: var(--wl-fs-lg); line-height: 21px; text-align: center;
-  text-transform: uppercase; text-shadow: var(--text-shadow-game, 0 0 4px #00535c, 0 0 20px #000);
+  text-transform: uppercase; text-shadow: var(--text-shadow-game, 0 0 4px #4b4b4b, 0 0 20px #000);
   /* «БАСКЕТБОЛ» и «VÓLEY» одним словом шире плитки в 88px и обрезались:
      переносим по слогам, а если словарь переносов не сработал — по буквам */
   hyphens: auto; overflow-wrap: break-word;
@@ -2168,12 +2171,12 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 
 /* ═══════════════════════════════════════════════════════════════════
    Попап поиска · 932:42896 «Search» — 859x1033, радиус 24.
-   Подложка 932:42894 — #000910 на 85%. Внутри: шапка 819x40,
+   Подложка 932:42894 — #080808 на 85%. Внутри: шапка 819x40,
    панель фильтров 819x208, сетка 5x3 и постраничная навигация.
    ═══════════════════════════════════════════════════════════════════ */
 .srch { position: fixed; inset: 0; z-index: 60; display: flex; }
 .srch[hidden] { display: none; }
-.srch__backdrop { position: absolute; inset: 0; background: rgba(0, 9, 16, .85); }
+.srch__backdrop { position: absolute; inset: 0; background: rgba(8, 8, 8, .85); }
 
 /* Размер окна не зависит от числа найденного: высота задана, а меняется
    только содержимое области результатов. */
@@ -2697,9 +2700,9 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   .hero__nav:has(:focus-visible) { opacity: 1; pointer-events: auto; }
   /* В рядах у этих кнопок фон --white-10 — там под ними тёмная плита. На арте
      баннера он не читается, поэтому берём верхний стоп градиента самого
-     баннера (#031741) с прозрачностью. */
-  .hero__nav .slider-btn { background: rgba(3, 23, 65, .7); backdrop-filter: blur(6px); }
-  .hero__nav .slider-btn:hover { background: rgba(3, 23, 65, .9); }
+     баннера (var(--wl-gray-2)) с прозрачностью. */
+  .hero__nav .slider-btn { background: rgba(26, 26, 26, .7); backdrop-filter: blur(6px); }
+  .hero__nav .slider-btn:hover { background: rgba(26, 26, 26, .9); }
   /* Гасим только шеврон: общая прозрачность просвечивала арт, и кнопка
      превращалась в пятно. */
   .hero__nav .slider-btn--off { opacity: 1; }
@@ -2739,11 +2742,11 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   .hero__copy--guest .hero__text { gap: 16px; }
   .hero__copy--guest .hero__title {
     margin: 0; width: 100%; font-weight: var(--wl-fw-semibold);
-    font-size: 37px; line-height: 26px; letter-spacing: -1.85px; color: #eef8fe;
+    font-size: 37px; line-height: 26px; letter-spacing: -1.85px; color: #f6f6f6;
   }
   .hero__copy--guest .hero__sub {
     margin: 0; width: 100%; font-weight: 300;
-    font-size: 26px; line-height: 26px; letter-spacing: -.52px; color: #eef8fe;
+    font-size: 26px; line-height: 26px; letter-spacing: -.52px; color: #f6f6f6;
   }
   .hero__copy--guest .hero__row { margin-top: 50px; height: 40px; }
   /* 1753:13973 — кнопка белая с чёрной надписью, 114×40, радиус 10.
@@ -2771,9 +2774,9 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   .hero__soc {
     display: flex; align-items: center; justify-content: center;
     width: 41px; height: 40px; flex: none; box-sizing: border-box; padding: var(--wl-sp-2);
-    background: #0f2356; border: 0; border-radius: var(--wl-r-sm);
+    background: var(--wl-gray-3); border: 0; border-radius: var(--wl-r-sm);
   }
-  .hero__soc:hover { background: #163063; }
+  .hero__soc:hover { background: var(--wl-gray-4); }
   /* Каждая иконка — один файл 24x24, показываем в 20: так не разъезжаются
      слои и не срезается угол от несовпадения своего размера с коробкой. */
   .hero__soc img { display: block; width: 20px; height: 20px; }
@@ -2839,7 +2842,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 .lg { position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center;
       padding: var(--wl-sp-6) var(--wl-sp-4); box-sizing: border-box; overflow-y: auto; }
 .lg[hidden] { display: none; }
-.lg__scrim { position: absolute; inset: 0; background: rgba(0, 9, 16, .78);
+.lg__scrim { position: absolute; inset: 0; background: rgba(8, 8, 8, .78);
              -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
 .lg__wrap { position: relative; width: 540px; max-width: calc(100vw - 32px);
             animation: lg-rise .26s cubic-bezier(.22, .61, .36, 1) both; }
@@ -2873,7 +2876,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 .lg__field  { display: flex; flex-direction: column; gap: var(--wl-sp-1); }
 .lg__input {
   display: flex; align-items: center; gap: var(--wl-sp-3); padding: var(--wl-sp-4); overflow: hidden;
-  background: #262b3f; border: 1px solid var(--wl-line-field); border-radius: var(--wl-r-md);
+  background: var(--wl-gray-4); border: 1px solid var(--wl-line-field); border-radius: var(--wl-r-md);
 }
 .lg__input img { display: block; flex: none; }
 .lg__input input {
@@ -2897,9 +2900,9 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   font-family: var(--wl-font); font-weight: var(--wl-fw-bold); font-size: var(--wl-fs-md); line-height: var(--wl-lh-md); color: var(--wl-text);
 }
 .lg__soc img { display: block; }
-.lg__soc:hover { background: rgba(38, 49, 85, .55); border-color: var(--wl-line-hover); }
+.lg__soc:hover { background: rgba(51, 51, 51, .55); border-color: var(--wl-line-hover); }
 .lg__terms { margin: 0; padding: var(--wl-sp-3) var(--wl-sp-4); border: 1px solid var(--wl-line-field); border-radius: var(--wl-r-sm);
-             font-family: var(--wl-font); font-size: var(--wl-fs-xs); line-height: 18px; color: #788691; }
+             font-family: var(--wl-font); font-size: var(--wl-fs-xs); line-height: 18px; color: #848484; }
 .lg__terms a { color: #b8b8b8; font-weight: var(--wl-fw-semibold); text-decoration: underline; }
 
 .lg__foot { display: flex; flex-direction: column; gap: 10px; padding: var(--wl-sp-4); }
@@ -3127,7 +3130,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   .hero__row   { height: 40px; gap: var(--wl-sp-2); }
   .hero__cta   { height: 40px; padding: var(--wl-sp-3); border-radius: var(--wl-r-md); background: var(--wl-ok-active); }
   .hero__or    { font-weight: var(--wl-fw-medium); font-size: var(--wl-fs-xl); color: var(--wl-text-muted); }
-  .hero__soc   { width: 41px; height: 40px; background: #102762; }
+  .hero__soc   { width: 41px; height: 40px; background: #2b2b2b; }
   /* В мобильном макете соцкнопки две */
   .hero__soc:nth-child(3) { display: none; }
 
@@ -3315,7 +3318,7 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
 .vipro { position: relative; overflow: hidden; box-sizing: border-box;
          display: flex; flex-direction: column; align-items: flex-start; gap: var(--wl-sp-2);
          padding: var(--wl-sp-8); border-radius: var(--wl-r-lg);
-         background: #16254e url(a/7887c6dd70.webp) center / cover no-repeat; }
+         background: var(--wl-gray-3) url(a/7887c6dd70.webp) center / cover no-repeat; }
 /* Водяной знак — логотип в цвет фона. Лежит под содержимым, поэтому
    детям баннера задан position: relative */
 .vipro::before { content: ''; position: absolute; right: 1px; top: 0;
@@ -3371,12 +3374,12 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
    идущей от края до края. Центры совпадают: линия 2px на -22, точка 12 на -27. */
 .vlvl__i::before { content: ''; position: absolute; top: -22px; left: 50%;
                    right: calc(-50% - 16px); height: 2px; border-radius: 2px;
-                   background: #232942; }
+                   background: var(--wl-gray-3); }
 .vlvl__i:last-child::before { display: none; }
 .vlvl__i::after { content: ''; position: absolute; left: 50%; top: -27px;
                   box-sizing: border-box; width: 12px; height: 12px; margin-left: -6px;
                   border-radius: var(--wl-r-round); background: var(--bg, var(--wl-bg-page));
-                  border: 2px solid #333a5c; }
+                  border: 2px solid var(--wl-gray-5); }
 .vlvl__i.is-now::after { background: var(--wl-primary); border-color: var(--wl-primary);
                          box-shadow: 0 0 0 4px var(--wl-a-18); }
 /* Пройденное — залитой точкой без ореола: видно, что ступень позади, но
@@ -3421,7 +3424,7 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
              line-height: var(--wl-lh-md); color: var(--wl-text-dim);
              transition: background .15s ease, color .15s ease; }
 .vfaq__tab:hover { color: var(--wl-text); }
-.vfaq__tab.is-active { background: #1f2439; color: var(--wl-text); }
+.vfaq__tab.is-active { background: var(--wl-gray-3); color: var(--wl-text); }
 .vfaq__lists { display: grid; }
 .vfaq__list { display: flex; flex-direction: column; gap: var(--wl-sp-3); }
 .vfaq__list[hidden] { display: none; }
@@ -3530,7 +3533,7 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
             border: 0; border-radius: var(--wl-r-pill); background: var(--wl-bg-field); color: var(--wl-text-muted);
             font-family: var(--wl-font); font-weight: var(--wl-fw-semibold); font-size: var(--wl-fs-sm);
             line-height: var(--wl-lh-sm); transition: background .15s ease, color .15s ease; }
-.bn__chip:hover { background: #30354e; color: var(--wl-text); }
+.bn__chip:hover { background: #363636; color: var(--wl-text); }
 .bn__chip.is-active,
 .bn__chip.is-active:hover { background: var(--wl-bg-pick);
                             box-shadow: inset 0 0 0 1px var(--wl-line-pick); color: var(--wl-text); }
@@ -3706,7 +3709,7 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
 .bnfo { position: fixed; inset: 0; z-index: 90; display: grid; place-items: center;
         padding: var(--wl-sp-5); }
 .bnfo[hidden] { display: none; }
-.bnfo__scrim { position: absolute; inset: 0; background: rgba(4, 8, 22, .72); }
+.bnfo__scrim { position: absolute; inset: 0; background: rgba(8, 8, 8, .72); }
 .bnfo__card { position: relative; box-sizing: border-box; width: 100%; max-width: 440px;
               max-height: 86vh; overflow: auto; padding: 26px; border-radius: var(--wl-r-lg);
               background: var(--card, var(--wl-bg-chrome));
@@ -3765,7 +3768,7 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
 .bncard__body h2 { margin: 0; font-family: var(--wl-font); font-weight: var(--wl-fw-semibold);
                    font-size: var(--wl-fs-lg); line-height: var(--wl-lh-md); color: var(--wl-text); }
 .bn__tag { display: inline-flex; align-items: center; height: 24px; padding: 0 10px; flex: none;
-           border-radius: var(--wl-r-pill); background: #282e49; color: var(--wl-text-muted);
+           border-radius: var(--wl-r-pill); background: var(--wl-gray-4); color: var(--wl-text-muted);
            font-family: var(--wl-font); font-weight: var(--wl-fw-semibold); font-size: var(--wl-fs-xs);
            line-height: var(--wl-lh-xs); white-space: nowrap; }
 .bn__tag--live { background: var(--wl-ok-bg); color: var(--wl-ok-text); }
@@ -3774,7 +3777,7 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
 /* Подвал прижат к низу: у карточек в ряду кнопки на одной линии */
 .bncard__foot { margin-top: auto; display: flex; align-items: center; gap: 10px; padding-top: var(--wl-sp-1); }
 .bncard__foot .bn__btn { flex: 1 1 0; height: 40px; padding: 0; }
-.bncard__foot .bn__btn:not(.bn__btn--primary) { border-color: #202642; }
+.bncard__foot .bn__btn:not(.bn__btn--primary) { border-color: var(--wl-gray-3); }
 
 /* ── отыгрыш ──
    Две колонки: слева прогресс и действия, справа сводка. Одной колонкой на
@@ -4550,8 +4553,8 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
 .dp__scrim { position: fixed; inset: 0;
              background:
                radial-gradient(120% 90% at 50% 0%,
-                               var(--wl-a-10) 0%, rgba(0, 9, 16, 0) 55%),
-               rgba(4, 12, 28, .52);
+                               var(--wl-a-10) 0%, rgba(8, 8, 8, 0) 55%),
+               rgba(12, 12, 12, .52);
              -webkit-backdrop-filter: blur(6px) saturate(.9);
              backdrop-filter: blur(6px) saturate(.9); }
 /* 20 у шапки против 70 у окна — при открытом депозите поднимаем её выше
@@ -4631,7 +4634,7 @@ body.dp-open .wallet__deposit { box-shadow: 0 0 0 2px var(--wl-money-glow),
    Собран тем же акцентом; свечение осталось тенью. Заливку здесь оставляем:
    это переключатель режима из двух половин, а не фильтр, и с лаймовой кнопкой
    оплаты внизу окна он не спорит. */
-.dp__seg-btn.is-active { color: #06213a;
+.dp__seg-btn.is-active { color: var(--wl-gray-2);
   background: linear-gradient(180deg, var(--wl-primary-hover), var(--wl-primary));
   box-shadow: 0 0 18px -6px var(--wl-a-55); }
 /* 1180:32130 — Crypto и Fiat по центру, под ними линия на всю ширину */
@@ -4729,7 +4732,7 @@ body.dp-open .wallet__deposit { box-shadow: 0 0 0 2px var(--wl-money-glow),
   box-sizing: border-box; width: 100%;
   max-height: 240px; overflow-y: auto; overscroll-behavior: contain;
   /* Цвет тот же, что у самого поля (var(--wl-bg-field)): список — его продолжение, и на
-     фоне окна var(--wl-bg-chrome) он читается. Прежний #141a35 почти совпадал с окном и
+     фоне окна var(--wl-bg-chrome) он читается. Прежний var(--wl-gray-2) почти совпадал с окном и
      панель сливалась в одно тёмное пятно. */
   background: var(--wl-bg-field); border: 1px solid var(--wl-w-18); border-radius: var(--wl-r-md);
   /* именно overflow-x: сокращённое overflow: hidden стояло ниже и гасило
@@ -4856,7 +4859,7 @@ body.dp-open .wallet__deposit { box-shadow: 0 0 0 2px var(--wl-money-glow),
 .dp__save { display: flex; align-items: center; gap: var(--wl-sp-3); width: 100%; height: 32px;
             padding: 0; border: 0; background: none; cursor: pointer; text-align: left; }
 .dp__toggle { position: relative; flex: none; width: 44px; height: 24px; border-radius: var(--wl-r-pill);
-              background: #3a4064; transition: background-color .16s ease; }
+              background: var(--wl-gray-6); transition: background-color .16s ease; }
 .dp__toggle i { position: absolute; left: 3px; top: 3px; width: 18px; height: 18px;
                 border-radius: var(--wl-r-round); background: var(--wl-text);
                 transition: transform .16s cubic-bezier(.22, .61, .36, 1); }
@@ -5082,7 +5085,7 @@ body.dp-open .wallet__deposit { box-shadow: 0 0 0 2px var(--wl-money-glow),
 .states { position: fixed; left: 16px; bottom: 16px; z-index: 90; box-sizing: border-box;
           display: flex; flex-direction: column; gap: 10px; width: 268px; max-height: calc(100vh - 32px);
           padding: 14px; overflow-y: auto;
-          background: #141a33; border: 1px solid var(--wl-w-12); border-radius: var(--wl-r-lg);
+          background: var(--wl-gray-2); border: 1px solid var(--wl-w-12); border-radius: var(--wl-r-lg);
           box-shadow: 0 24px 60px -20px rgba(0, 0, 0, .8);
           font-family: var(--wl-font); }
 .states[hidden] { display: none; }
@@ -5155,12 +5158,12 @@ body.dp-open .wallet__deposit { box-shadow: 0 0 0 2px var(--wl-money-glow),
 /* Кнопка в работе: подпись меняет скрипт, здесь только вид */
 .dp__submit.is-busy { opacity: .8; cursor: default; }
 
-/* 1180:32169 — сноска: кант #747889, радиус 12, паддинг 12, зазор 8 */
+/* 1180:32169 — сноска: кант #797979, радиус 12, паддинг 12, зазор 8 */
 /* Высота минимальная, а не жёсткая: на узком экране текст сноски уходит в
    три строки, и при height третья строка вылезала за рамку и обрезалась
    краем окна. Подпись меняется вместе с выбранной монетой, длина разная. */
 .dp__note { box-sizing: border-box; width: 100%; min-height: 56px; display: flex; gap: var(--wl-sp-2); padding: var(--wl-sp-3);
-            border: 1px solid #747889; border-radius: var(--wl-r-md); }
+            border: 1px solid #797979; border-radius: var(--wl-r-md); }
 .dp__note img { display: block; flex: none; }
 .dp__note p { margin: 0; flex: 1 0 0; min-width: 0;
               font-family: var(--wl-font); font-weight: var(--wl-fw-regular);
@@ -5334,7 +5337,7 @@ body.dp-open .wallet__deposit { box-shadow: 0 0 0 2px var(--wl-money-glow),
 /* Поле на карточке отличается заливкой всего на пару процентов — держим
    границу тонким кантом, иначе ряд полей сливается с плитой. */
 .prof__box { box-sizing: border-box; display: flex; align-items: center; gap: var(--wl-sp-3);
-             height: 46px; padding: var(--wl-sp-3) 14px; background: #262c47; border-radius: var(--wl-r-md);
+             height: 46px; padding: var(--wl-sp-3) 14px; background: var(--wl-gray-4); border-radius: var(--wl-r-md);
              border: 1px solid var(--wl-w-08); }
 .prof__box input { flex: 1 0 0; min-width: 0; border: 0; background: none; outline: none;
                    font-family: var(--wl-font); font-weight: var(--wl-fw-medium); font-size: var(--wl-fs-sm);
@@ -5376,7 +5379,7 @@ body.dp-open .wallet__deposit { box-shadow: 0 0 0 2px var(--wl-money-glow),
 /* Полоса сохранения — прилипает к низу окна, пока есть правки */
 .prof__save { position: sticky; bottom: 12px; z-index: 5;
               display: flex; align-items: center; gap: var(--wl-sp-3); padding: var(--wl-sp-4) var(--wl-sp-5);
-              background: rgba(24, 30, 59, .92); border-radius: var(--wl-r-lg);
+              background: rgba(32, 32, 32, .92); border-radius: var(--wl-r-lg);
               border: 1px solid var(--wl-w-08);
               -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
 .prof__save[hidden] { display: none; }
@@ -5425,7 +5428,7 @@ body.dp-open .wallet__deposit { box-shadow: 0 0 0 2px var(--wl-money-glow),
    с ней. Гасим фон почти в чёрный: панель читается отдельным слоем, а страница
    за ней явно недоступна — поэтому подложка и ловит клики. Раньше она их
    пропускала, и мимо панели нажималась кнопка под затемнением. */
-.pm__scrim { position: absolute; inset: 0; background: rgba(4, 10, 26, .78);
+.pm__scrim { position: absolute; inset: 0; background: rgba(10, 10, 10, .78);
              pointer-events: auto; animation: pm-scrim-in .22s ease both; }
 @keyframes pm-scrim-in { from { opacity: 0; } }
 /* ── Панель профиля: выезжает справа во всю высоту ──
@@ -5753,7 +5756,7 @@ body.dp-open .wallet__deposit { box-shadow: 0 0 0 2px var(--wl-money-glow),
              font-size: var(--wl-fs-sm); line-height: 1; }
 .vfs__item.is-current .vfs__btn { background: var(--wl-bg-pick);
                                   box-shadow: inset 0 0 0 1px var(--wl-line-pick); }
-.vfs__item.is-current .vfs__mark { background: var(--wl-primary); color: #04213a; }
+.vfs__item.is-current .vfs__mark { background: var(--wl-primary); color: var(--wl-gray-2); }
 .vfs__item.is-done .vfs__mark { background: var(--wl-ok); color: #06210d; }
 .vfs__item.is-done .vfs__mark b { font-size: 0; }
 .vfs__item.is-done .vfs__mark b::after { content: '\2713'; font-size: var(--wl-fs-sm); }
@@ -5885,7 +5888,7 @@ body.dp-open .wallet__deposit { box-shadow: 0 0 0 2px var(--wl-money-glow),
              transition: background-color .16s ease, box-shadow .16s ease; }
 .vft__card.is-on .vft__tick { background: var(--wl-primary); box-shadow: none; }
 .vft__card.is-on .vft__tick::after { content: '\2713'; display: grid; place-items: center;
-                                     width: 100%; height: 100%; color: #05203a;
+                                     width: 100%; height: 100%; color: var(--wl-gray-2);
                                      font-size: var(--wl-fs-xs); font-weight: var(--wl-fw-bold); }
 
 /* ── Шаг 3: загрузка ── */
@@ -6133,14 +6136,14 @@ body.dp-open .wallet__deposit { box-shadow: 0 0 0 2px var(--wl-money-glow),
 .nt[hidden] { display: none; }
 /* затемнение не ловит клики: с ним по соседней иконке в шапке нельзя
    было попасть — первый клик уходил в него и просто закрывал окно */
-.nt__scrim { position: absolute; inset: 0; background: rgba(4, 10, 26, .38);
+.nt__scrim { position: absolute; inset: 0; background: rgba(10, 10, 10, .38);
              pointer-events: none; }
 /* Панель уже прежней (426 -> 380) и легче: вместо плотной заливки —
    полупрозрачный фон с размытием под ним, тонкий кант и мягкая тень. */
 .nt__pop {
   position: absolute; right: 20px; top: 90px; box-sizing: border-box;
   display: flex; flex-direction: column; width: 380px; max-width: calc(100vw - 32px);
-  background: rgba(22, 27, 52, .92);
+  background: rgba(29, 29, 29, .92);
   -webkit-backdrop-filter: blur(18px) saturate(1.2);
   backdrop-filter: blur(18px) saturate(1.2);
   border: 1px solid var(--wl-w-12); border-radius: var(--wl-r-lg); overflow: hidden;
@@ -6426,12 +6429,12 @@ body.br-open .bnav { z-index: 66; }
       padding: var(--wl-sp-4); box-sizing: border-box; }
 .cf[hidden] { display: none; }
 html.cf-open, html.cf-open body { overflow: hidden; }
-.cf__scrim { position: absolute; inset: 0; background: rgba(0, 9, 16, .78);
+.cf__scrim { position: absolute; inset: 0; background: rgba(8, 8, 8, .78);
              backdrop-filter: blur(2px); }
 .cf__card { position: relative; width: 420px; max-width: 100%;
             box-sizing: border-box; padding: var(--wl-sp-6);
             display: flex; flex-direction: column; gap: 10px;
-            background: var(--modal-bg, #131a35); border-radius: var(--wl-r-lg);
+            background: var(--modal-bg, var(--wl-gray-2)); border-radius: var(--wl-r-lg);
             border: 1px solid var(--white-10, var(--wl-w-12));
             box-shadow: 0 24px 64px rgba(0, 0, 0, .45); }
 .cf__title { margin: 0; font-family: var(--wl-font-ui); font-weight: var(--wl-fw-bold);
@@ -6461,7 +6464,7 @@ html.cf-open, html.cf-open body { overflow: hidden; }
         transform: translate(-50%, 12px); opacity: 0; pointer-events: none;
         max-width: calc(100vw - 32px); box-sizing: border-box;
         padding: var(--wl-sp-3) 18px; border-radius: var(--wl-r-md);
-        background: #1b2342; border: 1px solid var(--white-10, var(--wl-w-12));
+        background: var(--wl-gray-3); border: 1px solid var(--white-10, var(--wl-w-12));
         box-shadow: 0 12px 32px rgba(0, 0, 0, .4);
         font-family: var(--wl-font-ui); font-weight: var(--wl-fw-medium);
         font-size: var(--wl-fs-md); line-height: var(--wl-lh-sm); color: var(--wl-text);
@@ -6511,7 +6514,7 @@ img.is-missing { visibility: hidden; }
    выезжал под панелью — со стороны выглядело так, будто кнопка не работает. */
 .cur { position: fixed; inset: 0; z-index: 73; }
 .cur[hidden] { display: none; }
-.cur__scrim { position: absolute; inset: 0; background: rgba(4, 10, 26, .55); }
+.cur__scrim { position: absolute; inset: 0; background: rgba(10, 10, 10, .55); }
 .cur__pop { position: absolute; box-sizing: border-box; width: 288px;
             max-width: calc(100vw - 32px); padding: var(--wl-sp-2); border-radius: var(--wl-r-lg);
             background: var(--wl-bg-chrome); border: 1px solid var(--wl-w-12);
