@@ -2047,17 +2047,16 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
     color: var(--wl-text); white-space: nowrap;
   }
 
-  /* 903:39410 — диск 55, градиент 95.95°. Тень снята: она была синей,
-     от прежней темы, и на новом полотне читалась ореолом. */
+  /* 903:39410 — слот 55 в вырезе панели. Зелёной заливки у него больше нет:
+     знак сам зелёный, на заливке того же цвета он бы пропал. Размер слота
+     оставлен прежним — под него вырезана панель. */
   .bnav__home {
     position: absolute; left: 50%; top: 10px; transform: translateX(-50%);
     width: 55px; height: 55px;
     display: flex; align-items: center; justify-content: center;
     border-radius: 50px;
-    background-image: linear-gradient(95.95deg,
-      var(--wl-primary-hover) 10.57%, var(--wl-primary) 47.44%, var(--wl-primary-active) 90.46%);
   }
-  .bnav__home img { display: block; width: 38px; height: 32px; }
+  .bnav__home img { display: block; width: 44px; height: 44px; }
   /* 903:39414 — подпись на left 184 от кадра 402, то есть по центру */
   /* Подпись растянута во всю ширину панели и перехватывала нажатия: по
      Browse и Search было не попасть. Кликов она принимать не должна. */
@@ -13805,7 +13804,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
     </a>
   </div>
   <!-- Знак WarWin из диска убран: подпись Home под ним и так называет кнопку -->
-  <a class="bnav__home" href="#" data-node-id="903:39410" aria-label="Home"></a>
+  <a class="bnav__home" href="#" data-node-id="903:39410" aria-label="Home"><img loading="lazy" decoding="async" src="a/24c140befa.svg" alt="" width="44" height="44"></a>
   <span class="bnav__home-label" data-node-id="903:39414">Home</span>
   <div class="bnav__group" data-node-id="903:39402">
     <a class="bnav__item" href="#" data-node-id="903:39403">
