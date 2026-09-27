@@ -489,19 +489,9 @@ body.nav-rail .nav-toggle__label { display: none; }
 }
 .nav-toggle:hover { background: var(--wl-bg-hover); color: var(--wl-text); }
 .nav-toggle:active { background: var(--wl-bg-active); }
-.logo { width: 156px; height: 55px; display: block; }
-/* Заглушка под будущий знак: пунктирная рамка читается как «здесь будет
-   логотип» и не притворяется готовым знаком. */
-.logo--ph {
-  display: flex; align-items: center; justify-content: center;
-  /* На мобильной слот знака 120, а заглушка 156 — без ограничения её
-     обрезало слева. */
-  max-width: 100%;
-  border: 1px dashed var(--wl-line-strong); border-radius: var(--wl-r-sm);
-  color: var(--wl-text-dim); font-size: var(--wl-fs-sm);
-  font-weight: var(--wl-fw-semibold); letter-spacing: 2px; text-transform: uppercase;
-  user-select: none;
-}
+/* Знак 216x40 из макета. Высоту задаём, ширину считает пропорция: на
+   мобильной слот уже, и жёсткие 216 вылезали бы за край. */
+.logo { display: block; width: auto; height: 40px; max-width: 100%; }
 
 .header-desktop {
   display: flex; align-items: center; justify-content: space-between;
@@ -4050,13 +4040,8 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
            font-weight: var(--wl-fw-semibold); font-size: var(--wl-fs-sm); color: var(--wl-text); }
 .gv__cur img { display: block; opacity: .7; }
 .gv__cur:hover { background: var(--wl-bg-hover); }
-.gv__mark { width: 74px; height: 26px; margin-inline: auto; object-fit: contain; opacity: .55;
-            /* Знак WarWin убран, на его месте та же заглушка, что в шапке */
-            display: flex; align-items: center; justify-content: center; box-sizing: border-box;
-            border: 1px dashed var(--wl-line-strong); border-radius: var(--wl-r-xs);
-            color: var(--wl-text-dim); font-family: var(--wl-font); font-size: var(--wl-fs-xs);
-            font-weight: var(--wl-fw-semibold); letter-spacing: 1px; text-transform: uppercase;
-            user-select: none; }
+.gv__mark { display: block; width: auto; height: 22px; margin-inline: auto;
+            object-fit: contain; opacity: .55; }
 .gv__modes { display: flex; gap: var(--wl-sp-1); padding: 3px; background: var(--wl-bg-field); border-radius: var(--wl-r-md); }
 .gv__mode { display: flex; align-items: center; justify-content: center; height: 30px; padding: 0 var(--wl-sp-4);
             border-radius: var(--wl-r-sm); font-weight: var(--wl-fw-bold); font-size: var(--wl-fs-sm); color: var(--wl-text-dim); }
@@ -6672,7 +6657,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         <!-- Заглушка вместо знака: логотипа у Рио ещё нет, а прежний
              варвиновский вводил в заблуждение. Габариты те же, 156×55,
              чтобы раскладка шапки не поехала. -->
-        <span class="logo logo--ph" role="img" aria-label="Место под логотип">ЛОГО</span>
+        <img class="logo" src="a/0d526d6016.svg" alt="RioBet" width="216" height="40">
       </div>
     </div>
 
@@ -12729,7 +12714,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
               <span class="gv__curwrap">
                 <button class="gv__cur" type="button" data-opts="USDT|USD|EUR|AZN">USDT<img loading="lazy" decoding="async" src="a/e139209072.svg" alt=""></button>
               </span>
-              <span class="gv__mark" role="img" aria-label="Место под логотип">ЛОГО</span>
+              <img loading="lazy" decoding="async" class="gv__mark" src="a/0d526d6016.svg" alt="RioBet">
               <div class="gv__modes" role="tablist" aria-label="Game mode">
                 <button class="gv__mode" type="button" role="tab" aria-selected="false">Demo</button>
                 <button class="gv__mode is-active" type="button" role="tab" aria-selected="true">Play</button>
