@@ -6916,25 +6916,6 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
 
 /* ── Главная: верх ── */
 .pz-top { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
-.wins-row { display: flex; align-items: center; gap: 16px; min-width: 0; }
-.wins-lbl { flex: none; display: flex; align-items: center; gap: 8px;
-            font-family: var(--wl-font-mono); font-size: 11px; letter-spacing: .06em;
-            text-transform: uppercase; color: var(--wl-text-dim); }
-.wins-lbl i { width: 6px; height: 6px; border-radius: 50%; background: #3ddc84; box-shadow: 0 0 0 3px rgba(61,220,132,.16); }
-.wins { flex: 1; min-width: 0; display: flex; gap: 8px; overflow: hidden;
-        -webkit-mask-image: linear-gradient(90deg, #000 82%, transparent); mask-image: linear-gradient(90deg, #000 82%, transparent); }
-.win { flex: none; display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px 0 4px;
-       border-radius: var(--wl-r-pill); background: var(--wl-bg-chrome); font-size: 13px; white-space: nowrap; }
-.win .th { flex: none; width: 28px; height: 28px; border-radius: var(--wl-r-sm);
-           background: repeating-linear-gradient(135deg, transparent 0 5px, rgba(240,238,234,.05) 5px 6px), var(--wl-bg-raised);
-           box-shadow: inset 0 0 0 1px var(--wl-w-12); }
-.win .g { color: var(--wl-text); }
-.win .id { font-family: var(--wl-font-mono); font-size: 11px; color: var(--wl-text-dim); opacity: .75; }
-.win b { font-family: var(--wl-font-mono); font-size: 12px; font-weight: var(--wl-fw-medium); color: var(--wl-text); font-variant-numeric: tabular-nums; }
-.win.peak { background: radial-gradient(120% 200% at 0% 50%, rgba(255,241,214,.22), rgba(255,153,0,.12) 45%, var(--wl-bg-chrome) 80%);
-            box-shadow: inset 0 0 0 1px rgba(255,241,214,.35); }
-.win.peak b { color: var(--wl-core); text-shadow: 0 0 12px rgba(255,197,107,.8); }
-
 .bento { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: repeat(2, 216px); gap: 12px; }
 .tile { position: relative; isolation: isolate; overflow: hidden; border-radius: var(--wl-r-lg);
         display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; gap: 8px;
@@ -7046,11 +7027,6 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
 @media (max-width: 1023px) {
   .bento { display: none; }
   .pz-top { gap: 0; }
-  .wins-lbl { display: none; }
-  .wins { overflow-x: auto; scrollbar-width: none; -webkit-mask-image: none; mask-image: none; }
-  .wins::-webkit-scrollbar { display: none; }
-  .win { height: 32px; font-size: 12px; padding: 0 12px 0 4px; }
-  .win .th { width: 24px; height: 24px; }
   #view-home .section--slots .gcard { flex-basis: 132px; }
   #view-home .section--live .gcard { flex-basis: 220px; }
   #view-home .section--top10 .t10 { flex-basis: 184px; padding-left: 52px; }
@@ -7299,15 +7275,10 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
 
     <div class="view view--home" id="view-home">
 
-    <!-- ═══ PLAZMO: верх главной по образцу — лента выигрышей и промо-бенто.
-         Данные в ленте — пример, как в образце. Фото в плитках нет по решению
-         заказчика: главная — на огне, боковые — на Char. Прежний герой и
+    <!-- ═══ PLAZMO: верх главной по образцу — промо-бенто. Фото в плитках
+         нет по решению заказчика: главная — на огне, боковые — на Char. Прежний герой и
          гостевой баннер на десктопе скрыты стилем, на мобильной остаются. ═══ -->
     <div class="pz-top">
-      <div class="wins-row" aria-label="Winning now">
-        <span class="wins-lbl"><i></i>Winning now</span>
-        <div class="wins"><span class="win peak"><span class="th" aria-hidden="true"></span><span class="g">Gates of Olympus</span><span class="id">4471***</span><b>+$12 400</b></span><span class="win"><span class="th" aria-hidden="true"></span><span class="g">Aviator</span><span class="id">7760***</span><b>+$310</b></span><span class="win"><span class="th" aria-hidden="true"></span><span class="g">Sweet Bonanza</span><span class="id">3108***</span><b>+$86</b></span><span class="win"><span class="th" aria-hidden="true"></span><span class="g">Crazy Time</span><span class="id">9025***</span><b>+$1 250</b></span><span class="win"><span class="th" aria-hidden="true"></span><span class="g">Fortune Tiger</span><span class="id">5512***</span><b>+$644</b></span><span class="win"><span class="th" aria-hidden="true"></span><span class="g">Lightning Roulette</span><span class="id">2087***</span><b>+$720</b></span><span class="win"><span class="th" aria-hidden="true"></span><span class="g">Fortune Dragon</span><span class="id">6634***</span><b>+$132</b></span><span class="win"><span class="th" aria-hidden="true"></span><span class="g">Mines</span><span class="id">1180***</span><b>+$58</b></span></div>
-      </div>
       <div class="bento">
         <div class="tile t-main">
           <span class="eyebrow">Welcome pack · 3 deposits</span>
