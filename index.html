@@ -537,14 +537,46 @@ body.nav-rail .nav-toggle__label { display: none; }
 .cat-tab.is-active { background: var(--wl-bg-pick); box-shadow: inset 0 0 0 1px var(--wl-line-pick); color: var(--wl-text); }
 .cat-tab.is-active .cat-tab__label { color: var(--wl-text); }
 
+/* Разделы в шапке: тёмная пилюля-подложка, внутри вкладки. Активная —
+   светлой заливкой с тёмным текстом, как в образце. */
+.hdtabs { display: flex; align-items: center; gap: 2px; flex: none;
+          padding: 4px; border-radius: var(--wl-r-pill); background: var(--wl-bg-chrome); }
+.hdtab { display: inline-flex; align-items: center; gap: var(--wl-sp-2); flex: none;
+         height: 32px; padding: 0 var(--wl-sp-4); border: 0; cursor: pointer;
+         border-radius: var(--wl-r-pill); background: none; color: var(--wl-text-dim);
+         font-family: inherit; font-weight: var(--wl-fw-medium); font-size: var(--wl-fs-sm);
+         line-height: 1; white-space: nowrap;
+         transition: color .15s ease, background-color .15s ease; }
+.hdtab svg { width: 16px; height: 16px; display: block; flex: none; }
+.hdtab:hover { color: var(--wl-text); }
+.hdtab.is-active { background: var(--wl-text); color: var(--wl-bg-page); }
+.hdtab.is-active:hover { color: var(--wl-bg-page); }
+/* Спорт снят с сайта: вкладка остаётся на месте, но гаснет и не нажимается —
+   так же, как пункты спорта в боковом меню. */
+.hdtab.is-off { color: var(--wl-text-off); cursor: default; pointer-events: none; }
+/* Распорка отодвигает поиск и кошелёк к правому краю */
+.hdsp { flex: 1 1 auto; min-width: var(--wl-sp-4); }
+
 .header-actions { display: flex; align-items: center; gap: var(--wl-sp-3); }
+/* Поиск — не значок, а строка: по ширине видно, что это поле, а подсказка
+   клавиши говорит, что до него можно дотянуться с клавиатуры. */
 .btn-search {
-  display: flex; align-items: center; justify-content: center;
-  width: 40px; height: 40px; padding: var(--wl-sp-2) var(--wl-sp-4);
-  background: var(--wl-bg-field); border-radius: var(--wl-r-pill);
+  display: flex; align-items: center; gap: var(--wl-sp-3); flex: none;
+  width: 248px; height: 40px; padding: 0 4px 0 var(--wl-sp-4);
+  border: 0; cursor: pointer; text-align: left;
+  background: var(--wl-bg-chrome); border-radius: var(--wl-r-pill);
+  color: var(--wl-text-dim); font-family: inherit;
+  font-weight: var(--wl-fw-medium); font-size: var(--wl-fs-sm);
+  transition: box-shadow .15s ease;
 }
-/* В макете слот 15.838×16, но внутренняя обёртка растягивает глиф до 18.61×18.77 */
-.btn-search img { width: 18.61px; height: 18.772px; display: block; }
+.btn-search:hover { background: var(--wl-bg-chrome); box-shadow: inset 0 0 0 1px var(--wl-line-hover); }
+.btn-search img { width: 18px; height: 18px; display: block; flex: none; opacity: .75; }
+.btn-search__label { flex: 1 1 auto; min-width: 0; overflow: hidden;
+                     white-space: nowrap; text-overflow: ellipsis; }
+.btn-search__key { flex: none; display: grid; place-items: center;
+                   width: 28px; height: 28px; border-radius: var(--wl-r-round);
+                   background: var(--wl-bg-raised); font-family: var(--wl-font-mono);
+                   font-size: var(--wl-fs-xs); color: var(--wl-text-dim); }
 .btn {
   display: flex; align-items: center; justify-content: center;
   height: 40px; padding: var(--wl-sp-3); border-radius: var(--wl-r-pill);
@@ -1778,7 +1810,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   .topbar__logo-wrap img { width: 100%; height: 100%; object-fit: contain; }
   .btn-search { display: none; }
   /* В мобильной шапке только логотип и две кнопки — вкладок Casino/Sports нет */
-  .cat-buttons { display: none; }
+  .cat-buttons, .hdtabs, .hdsp { display: none; }
   .header-actions { gap: var(--wl-sp-3); margin-left: auto; }
   /* ── 925:2284 — шапка после входа: под верхней полосой идёт кошелёк ──
      Кадр 402x122: сверху 62 (логотип, профиль, колокольчик), снизу 60 —
@@ -3190,12 +3222,24 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
    и колокольчик с точкой, кнопки 40x40 радиусом 10, зазор 12. */
 .authed { display: none; align-items: center; gap: var(--wl-sp-3); }
 .authed__btn { display: flex; align-items: center; justify-content: center; position: relative;
-               width: 40px; height: 40px; flex: none; padding: var(--wl-sp-2) var(--wl-sp-4);
-               background: none; border: 0; border-radius: var(--wl-r-pill); cursor: pointer; }
-.authed__btn:hover { background: var(--wl-bg-field); }
+               width: 40px; height: 40px; flex: none; padding: 0;
+               background: var(--wl-bg-chrome); border: 0; border-radius: var(--wl-r-round);
+               color: var(--wl-text); cursor: pointer;
+               transition: background-color .15s ease; }
+.authed__btn:hover { background: var(--wl-bg-raised); }
 .authed__btn img { display: block; }
-.authed__btn--bell i { position: absolute; left: 24.5px; top: 11px;
-                       width: 5px; height: 5px; border-radius: var(--wl-r-round); background: #ff4d4f; }
+/* Кружок с инициалами вместо значка человечка — как в образце: подложка на
+   ступень светлее соседних кнопок, внутренний кант и моноширинные буквы. */
+.authed__btn--ava { background: var(--wl-bg-raised); box-shadow: inset 0 0 0 1px var(--wl-w-12);
+                    font-family: var(--wl-font-mono); font-weight: var(--wl-fw-medium);
+                    font-size: var(--wl-fs-xs); letter-spacing: .04em; }
+.authed__btn--ava:hover { background: var(--wl-bg-field); }
+/* Точка непрочитанного — накалом, а не красным: красный на этой шапке читается
+   как ошибка. Кольцо цветом кнопки отрезает её от значка. */
+.authed__btn--bell i { position: absolute; right: 11px; top: 10px;
+                       width: 7px; height: 7px; border-radius: var(--wl-r-round);
+                       background: var(--wl-primary); box-shadow: 0 0 0 2px var(--wl-bg-chrome); }
+.authed__btn--bell:hover i { box-shadow: 0 0 0 2px var(--wl-bg-raised); }
 /* точка непрочитанного гаснет, когда список открыли */
 .authed__btn--bell.is-read i { display: none; }
 body.is-authed .header-actions .btn { display: none; }
@@ -3204,7 +3248,9 @@ body.is-authed .authed { display: flex; }
 /* 905:4387 — баланс и кнопка пополнения, видны только после входа.
    Лежит отдельным ребёнком .header-desktop: у той space-between, и три
    группы сами встают на 0 / 470 / 960 внутри колонки 1104, как в макете. */
-.wallet { display: none; align-items: center; overflow: hidden; border-radius: var(--wl-r-sm); }
+.wallet { display: none; align-items: center; gap: var(--wl-sp-3); flex: none;
+          height: 40px; padding: 0 4px 0 var(--wl-sp-4);
+          border-radius: var(--wl-r-pill); background: var(--wl-bg-chrome); }
 body.is-authed .wallet { display: flex; }
 /* Кошелёк стоит вплотную к правой группе — сразу слева от поиска, одним
    блоком с ним. Поэтому у .header-desktop прижим вправо и общий зазор,
@@ -3212,25 +3258,25 @@ body.is-authed .wallet { display: flex; }
 @media (min-width: 1024px) {
   /* Зазор до правой группы шире внутреннего (12): кошелёк — отдельный
      блок, а не ещё одна круглая кнопка в ряду. */
-  .header-desktop { justify-content: flex-end; gap: var(--wl-sp-5); }
+  .header-desktop { justify-content: flex-end; gap: var(--wl-sp-3); }
   .header-actions { margin-left: 0; }
 }
 /* Сумма набиралась Work Sans 14 против Cora 14 у кнопки: при одном кегле
    капитель Cora крупнее, и баланс читался мельче соседа. Даём цифрам тот же
    гротеск, что в поп-апе профиля, и кегль 16. */
 .wallet__balance { display: flex; align-items: center; gap: var(--wl-sp-2); flex: none;
-                   padding: var(--wl-sp-3); border: 0; cursor: pointer;
-                   background: var(--wl-w-12); color: var(--wl-text);
-                   font-family: var(--wl-font-ui); font-weight: var(--wl-fw-bold);
-                   font-size: var(--wl-fs-md); line-height: var(--wl-lh-xs); white-space: nowrap;
+                   padding: 0; border: 0; cursor: pointer;
+                   background: none; color: var(--wl-text);
+                   font-weight: var(--wl-fw-medium);
+                   font-size: var(--wl-fs-sm); line-height: var(--wl-lh-xs); white-space: nowrap;
                    font-variant-numeric: tabular-nums; }
-.wallet__balance:hover { background: var(--wl-w-18); }
+.wallet__balance:hover { background: none; color: var(--wl-text); opacity: .8; }
 .wallet__balance img { display: block; }
 /* тот же флаг, что в поп-апе профиля, только 16 — на этой высоте чип
    остаётся 40, как был со значком доллара */
 .wallet__flag { display: block; flex: none; width: 16px; height: 16px; border-radius: var(--wl-r-round); }
 .wallet__deposit { display: flex; align-items: center; justify-content: center; flex: none;
-                   padding: var(--wl-sp-3); border: 0; border-radius: var(--wl-r-pill); cursor: pointer;
+                   height: 32px; padding: 0 var(--wl-sp-4); border: 0; border-radius: var(--wl-r-pill); cursor: pointer;
                    background: linear-gradient(to bottom, var(--wl-money-a), var(--wl-money-b)); color: var(--wl-money-ink);
                    font-family: var(--wl-font-ui); font-weight: var(--wl-fw-bold);
                    font-size: var(--wl-fs-sm); line-height: 14px; white-space: nowrap; }
@@ -6761,6 +6807,25 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
     </div>
 
     <div class="header-desktop">
+      <!-- Разделы прямо в шапке, как в образце: одна тёмная пилюля, внутри
+           вкладки. Значки нарисованы прямо в разметке обводкой currentColor —
+           только так они перекрашиваются вместе с активной вкладкой.
+           Спорт снят с сайта, поэтому вкладка стоит, но не нажимается. -->
+      <div class="hdtabs" role="group" aria-label="Sections">
+        <button class="hdtab" type="button" data-hdtab="casino" data-fgo="view:casino">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="3"/><path d="M9.2 5v14M14.8 5v14"/></svg>Casino</button>
+        <button class="hdtab is-off" type="button" data-hdtab="sport" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="m12 7.5 4 2.9-1.5 4.6h-5L8 10.4z"/></svg>Sport</button>
+        <button class="hdtab" type="button" data-hdtab="bonuses" data-fgo="view:bonuses">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="8" width="17" height="4" rx="1.5"/><path d="M5 12v7.5h14V12M12 8v11.5M12 8c-1.5-3-5-3.5-5-1.2C7 8 9 8 12 8zm0 0c1.5-3 5-3.5 5-1.2C17 8 15 8 12 8z"/></svg>Bonuses</button>
+      </div>
+      <span class="hdsp" aria-hidden="true"></span>
+      <!-- Поиск — широкая пилюля с подсказкой клавиши, а не один значок -->
+      <button class="btn-search" aria-label="Search">
+        <img src="a/25f570e1f7.svg" alt="">
+        <span class="btn-search__label">Search</span>
+        <kbd class="btn-search__key">/</kbd>
+      </button>
       <!-- 905:4387 — баланс и пополнение отдельной группой: в макете после
            входа шапка делится на три части, кошелёк стоит между ними -->
       <div class="wallet" data-node-id="905:4387">
@@ -6773,17 +6838,15 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         <button class="wallet__deposit" type="button" data-node-id="905:4393">DEPOSIT</button>
       </div>
       <div class="header-actions" data-node-id="904:3592">
-        <button class="btn-search" aria-label="Search"><img src="a/25f570e1f7.svg" alt=""></button>
         <button class="btn btn--ghost">LOGIN</button>
         <button class="btn btn--primary">REGISTER</button>
-        <!-- 905:4403 — состояние после входа: профиль и уведомления -->
+        <!-- 905:4403 — состояние после входа: уведомления и профиль.
+             Порядок как в образце: колокольчик, за ним кружок с инициалами. -->
         <div class="authed" data-node-id="1180:21426">
-          <button class="authed__btn" type="button" aria-label="Account">
-            <img src="a/1d12ab6211.svg" alt="" width="22" height="22">
-          </button>
           <button class="authed__btn authed__btn--bell" type="button" aria-label="Notifications">
             <img src="a/ea0673126f.svg" alt="" width="24" height="24"><i></i>
           </button>
+          <button class="authed__btn authed__btn--ava" type="button" aria-label="Account">RD</button>
         </div>
       </div>
     </div>
@@ -15788,6 +15851,33 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         if (lastFocus) lastFocus.focus();
       };
       srchBtn.addEventListener('click', openSearch);
+      /* В шапке нарисована подсказка «/», значит клавиша должна работать.
+         Пока курсор в поле или в тексте, косая — обычный символ. */
+      document.addEventListener('keydown', function (e) {
+        if (e.key !== '/' || e.metaKey || e.ctrlKey || e.altKey) return;
+        if (!srch.hidden) return;
+        var t = e.target;
+        if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+        e.preventDefault();
+        openSearch();
+      });
+
+      /* Подсветка раздела в шапке. Категория — часть казино, поэтому
+         светится та же вкладка. Состояние ставим и на загрузке: первый
+         экран показан разметкой, showView для него не вызывается. */
+      var hdtabs = [].slice.call(document.querySelectorAll('.hdtab'));
+      if (hdtabs.length) {
+        var hdSync = function (key) {
+          hdtabs.forEach(function (t) {
+            var k = t.dataset.hdtab;
+            t.classList.toggle('is-active',
+              k === 'casino' ? (key === 'casino' || key === 'category') : k === key);
+          });
+        };
+        document.addEventListener('ww:view', function (e) { hdSync(e.detail); });
+        var shown = document.querySelector('.view:not([hidden])');
+        hdSync(shown ? (shown.id || '').replace('view-', '') : 'home');
+      }
 
       /* 973:19055 — модалка входа по кнопке LOGIN в шапке */
       var lg = document.getElementById('login-modal');
