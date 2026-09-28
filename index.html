@@ -275,8 +275,8 @@
   --wl-sp-10: 40px;
 
   /* ---------- Сетка ---------- */
-  --wl-nav:          276px;   /* было 252; от него же считаются левый край контента и шапки */
-  --wl-nav-collapsed: 84px;
+  --wl-nav:          216px;   /* раскрытая колонка PLAZMO; от неё считаются левый край контента и шапки */
+  --wl-nav-collapsed: 64px;   /* колонка значков — состояние по умолчанию */
   --wl-page-w:      1440px;
   --wl-content:     1104px;  /* 252 меню + 44 зазор + 1104 + 40 = 1440 */
 }
@@ -411,7 +411,7 @@
    Раньше здесь жил псевдоним --nav-w, но после переезда на токены панель
    и контент стали читать --wl-nav напрямую, и рейка перестала работать:
    бургер менял переменную, которую больше никто не спрашивал. */
-body.nav-rail { --wl-nav: 84px; }
+body.nav-rail { --wl-nav: var(--wl-nav-collapsed); }
 /* Состояние из localStorage ставится скриптом — на первом кадре без перехода */
 html.nav-boot .sidebar, html.nav-boot .content { transition: none; }
 
@@ -1524,7 +1524,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   /* Шапка начинается там же, где контент. Пробовал дотянуть её до
      карточки меню — стало хуже: полоса 244…296 закрывалась только выше
      74, а ниже оставалась фоном, и под плашкой зиял чёрный вырез. */
-  .topbar { left: calc(var(--wl-nav) + 44px); }
+  .topbar { left: calc(var(--wl-nav) + 24px); }
   /* В шапке слева больше ничего нет — отправляем кнопки входа вправо явно */
   .header-actions { margin-left: auto; }
   .nav-toggle { display: flex; }
@@ -1534,7 +1534,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   /* Потолка у колонки больше нет: у 1win контент идёт до самого края, поле
      справа 27 при экране 1683. Раньше упирались в 1200 и на широком мониторе
      справа оставалось 113 пустых пикселей при 1683 и 232 при 1920. */
-  .content { --edge: 40px; left: calc(var(--wl-nav) + 44px); }
+  .content { --edge: 32px; left: calc(var(--wl-nav) + 24px); }
   .topbar  { gap: 60px; padding-right: 41px; }
   /* Шапка идёт по той же колонке, что и контент */
   .header-desktop { margin-left: var(--gutter, 0px); margin-right: var(--gutter-r, 0px); }
@@ -6683,12 +6683,10 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
 /* Карточки игр, лайв-казино и спорта — тем же приёмом: арт и подписи
    скрыты, остаётся залитый прямоугольник. Плитки провайдеров получают
    такую же подложку, иначе знаки висели в воздухе. */
-.game > *, .lc > *, .sport > * { display: none !important; }
-.game, .lc, .sport, .provider {
+.game > img.layer, .lc > img.layer, .lc > .clip, .sport > * { display: none !important; }
+.sport, .provider {
   background: var(--wl-bg-chrome); background-image: none; border: 0;
 }
-.game::after,  .game::before,
-.lc::after,    .lc::before,
 .sport::after, .sport::before { display: none !important; }
 
 /* Карточки бонусов — такими же заглушками, как карточки игр: плоская
@@ -6783,6 +6781,290 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
 .vsup__btn:not(.vsup__btn--primary):hover { border-color: var(--wl-w-55); background: none; }
 .bn__btn--primary, .vsup__btn--primary { border-color: transparent; }
 
+
+/* ═══════════════ PLAZMO · боковая колонка ═══════════════
+   Как в образце: 64px значков, по кнопке раскрывается до 216 с подписями.
+   Пункт — пилюля 40px; активный на подложке Char, значок накалом и
+   полоска слева. В колонке подпись всплывает подсказкой. */
+.sidebar { padding: 20px 12px; background: #0c0a0a; border-right: 1px solid var(--wl-line);
+           overflow: visible; }
+.sbrail { display: flex; flex-direction: column; align-items: stretch; gap: 4px; width: 100%; min-width: 0; }
+.sbrail hr { flex: none; height: 1px; margin: 8px 6px; border: 0; background: var(--wl-line); }
+.ri { position: relative; flex: none; display: flex; align-items: center; gap: 12px; width: 100%;
+      height: 40px; padding: 0 10px; margin: 0; border: 0; border-radius: var(--wl-r-pill);
+      background: none; color: var(--wl-text-dim); cursor: pointer; text-align: left;
+      font-family: var(--wl-font); font-size: var(--wl-fs-sm); font-weight: var(--wl-fw-medium);
+      white-space: nowrap; transition: background-color .15s ease, color .15s ease; }
+.ri svg { flex: none; width: 20px; height: 20px; display: block; }
+.ri span { overflow: hidden; text-overflow: ellipsis; }
+.ri:hover { background: var(--wl-bg-chrome); color: var(--wl-text); }
+.ri.is-active { background: var(--wl-bg-chrome); color: var(--wl-text); }
+.ri.is-active svg { color: var(--wl-primary); }
+.ri.is-active::before { content: ''; position: absolute; left: -12px; top: 10px; bottom: 10px; width: 3px;
+                        border-radius: 0 999px 999px 0; background: var(--wl-primary); }
+.ri:focus-visible { outline: 2px solid var(--wl-primary); outline-offset: -2px; }
+/* Кнопка сворачивания — тот же пункт; прежний значок-маска ей не нужен */
+.ri.nav-toggle { margin: 0; box-shadow: none; }
+.ri.nav-toggle::before { content: none; }
+body.nav-rail .ri span { display: none; }
+body.nav-rail .ri.nav-toggle { justify-content: flex-start; padding: 0 10px; }
+body.nav-rail .ri::after {
+  content: attr(data-l); position: absolute; left: calc(100% + 14px); top: 50%;
+  translate: -4px -50%; height: 28px; padding: 0 10px; display: flex; align-items: center;
+  border-radius: var(--wl-r-sm); background: var(--wl-text); color: var(--wl-bg-page);
+  font-size: var(--wl-fs-xs); font-weight: var(--wl-fw-semibold); white-space: nowrap;
+  opacity: 0; pointer-events: none; transition: opacity .15s ease, translate .15s ease; z-index: 30;
+}
+body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity: 1; translate: 0 -50%; }
+
+
+/* ═══════════════ PLAZMO · главная по образцу ═══════════════ */
+
+/* ── Карточка игры: штрихованная заглушка под обложку ──
+   Везде, где есть .game/.lc: на главной, в категории, в поиске. Обложки
+   скрыты, подписи из разметки видны: провайдер ярлыком сверху, название
+   снизу. Значок картинки по центру; на наведении — оранжевый круг с ▶. */
+.game, .lc {
+  display: block; border: 0;
+  background: repeating-linear-gradient(135deg, transparent 0 11px, rgba(240,238,234,.028) 11px 12px),
+              linear-gradient(180deg, #1c191a, #262223);
+  box-shadow: inset 0 0 0 1px var(--wl-line);
+  transition: box-shadow .2s ease, transform .25s cubic-bezier(.2,.7,.2,1);
+}
+.lc--violet, .lc--black { background: repeating-linear-gradient(135deg, transparent 0 11px, rgba(240,238,234,.028) 11px 12px),
+                                      linear-gradient(180deg, #1c191a, #262223); }
+.game::before, .lc::before {
+  content: ''; position: absolute; left: 50%; top: 40%; z-index: 0;
+  width: 24px; height: 24px; translate: -50% -50%;
+  background: var(--wl-w-18);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.6' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='16' rx='3'/%3E%3Ccircle cx='9' cy='10' r='2'/%3E%3Cpath d='m4 18 5-5 4 4 3-3 4 4'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.6' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='16' rx='3'/%3E%3Ccircle cx='9' cy='10' r='2'/%3E%3Cpath d='m4 18 5-5 4 4 3-3 4 4'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: opacity .2s ease;
+}
+.game::after, .lc::after {
+  content: ''; position: absolute; left: 50%; top: 40%; z-index: 5;
+  width: 48px; height: 48px; translate: -50% -50%; scale: .8; opacity: 0;
+  border-radius: 50%; background: var(--wl-primary) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8.5 5.8v12.4c0 .8.9 1.3 1.6.8l9.3-6.2c.6-.4.6-1.2 0-1.6L10.1 5c-.7-.5-1.6 0-1.6.8z' fill='%230B0A0A'/%3E%3C/svg%3E") center / 20px no-repeat;
+  box-shadow: 0 8px 24px -6px rgba(255, 153, 0, .6);
+  transition: opacity .2s ease, scale .25s cubic-bezier(.2,.7,.2,1);
+}
+.card-veil { display: none !important; }
+@media (hover: hover) {
+  .game:hover, .lc:hover { box-shadow: inset 0 0 0 1.5px var(--wl-primary); transform: translateY(-4px); }
+  .game:hover::before, .lc:hover::before { opacity: 0; }
+  .game:hover::after, .lc:hover::after { opacity: 1; scale: 1; }
+}
+.game:focus-visible, .lc:focus-visible { outline: none; box-shadow: inset 0 0 0 1.5px var(--wl-primary); }
+.game__info, .lc__info {
+  position: absolute; inset: 0; transform: none; width: auto;
+  display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; gap: 4px;
+  padding: 12px; background: none; text-align: left;
+}
+.game__name, .lc__name {
+  width: 100%; margin: 0; text-align: left; text-shadow: none;
+  font-family: var(--wl-font-display); font-variation-settings: 'wdth' 100; font-stretch: normal;
+  font-weight: var(--wl-fw-bold); font-size: 15px; line-height: 1.05; letter-spacing: -.01em;
+  text-transform: uppercase; text-wrap: balance; color: var(--wl-text);
+}
+.game__provider, .lc__provider {
+  position: absolute; top: 0; left: 50%; translate: -50% 0; margin: 0;
+  height: 20px; padding: 0 10px; display: flex; align-items: center;
+  border-radius: 0 0 var(--wl-r-sm) var(--wl-r-sm); background: rgba(11, 10, 10, .8);
+  font-family: var(--wl-font-mono); font-size: 9px; font-weight: var(--wl-fw-medium);
+  letter-spacing: .08em; text-transform: uppercase; color: var(--wl-text-dim);
+  text-shadow: none; white-space: nowrap;
+}
+.gbadge { position: absolute; top: 28px; left: 50%; translate: -50% 0; z-index: 4;
+          height: 18px; padding: 0 7px; display: inline-flex; align-items: center;
+          border-radius: var(--wl-r-pill); background: var(--wl-text); color: var(--wl-bg-page);
+          font-size: 9px; font-weight: var(--wl-fw-semibold); letter-spacing: .04em; text-transform: uppercase; }
+.gbadge--hot { background: var(--wl-primary); }
+.lpill { position: absolute; top: 28px; left: 50%; translate: -50% 0; z-index: 4;
+         height: 22px; padding: 0 9px; display: flex; align-items: center; gap: 6px;
+         border-radius: var(--wl-r-pill); background: rgba(11, 10, 10, .72);
+         font-family: var(--wl-font-mono); font-size: 10px; letter-spacing: .04em; color: var(--wl-text); }
+.lpill i, .on i { flex: none; width: 6px; height: 6px; border-radius: 50%; background: #3ddc84; }
+.lpill i { animation: onair 1.6s ease-out infinite; }
+@keyframes onair { 0% { box-shadow: 0 0 0 0 rgba(61,220,132,.45); } 100% { box-shadow: 0 0 0 4px rgba(61,220,132,0); } }
+
+/* Обёртка на главной: карточка и под ней «● N playing» */
+.gcard { flex: none; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; min-width: 0; }
+.gcard > .game, .gcard > .lc { width: 100%; height: auto; aspect-ratio: 3 / 4; }
+.gcard--live > .lc { aspect-ratio: 16 / 10; }
+.gcard--live .lc::before, .gcard--live .lc::after { top: 44%; }
+.on { display: flex; align-items: center; gap: 6px; height: 16px; min-width: 0;
+      font-size: 12px; color: var(--wl-text-dim); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.on em { font-style: normal; }
+.on .lim { margin-left: auto; font-family: var(--wl-font-mono); font-size: 11px; overflow: hidden; text-overflow: ellipsis; }
+
+/* ── Заголовок ряда: значок, название, шеврон; справа View all и стрелки ── */
+.section__head { align-items: center; min-height: 32px; gap: 8px; }
+.section__title { gap: 10px; }
+.section__title img { width: 20px; height: 20px; }
+.section__title h2 { font-size: 17px; line-height: 1.1; white-space: nowrap; }
+.section__title::after { content: ''; flex: none; width: 16px; height: 16px; background: var(--wl-text-dim);
+                         -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 6 6 6-6 6'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 6 6 6-6 6'/%3E%3C/svg%3E") center / contain no-repeat; }
+.section__nav { gap: 8px; }
+.view-all { height: 32px; padding: 0 14px; border-radius: var(--wl-r-pill); background: none;
+            box-shadow: inset 0 0 0 1px var(--wl-line);
+            font-size: 13px; font-weight: var(--wl-fw-medium); line-height: 1; color: var(--wl-text-dim);
+            transition: color .15s ease, box-shadow .15s ease; }
+.view-all:hover, .chip.view-all:hover { background: none; color: var(--wl-text); box-shadow: inset 0 0 0 1px rgba(240,238,234,.32); }
+.slider-btns { gap: 8px; }
+.slider-btn { width: 32px; height: 32px; padding: 0; background: var(--wl-bg-chrome); }
+.slider-btn:hover { background: var(--wl-bg-raised); }
+.slider-btn--off { opacity: .35; }
+
+/* ── Главная: верх ── */
+.pz-top { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+.wins-row { display: flex; align-items: center; gap: 16px; min-width: 0; }
+.wins-lbl { flex: none; display: flex; align-items: center; gap: 8px;
+            font-family: var(--wl-font-mono); font-size: 11px; letter-spacing: .06em;
+            text-transform: uppercase; color: var(--wl-text-dim); }
+.wins-lbl i { width: 6px; height: 6px; border-radius: 50%; background: #3ddc84; box-shadow: 0 0 0 3px rgba(61,220,132,.16); }
+.wins { flex: 1; min-width: 0; display: flex; gap: 8px; overflow: hidden;
+        -webkit-mask-image: linear-gradient(90deg, #000 82%, transparent); mask-image: linear-gradient(90deg, #000 82%, transparent); }
+.win { flex: none; display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px 0 4px;
+       border-radius: var(--wl-r-pill); background: var(--wl-bg-chrome); font-size: 13px; white-space: nowrap; }
+.win .th { flex: none; width: 28px; height: 28px; border-radius: var(--wl-r-sm);
+           background: repeating-linear-gradient(135deg, transparent 0 5px, rgba(240,238,234,.05) 5px 6px), var(--wl-bg-raised);
+           box-shadow: inset 0 0 0 1px var(--wl-w-12); }
+.win .g { color: var(--wl-text); }
+.win .id { font-family: var(--wl-font-mono); font-size: 11px; color: var(--wl-text-dim); opacity: .75; }
+.win b { font-family: var(--wl-font-mono); font-size: 12px; font-weight: var(--wl-fw-medium); color: var(--wl-text); font-variant-numeric: tabular-nums; }
+.win.peak { background: radial-gradient(120% 200% at 0% 50%, rgba(255,241,214,.22), rgba(255,153,0,.12) 45%, var(--wl-bg-chrome) 80%);
+            box-shadow: inset 0 0 0 1px rgba(255,241,214,.35); }
+.win.peak b { color: var(--wl-core); text-shadow: 0 0 12px rgba(255,197,107,.8); }
+
+.bento { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: repeat(2, 216px); gap: 12px; }
+.tile { position: relative; isolation: isolate; overflow: hidden; border-radius: var(--wl-r-lg);
+        display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; gap: 8px;
+        padding: 24px; background: var(--wl-bg-chrome); color: inherit; text-decoration: none; }
+.tile h3 { margin: 0; font-family: var(--wl-font-display); font-variation-settings: 'wdth' 112; font-weight: var(--wl-fw-bold);
+           text-transform: uppercase; letter-spacing: -.01em; color: var(--wl-text); }
+.eyebrow { font-family: var(--wl-font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: rgba(240,238,234,.78); }
+.t-main { grid-column: span 8; grid-row: span 2; padding: 40px; gap: 12px; background: var(--wl-heat); }
+.t-main h3 { font-size: clamp(34px, 4.6vw, 64px); line-height: .92; }
+.t-main p { margin: 0; max-width: 30ch; font-size: 15px; line-height: 1.5; color: rgba(240,238,234,.85); }
+.t-main .cta { display: flex; gap: 8px; margin-top: 12px; }
+.t-main .dots { position: absolute; right: 40px; bottom: 54px; display: flex; gap: 6px; }
+.dots i { width: 16px; height: 3px; border-radius: var(--wl-r-pill); background: rgba(240,238,234,.28); }
+.dots i.on { width: 32px; background: var(--wl-text); }
+.pzbtn { display: inline-flex; align-items: center; justify-content: center; height: 40px; padding: 0 20px;
+         border: 0; border-radius: var(--wl-r-pill); cursor: pointer; white-space: nowrap;
+         font-family: inherit; font-size: 14px; font-weight: var(--wl-fw-semibold);
+         transition: background-color .15s ease, box-shadow .15s ease; }
+.pzbtn--bone { background: var(--wl-text); color: var(--wl-bg-page); }
+.pzbtn--bone:hover { background: #fff; }
+.pzbtn--ghost { background: none; color: var(--wl-text); box-shadow: inset 0 0 0 1px var(--wl-w-22); }
+.pzbtn--ghost:hover { box-shadow: inset 0 0 0 1px var(--wl-w-55); }
+.t-side { grid-column: span 4; padding: 24px 72px 24px 24px;
+          background: radial-gradient(120% 90% at 100% 0%, rgba(255,153,0,.10), transparent 60%), var(--wl-bg-chrome);
+          box-shadow: inset 0 0 0 1px var(--wl-line); transition: box-shadow .2s ease; }
+.t-side--crash { background: radial-gradient(120% 90% at 100% 0%, rgba(142,21,4,.35), transparent 60%), var(--wl-bg-chrome); }
+.t-side h3 { font-size: 20px; line-height: 1.05; }
+.t-side .sub-l { font-family: var(--wl-font-mono); font-size: 11px; color: rgba(240,238,234,.72); }
+.t-side .go { position: absolute; right: 20px; bottom: 20px; width: 40px; height: 40px; border-radius: 50%;
+              display: grid; place-items: center; background: rgba(240,238,234,.14); color: var(--wl-text);
+              transition: background-color .2s ease, color .2s ease; }
+.t-side .go svg { width: 18px; height: 18px; }
+.t-side:hover { box-shadow: inset 0 0 0 1px var(--wl-w-22); }
+.t-side:hover .go, .t-side:focus-visible .go { background: var(--wl-primary); color: var(--wl-bg-page); }
+
+/* Прежний герой, гостевой баннер и заглушка баннера — не на главной десктопа */
+@media (min-width: 1024px) {
+  .hero, .banner { display: none !important; }
+}
+#view-home .bonus--ph, #view-home .section--sport { display: none !important; }
+#view-home .sections, #view-home .sections__top { gap: 40px; }
+
+/* ── Ряды главной ── */
+#view-home .rail { gap: 12px; }
+#view-home .section--slots .gcard { flex-basis: calc((100% - 5 * 12px) / 6); }
+#view-home .section--live  .gcard { flex-basis: calc((100% - 3 * 12px) / 4); }
+#view-home .section--top10 .t10 { position: relative; flex: none; min-width: 0;
+                                  flex-basis: calc((100% - 4 * 12px) / 5); padding-left: clamp(44px, 4.6vw, 64px); }
+#view-home .section--top10 .t10 .gcard { position: relative; z-index: 1; }
+#view-home .section--top10 .game.is-extra { display: none; }
+.t10__num { position: absolute; left: -4px; bottom: 24px; z-index: 0; pointer-events: none;
+            font-family: var(--wl-font-display); font-variation-settings: 'wdth' 100; font-weight: var(--wl-fw-bold);
+            font-size: clamp(120px, 12.4vw, 176px); line-height: .74; letter-spacing: -.06em;
+            color: #0e0c0c; -webkit-text-stroke: 1.5px rgba(240,238,234,.3); transition: -webkit-text-stroke-color .2s ease; }
+.t10:hover .t10__num { -webkit-text-stroke-color: var(--wl-primary); }
+
+/* Краш: три плитки вместо ленты */
+#view-home .section--crash .rail { display: none; }
+.crash { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.cr { position: relative; isolation: isolate; overflow: hidden; display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 14px;
+      padding: 12px 20px 12px 12px; border-radius: var(--wl-r-md); background: var(--wl-bg-chrome);
+      color: inherit; text-decoration: none; transition: box-shadow .3s ease, background .6s ease; }
+.cr:hover, .cr:focus-visible { box-shadow: inset 0 0 0 1.5px var(--wl-primary); outline: none; }
+.cr__sq { flex: none; width: 56px; aspect-ratio: 1; border-radius: var(--wl-r-sm);
+          background: repeating-linear-gradient(135deg, transparent 0 11px, rgba(240,238,234,.028) 11px 12px), linear-gradient(180deg, #1c191a, #262223);
+          box-shadow: inset 0 0 0 1px var(--wl-line); }
+.cr-i { display: grid; gap: 2px; min-width: 0; }
+.cr-i b { font-family: var(--wl-font-display); font-variation-settings: 'wdth' 112; font-size: 15px; font-weight: var(--wl-fw-bold);
+          line-height: 1.1; text-transform: uppercase; }
+.cr-i small { font-size: 12px; color: var(--wl-text-dim); }
+.cr-i .on { margin-top: 6px; }
+.cr .x { align-self: start; margin-top: 6px; text-align: right;
+         font-family: var(--wl-font-mono); font-size: 26px; font-weight: var(--wl-fw-medium); letter-spacing: -.02em;
+         font-variant-numeric: tabular-nums; color: var(--wl-text); transition: color .3s ease, text-shadow .3s ease; }
+.cr .curve { position: absolute; right: 0; bottom: 0; z-index: -1; width: 52%; height: 18%;
+             color: rgba(240,238,234,.22); transition: height .5s cubic-bezier(.2,.7,.2,1), color .4s ease; }
+.cr[data-st="warm"] .x { color: var(--wl-primary); }
+.cr[data-st="warm"] .curve { height: 32%; color: rgba(255,153,0,.55); }
+.cr[data-st="peak"] { background: radial-gradient(90% 140% at 100% 0%, rgba(255,241,214,.18), rgba(255,153,0,.10) 40%, var(--wl-bg-chrome) 75%);
+                      box-shadow: inset 0 0 0 1px rgba(255,241,214,.32); }
+.cr[data-st="peak"] .x { color: var(--wl-core); text-shadow: 0 0 16px rgba(255,197,107,.9); }
+.cr[data-st="peak"] .curve { height: 46%; color: rgba(255,241,214,.7); }
+
+/* Провайдеры: плашки Char 2:1, знаки монохромом, на наведении — цвет и кант */
+#view-home .providers-rail { gap: 12px; }
+#view-home .provider { flex: 0 0 calc((100% - 5 * 12px) / 6); width: auto; height: auto; aspect-ratio: 2 / 1;
+                       background: var(--wl-bg-chrome); box-shadow: inset 0 0 0 1px transparent;
+                       transition: box-shadow .2s ease, background-color .2s ease; }
+#view-home .provider img { filter: grayscale(1) brightness(1.4); opacity: .6; transition: opacity .2s ease, filter .2s ease; }
+#view-home .provider:hover { background: var(--wl-bg-raised); box-shadow: inset 0 0 0 1px var(--wl-primary); }
+#view-home .provider:hover img { filter: none; opacity: 1; }
+
+/* Ряды проявляются при прокрутке */
+.pz-rise { opacity: 0; translate: 0 16px; transition: opacity .5s ease, translate .6s cubic-bezier(.2,.7,.2,1); }
+.pz-rise.is-in { opacity: 1; translate: 0 0; }
+
+/* Планшет: промо в колонку, ряды листаются */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .bento { grid-template-rows: 216px 180px; }
+  .t-main { grid-column: span 12; grid-row: span 1; }
+  .t-side { grid-column: span 6; }
+  #view-home .section--slots .gcard { flex-basis: calc((100% - 3 * 12px) / 4); }
+  #view-home .section--top10 .t10 { flex-basis: calc((100% - 2 * 12px) / 3); }
+  #view-home .section--live .gcard { flex-basis: calc((100% - 2 * 12px) / 3); }
+  .crash { grid-template-columns: repeat(3, minmax(240px, 1fr)); overflow-x: auto; }
+}
+/* Телефон: промо — прежний слайдер героя, ленты листаются пальцем */
+@media (max-width: 1023px) {
+  .bento { display: none; }
+  .pz-top { gap: 0; }
+  .wins-lbl { display: none; }
+  .wins { overflow-x: auto; scrollbar-width: none; -webkit-mask-image: none; mask-image: none; }
+  .wins::-webkit-scrollbar { display: none; }
+  .win { height: 32px; font-size: 12px; padding: 0 12px 0 4px; }
+  .win .th { width: 24px; height: 24px; }
+  #view-home .section--slots .gcard { flex-basis: 132px; }
+  #view-home .section--live .gcard { flex-basis: 220px; }
+  #view-home .section--top10 .t10 { flex-basis: 184px; padding-left: 52px; }
+  .t10__num { font-size: 120px; }
+  .crash { grid-template-columns: repeat(3, 260px); overflow-x: auto; scrollbar-width: none; }
+  .crash::-webkit-scrollbar { display: none; }
+  #view-home .provider { flex-basis: 124px; }
+  .section__title h2 { font-size: 15px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pz-rise { opacity: 1; translate: none; transition: none; }
+  .lpill i { animation: none; }
+}
+
 </style>
 </head>
 <body>
@@ -6853,109 +7135,28 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
   </header>
 
   <!-- ═══════════ Сайдбар ═══════════ -->
-  <aside class="sidebar" id="sidebar" data-node-id="860:5895">
-    <div class="sidebar__menu" data-node-id="860:5897">
-      <!-- Бургер и разделы верхнего уровня: верх тёмной колонки, на одном
-           уровне с логотипом — как у Stake. -->
-      <!-- 860:5898 — две группы, между ними зазор 230 -->
-      <div class="sidebar__inner" data-node-id="860:5898">
-
-        <!-- 860:5900 — навигация. Порядок и состав по варфрейму заказчика.
-             Три группы, разделённые линиями: игры, бонусы, поддержка. -->
-        <!-- Первая группа: игровая -->
-        <nav class="sidebar__nav" data-node-id="860:5900">
-
-          <div class="side-item" data-node-id="860:5902">
-            <span class="ico ico--casino" aria-hidden="true"></span>
-            <span class="side-item__label">Casino</span>
-            <img class="chev" src="a/346630b640.svg" alt="">
-          </div>
-          <div class="subcat is-collapsed" data-node-id="860:5903">
-            <div class="subcat__list">
-              <a class="sub-item" href="#"><img src="a/60e8a2f99e.svg" alt=""><span>Lobby</span></a>
-              <a class="sub-item" href="#"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23bbc6cd'%3E%3Cpath d='M12.6 1.8c.3 2.9 1.7 4.3 3.1 5.7 1.5 1.5 2.8 3.2 2.8 5.7a6.5 6.5 0 0 1-13 0c0-1.9.7-3.6 2-4.9.1 1.3.6 2.2 1.5 2.7.4-3.9 1.3-6.7 3.6-9.2Z'/%3E%3Cpath d='M12.2 12.1c1.4 1.2 2.3 2.4 2.3 3.8a2.8 2.8 0 0 1-5.6 0c0-1 .5-1.9 1.2-2.6.1.6.4 1 .8 1.2.2-1 .6-1.7 1.3-2.4Z' fill='%23222a45'/%3E%3C/svg%3E" alt=""><span>Popular Games</span></a>
-              <a class="sub-item" href="#"><img src="a/d4505ffade.svg" alt=""><span>Slots</span></a>
-              <a class="sub-item" href="#"><img src="a/c1845085c1.svg" alt=""><span>Table Games</span></a>
-              <a class="sub-item" href="#"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23bbc6cd'%3E%3Cellipse cx='12' cy='5.6' rx='7.6' ry='3.1'/%3E%3Cpath d='M4.4 8.2c1.6 1.5 4.4 2.4 7.6 2.4s6-.9 7.6-2.4v3.3c0 1.7-3.4 3.1-7.6 3.1s-7.6-1.4-7.6-3.1Z'/%3E%3Cpath d='M4.4 13.6c1.6 1.5 4.4 2.4 7.6 2.4s6-.9 7.6-2.4v3.3c0 1.7-3.4 3.1-7.6 3.1s-7.6-1.4-7.6-3.1Z'/%3E%3C/svg%3E" alt=""><span>Jackpots</span></a>
-              <a class="sub-item" href="#"><img src="a/c46f4569fb.svg" alt=""><span>New Games</span></a>
-              <a class="sub-item" href="#"><img src="a/46d277f6b4.svg" alt=""><span>Providers</span></a>
-            </div>
-          </div>
-
-          <div class="side-item">
-            <img class="ico" src="a/c0ba02d44b.svg" alt="">
-            <span class="side-item__label">Live Casino</span>
-            <img class="chev" src="a/346630b640.svg" alt="">
-          </div>
-          <div class="subcat is-collapsed">
-            <div class="subcat__list">
-              <a class="sub-item" href="#"><img src="a/60e8a2f99e.svg" alt=""><span>Lobby</span></a>
-              <a class="sub-item" href="#"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23bbc6cd'%3E%3Cpath d='M12 1.8a10.2 10.2 0 1 0 0 20.4 10.2 10.2 0 0 0 0-20.4Zm0 3.3a6.9 6.9 0 1 1 0 13.8 6.9 6.9 0 0 1 0-13.8Z'/%3E%3Cpath d='M11.1 4.4h1.8v15.2h-1.8Z'/%3E%3Cpath d='M4.4 11.1h15.2v1.8H4.4Z'/%3E%3Ccircle cx='12' cy='12' r='2.6'/%3E%3Ccircle cx='12' cy='7.6' r='1.1' fill='%23222a45'/%3E%3C/svg%3E" alt=""><span>Roulette</span></a>
-              <a class="sub-item" href="#"><img src="a/c1845085c1.svg" alt=""><span>Blackjack</span></a>
-              <a class="sub-item" href="#"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23bbc6cd'%3E%3Crect x='9' y='2.6' width='10' height='14.4' rx='2'/%3E%3Crect x='3.6' y='5.4' width='12' height='16.8' rx='2.8' fill='%23222a45'/%3E%3Crect x='4.8' y='6.6' width='9.6' height='14.4' rx='2'/%3E%3Cpath d='M9.6 10.6 11.8 13.8 9.6 17 7.4 13.8Z' fill='%23222a45'/%3E%3C/svg%3E" alt=""><span>Baccarat</span></a>
-              <a class="sub-item" href="#"><img src="a/6476cc4cce.svg" alt=""><span>Game Shows</span></a>
-              <a class="sub-item" href="#"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23bbc6cd'%3E%3Cpath d='M12 2.4c-2.5 2.7-7.6 5.6-7.6 9.7a4.1 4.1 0 0 0 6.4 3.4c-.2 2-.9 3.5-2.1 4.6h6.6c-1.2-1.1-1.9-2.6-2.1-4.6a4.1 4.1 0 0 0 6.4-3.4c0-4.1-5.1-7-7.6-9.7Z'/%3E%3C/svg%3E" alt=""><span>Poker</span></a>
-            </div>
-          </div>
-
-          <div class="side-item">
-            <img class="ico" src="a/21ad8ec927.svg" alt="">
-            <span class="side-item__label">Fast Games</span>
-            <img class="chev" src="a/346630b640.svg" alt="">
-          </div>
-          <div class="subcat is-collapsed">
-            <div class="subcat__list">
-              <a class="sub-item" href="#" data-go="crash games"><img class="sub-item__art" src="a/21ad8ec927.svg" alt=""><span>Crash Games</span></a>
-              <a class="sub-item" href="#"><img class="sub-item__art" src="a/cc38b2c720.svg" alt=""><span>Mines</span></a>
-              <a class="sub-item" href="#"><img class="sub-item__art" src="a/ab851b2f84.svg" alt=""><span>Plinko</span></a>
-              <a class="sub-item" href="#"><img class="sub-item__art" src="a/fe40bcd417.svg" alt=""><span>Dice</span></a>
-              <a class="sub-item" href="#"><img class="sub-item__art" src="a/70ed5edf3b.svg" alt=""><span>Limbo</span></a>
-              <a class="sub-item" href="#"><img class="sub-item__art" src="a/10787b61df.svg" alt=""><span>Wheel</span></a>
-              <a class="sub-item" href="#"><img src="a/00cde24c80.svg" alt=""><span>Keno</span></a>
-            </div>
-          </div>
-
-          <div class="side-item" data-node-id="894:29019">
-            <img class="ico" src="a/401e94f115.svg" alt="">
-            <span class="side-item__label">Sport</span>
-            <img class="chev" src="a/346630b640.svg" alt="">
-          </div>
-          <!-- Страницы спорта нет: раздел оставлен заглушкой. Пункты на месте,
-               чтобы структура читалась, но не нажимаются. Лобби — первым,
-               как в разделах казино и живого казино. -->
-          <div class="subcat is-collapsed" data-node-id="1029:29221">
-            <div class="subcat__list">
-              <span class="sub-item is-off" aria-disabled="true"><img src="a/60e8a2f99e.svg" alt=""><span>Lobby</span></span>
-              <span class="sub-item is-off" aria-disabled="true"><img src="a/0eec65d4be.svg" alt=""><span>Upcoming</span></span>
-              <span class="sub-item is-off" aria-disabled="true"><img src="a/eed79b599e.svg" alt=""><span>Outrights</span></span>
-            </div>
-          </div>
-
-          <!-- Вторая группа: бонусная -->
-          <div class="sidebar__rule"></div>
-          <div class="side-item" data-node-id="895:29050">
-            <img class="ico" src="a/6b1e44858b.svg" alt="">
-            <span class="side-item__label">Promotions</span>
-          </div>
-          <div class="side-item">
-            <img class="ico" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23bbc6cd'%3E%3Ccircle cx='8.1' cy='4.4' r='2.7'/%3E%3Ccircle cx='15.9' cy='4.4' r='2.7'/%3E%3Crect x='2.4' y='6.6' width='19.2' height='4.2' rx='1.3'/%3E%3Cpath d='M4 12.2h16v7.2a1.6 1.6 0 0 1-1.6 1.6H5.6A1.6 1.6 0 0 1 4 19.4Z'/%3E%3Crect x='10.4' y='3.6' width='3.2' height='17.4' rx='.8' fill='%23222a45'/%3E%3C/svg%3E" alt="">
-            <span class="side-item__label">Bonuses</span>
-          </div>
-          <div class="side-item" data-auth-only>
-            <img class="ico" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23bbc6cd'%3E%3Cpath d='M2.4 6.9 6.6 11.6 12 4l5.4 7.6 4.2-4.7v10.6a1.6 1.6 0 0 1-1.6 1.6H4A1.6 1.6 0 0 1 2.4 17.5Z'/%3E%3C/svg%3E" alt="">
-            <span class="side-item__label">VIP Club</span>
-          </div>
-        </nav>
-
-
-      </div>
-      <!-- Сворачивание — последней строкой карточки, значком и подписью:
-           наверху оно стояло рядом с разделами и читалось как ещё один
-           раздел. В свёрнутой панели подпись уходит, значок остаётся. -->
-      <button class="nav-toggle" type="button" aria-label="Collapse menu"
-              aria-expanded="true" aria-controls="sidebar"><span
-              class="nav-toggle__label">Collapse</span></button>
-    </div>
+  <!-- Боковая колонка по образцу PLAZMO: 64px значков, по кнопке раскрывается
+       до 216 с подписями. Подпунктов больше нет — каждый пункт ведёт на свою
+       страницу (виды через data-fgo, категории через data-ri-cat).
+       Спорта здесь нет: он погашенной вкладкой стоит в шапке. -->
+  <aside class="sidebar" id="sidebar" aria-label="Categories">
+    <nav class="sbrail">
+        <button class="ri nav-toggle" type="button" data-l="Expand" aria-label="Expand menu"
+                aria-expanded="false" aria-controls="sidebar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="3"/><path d="M9.5 4.5v15"/></svg><span>Collapse</span></button>
+        <hr>
+        <button class="ri" type="button" data-l="Lobby" data-fgo="view:home" data-ri="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg><span>Lobby</span></button>
+        <button class="ri" type="button" data-l="Slots" data-ri-cat="slots"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="3"/><path d="M9.2 5v14M14.8 5v14"/></svg><span>Slots</span></button>
+        <button class="ri" type="button" data-l="Live casino" data-ri-cat="live casino"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="13" height="12" rx="3"/><path d="m16 10.5 5-3v9l-5-3"/></svg><span>Live casino</span></button>
+        <button class="ri" type="button" data-l="Crash" data-ri-cat="crash games"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 19.5c6.5 0 10.5-3.5 16-14"/><path d="M14.5 5.5h5v5"/></svg><span>Crash</span></button>
+        <button class="ri" type="button" data-l="Table games" data-ri-cat="table games"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="11" height="15" rx="2.5"/><path d="m15 7.6 3.8 1.1c.8.2 1.3 1.1 1 1.9l-2.7 9.4"/></svg><span>Table games</span></button>
+        <button class="ri" type="button" data-l="New games" data-ri-cat="new games"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5 13.9 8.6 19 10.5 13.9 12.4 12 17.5 10.1 12.4 5 10.5 10.1 8.6z"/><path d="M18.5 16.5v4M16.5 18.5h4"/></svg><span>New games</span></button>
+        <hr>
+        <button class="ri" type="button" data-l="Bonuses" data-fgo="view:bonuses" data-ri="bonuses"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="8" width="17" height="4" rx="1.5"/><path d="M5 12v7.5h14V12M12 8v11.5M12 8c-1.5-3-5-3.5-5-1.2C7 8 9 8 12 8zm0 0c1.5-3 5-3.5 5-1.2C17 8 15 8 12 8z"/></svg><span>Bonuses</span></button>
+        <button class="ri" type="button" data-l="Promotions" data-fgo="view:promo" data-ri="promo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4.5h8v5a4 4 0 0 1-8 0z"/><path d="M8 6.5H5v1.5a3 3 0 0 0 3 3M16 6.5h3v1.5a3 3 0 0 1-3 3M12 13.5v4M8.5 20.5h7"/></svg><span>Promotions</span></button>
+        <button class="ri" type="button" data-l="VIP club" data-fgo="view:vip" data-ri="vip" data-auth-only><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 17.5 3 7.5l5 4 4-6 4 6 5-4-1 10z"/><path d="M5 20.5h14"/></svg><span>VIP club</span></button>
+        <hr>
+        <button class="ri" type="button" data-l="Support" data-fgo="view:helpSup" data-ri="helpSup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 6.5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H10l-4 3.5v-3.5a1.5 1.5 0 0 1-1.5-1.5z"/></svg><span>Support</span></button>
+    </nav>
   </aside>
 
   <!-- ═══════════ Контент ═══════════ -->
@@ -7098,212 +7299,285 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
 
     <div class="view view--home" id="view-home">
 
+    <!-- ═══ PLAZMO: верх главной по образцу — лента выигрышей и промо-бенто.
+         Данные в ленте — пример, как в образце. Фото в плитках нет по решению
+         заказчика: главная — на огне, боковые — на Char. Прежний герой и
+         гостевой баннер на десктопе скрыты стилем, на мобильной остаются. ═══ -->
+    <div class="pz-top">
+      <div class="wins-row" aria-label="Winning now">
+        <span class="wins-lbl"><i></i>Winning now</span>
+        <div class="wins"><span class="win peak"><span class="th" aria-hidden="true"></span><span class="g">Gates of Olympus</span><span class="id">4471***</span><b>+$12 400</b></span><span class="win"><span class="th" aria-hidden="true"></span><span class="g">Aviator</span><span class="id">7760***</span><b>+$310</b></span><span class="win"><span class="th" aria-hidden="true"></span><span class="g">Sweet Bonanza</span><span class="id">3108***</span><b>+$86</b></span><span class="win"><span class="th" aria-hidden="true"></span><span class="g">Crazy Time</span><span class="id">9025***</span><b>+$1 250</b></span><span class="win"><span class="th" aria-hidden="true"></span><span class="g">Fortune Tiger</span><span class="id">5512***</span><b>+$644</b></span><span class="win"><span class="th" aria-hidden="true"></span><span class="g">Lightning Roulette</span><span class="id">2087***</span><b>+$720</b></span><span class="win"><span class="th" aria-hidden="true"></span><span class="g">Fortune Dragon</span><span class="id">6634***</span><b>+$132</b></span><span class="win"><span class="th" aria-hidden="true"></span><span class="g">Mines</span><span class="id">1180***</span><b>+$58</b></span></div>
+      </div>
+      <div class="bento">
+        <div class="tile t-main">
+          <span class="eyebrow">Welcome pack · 3 deposits</span>
+          <h3>Up to 350%</h3>
+          <p>Bonus on your first three deposits. Warm up your balance.</p>
+          <div class="cta">
+            <button class="pzbtn pzbtn--bone" type="button" data-fgo="auth:reg">Claim bonus</button>
+            <button class="pzbtn pzbtn--ghost" type="button" data-fgo="view:promo">Terms</button>
+          </div>
+          <span class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></span>
+        </div>
+        <a class="tile t-side" href="#" data-cat-go="live casino">
+          <span class="eyebrow">Live casino</span>
+          <h3>Soft dice,<br>hard tables</h3>
+          <span class="sub-l">148 tables live now</span>
+          <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+        </a>
+        <a class="tile t-side t-side--crash" href="#" data-cat-go="crash games">
+          <span class="eyebrow">Crash games · 24</span>
+          <h3>Cash out<br>before the crash</h3>
+          <span class="sub-l">Aviator peaked at ×24,80</span>
+          <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+        </a>
+      </div>
+    </div>
+
     <!-- Секции -->
     <div class="sections" data-node-id="851:2992">
       <div class="sections__top" data-node-id="851:3097">
 
         <!-- Popular Slots -->
-        <section class="section" data-node-id="851:3098">
+        <section class="section section--top10" data-node-id="851:3098">
           <div class="section__head">
             <div class="section__title">
-              <img loading="lazy" decoding="async" src="a/4bd0173c3d.svg" alt="">
-              <h2>Popular</h2>
+              <img src="a/4bd0173c3d.svg" alt="">
+              <h2>Top 10 today</h2>
             </div>
             <div class="section__nav">
               <a class="view-all" href="#">View All</a>
               <div class="slider-btns">
-                <button class="slider-btn slider-btn--prev slider-btn--off" aria-label="Back"><i><img loading="lazy" decoding="async" src="a/8196602e48.svg" alt=""></i></button>
-                <button class="slider-btn slider-btn--next" aria-label="Next"><i><img loading="lazy" decoding="async" src="a/e20dc84eee.svg" alt=""></i></button>
+                <button class="slider-btn slider-btn--prev slider-btn--off" aria-label="Back"><i><img src="a/8196602e48.svg" alt=""></i></button>
+                <button class="slider-btn slider-btn--next" aria-label="Next"><i><img src="a/e20dc84eee.svg" alt=""></i></button>
               </div>
             </div>
           </div>
 
           <div class="rail">
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/e0c94c0a90.webp" alt="" style="width:227px;height:227px;left:calc(50% + 3.2px);top:calc(50% + 0.5px);transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/33353ab54a.webp" alt="" style="width:227px;height:227px;left:calc(50% + 3.2px);top:calc(50% + 0.5px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/e0c94c0a90.webp" alt="" style="width:227px;height:227px;left:calc(50% + 3.2px);top:calc(50% + 0.5px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/33353ab54a.webp" alt="" style="width:227px;height:227px;left:calc(50% + 3.2px);top:calc(50% + 0.5px);transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Gates of<br>Olympus 1000</div><p class="game__provider">PRAGMATIC PLAY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/6d544b165a.webp" alt="" style="width:222.214px;height:222.214px;left:calc(50% + 2.13px);top:50%;transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/ad60376bde.webp" alt="" style="width:222.214px;height:222.214px;left:calc(50% + 2.13px);top:50%;transform:translate(-50%,-50%)">
+              <img class="layer" src="a/6d544b165a.webp" alt="" style="width:222.214px;height:222.214px;left:calc(50% + 2.13px);top:50%;transform:translate(-50%,-50%)">
+              <img class="layer" src="a/ad60376bde.webp" alt="" style="width:222.214px;height:222.214px;left:calc(50% + 2.13px);top:50%;transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Fortune Dragon</div><p class="game__provider">PG SOFT</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/d9b382b56f.webp" alt="" style="width:159.071px;height:238.607px;left:calc(50% + 0.31px);top:calc(50% - 4.55px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/d9b382b56f.webp" alt="" style="width:159.071px;height:238.607px;left:calc(50% + 0.31px);top:calc(50% - 4.55px);transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Fortune Tiger</div><p class="game__provider">PG SOFT</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/333ed83b16.webp" alt="" style="width:379.733px;height:213.6px;left:calc(50% + 0.3px);top:50%;transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/a3c7bafe7d.webp" alt="" style="width:234.964px;height:234.964px;left:calc(50% - 2.42px);bottom:-20.04px;transform:translateX(-50%)">
+              <img class="layer" src="a/333ed83b16.webp" alt="" style="width:379.733px;height:213.6px;left:calc(50% + 0.3px);top:50%;transform:translate(-50%,-50%)">
+              <img class="layer" src="a/a3c7bafe7d.webp" alt="" style="width:234.964px;height:234.964px;left:calc(50% - 2.42px);bottom:-20.04px;transform:translateX(-50%)">
               <div class="game__info"><div class="game__name">Mighty Wild Panther</div><p class="game__provider">WAZDAN</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/ff02fcac20.webp" alt="" style="width:222.214px;height:333.321px;left:calc(50% - 2.42px);top:50%;transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/3307492a6d.webp" alt="" style="width:222.214px;height:333.321px;left:calc(50% - 2.42px);top:50%;transform:translate(-50%,-50%)">
+              <img class="layer" src="a/ff02fcac20.webp" alt="" style="width:222.214px;height:333.321px;left:calc(50% - 2.42px);top:50%;transform:translate(-50%,-50%)">
+              <img class="layer" src="a/3307492a6d.webp" alt="" style="width:222.214px;height:333.321px;left:calc(50% - 2.42px);top:50%;transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Sweet Bonanza 1000</div><p class="game__provider">PRAGMATIC PLAY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/05f10541c3.webp" alt="" style="width:231.321px;height:346.982px;left:calc(50% + 0.31px);top:calc(50% - 0.46px);transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/7823b75dd3.webp" alt="" style="width:231.321px;height:346.982px;left:calc(50% + 0.31px);top:calc(50% - 0.46px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/05f10541c3.webp" alt="" style="width:231.321px;height:346.982px;left:calc(50% + 0.31px);top:calc(50% - 0.46px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/7823b75dd3.webp" alt="" style="width:231.321px;height:346.982px;left:calc(50% + 0.31px);top:calc(50% - 0.46px);transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Spaceman</div><p class="game__provider">PRAGMATIC PLAY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/c4372eb7e1.webp" alt="" style="width:429.867px;height:241.8px;left:calc(50% + 5.23px);bottom:0;transform:translateX(-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/ad5ec06057.webp" alt="" style="width:386.133px;height:217.2px;left:calc(50% + 0.3px);bottom:0;transform:translateX(-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/eb593a8e28.webp" alt="" style="width:173.13px;height:199px;left:calc(50% - 2.4px);top:5px;transform:translateX(-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/11c0f00d73.webp" alt="" style="width:174.857px;height:174.857px;left:calc(50% + 0.31px);top:10.93px;transform:translateX(-50%)">
+              <img class="layer" src="a/c4372eb7e1.webp" alt="" style="width:429.867px;height:241.8px;left:calc(50% + 5.23px);bottom:0;transform:translateX(-50%)">
+              <img class="layer" src="a/ad5ec06057.webp" alt="" style="width:386.133px;height:217.2px;left:calc(50% + 0.3px);bottom:0;transform:translateX(-50%)">
+              <img class="layer" src="a/eb593a8e28.webp" alt="" style="width:173.13px;height:199px;left:calc(50% - 2.4px);top:5px;transform:translateX(-50%)">
+              <img class="layer" src="a/11c0f00d73.webp" alt="" style="width:174.857px;height:174.857px;left:calc(50% + 0.31px);top:10.93px;transform:translateX(-50%)">
               <div class="game__info"><div class="game__name">Mental II</div><p class="game__provider">NOLIMIT CITY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/4910e1a4f8.webp" alt="" style="width:218.571px;height:218.571px;left:calc(50% + 3.96px);top:calc(50% - 8.2px);transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/09cfddd4d6.webp" alt="" style="width:218.571px;height:218.571px;left:calc(50% + 3.96px);top:calc(50% - 8.2px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/4910e1a4f8.webp" alt="" style="width:218.571px;height:218.571px;left:calc(50% + 3.96px);top:calc(50% - 8.2px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/09cfddd4d6.webp" alt="" style="width:218.571px;height:218.571px;left:calc(50% + 3.96px);top:calc(50% - 8.2px);transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Duck Hunters</div><p class="game__provider">NOLIMIT CITY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/7c1cc28009.webp" alt="" style="width:195.5px;height:293.25px;left:calc(50% + 0.31px);top:calc(50% - 19.13px);transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/24da35ff17.webp" alt="" style="width:195.5px;height:293.25px;left:calc(50% + 0.31px);top:calc(50% - 19.13px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/7c1cc28009.webp" alt="" style="width:195.5px;height:293.25px;left:calc(50% + 0.31px);top:calc(50% - 19.13px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/24da35ff17.webp" alt="" style="width:195.5px;height:293.25px;left:calc(50% + 0.31px);top:calc(50% - 19.13px);transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Kill em’ all</div><p class="game__provider">NOLIMIT CITY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/4d730cd5ac.webp" alt="" style="width:180.321px;height:270.482px;left:calc(50% + 0.23px);top:calc(50% + 11.38px);transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/fdde3c232d.webp" alt="" style="width:180.321px;height:270.482px;left:calc(50% + 0.23px);top:calc(50% + 11.38px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/4d730cd5ac.webp" alt="" style="width:180.321px;height:270.482px;left:calc(50% + 0.23px);top:calc(50% + 11.38px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/fdde3c232d.webp" alt="" style="width:180.321px;height:270.482px;left:calc(50% + 0.23px);top:calc(50% + 11.38px);transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Dead or Alive II</div><p class="game__provider">NETENT</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/fc98b34cb2.webp" alt="" style="width:278.679px;height:278.679px;left:calc(50% + 7.6px);top:calc(50% - 4.55px);transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/17dd55bdfa.webp" alt="" style="width:278.679px;height:278.679px;left:calc(50% + 5.24px);top:calc(50% - 4.55px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/fc98b34cb2.webp" alt="" style="width:278.679px;height:278.679px;left:calc(50% + 7.6px);top:calc(50% - 4.55px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/17dd55bdfa.webp" alt="" style="width:278.679px;height:278.679px;left:calc(50% + 5.24px);top:calc(50% - 4.55px);transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Tombstone Slaughter</div><p class="game__provider">NOLIMIT CITY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/00b8e695cb.webp" alt="" style="width:203.393px;height:305.089px;left:calc(50% - 3.33px);top:calc(50% + 12.29px);transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/caaccda5aa.webp" alt="" style="width:203.393px;height:305.089px;left:calc(50% - 3.33px);top:calc(50% + 12.29px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/00b8e695cb.webp" alt="" style="width:203.393px;height:305.089px;left:calc(50% - 3.33px);top:calc(50% + 12.29px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/caaccda5aa.webp" alt="" style="width:203.393px;height:305.089px;left:calc(50% - 3.33px);top:calc(50% + 12.29px);transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Aviator</div><p class="game__provider">SPRIBE</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/3fb3cce83f.webp" alt="" style="width:252.571px;height:378.857px;left:calc(50% + 0.31px);top:calc(50% + 7.29px);transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/9822165f53.webp" alt="" style="width:252.571px;height:378.857px;left:calc(50% + 0.31px);top:calc(50% + 7.29px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/3fb3cce83f.webp" alt="" style="width:252.571px;height:378.857px;left:calc(50% + 0.31px);top:calc(50% + 7.29px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/9822165f53.webp" alt="" style="width:252.571px;height:378.857px;left:calc(50% + 0.31px);top:calc(50% + 7.29px);transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Sugar Rush 1000</div><p class="game__provider">PRAGMATIC PLAY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/49a970df71.webp" alt="" style="width:210.679px;height:316.018px;left:calc(50% + 0.31px);top:calc(50% + 13.01px);transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/158f53e9ad.webp" alt="" style="width:210.679px;height:316.018px;left:calc(50% + 0.31px);top:calc(50% + 13.01px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/49a970df71.webp" alt="" style="width:210.679px;height:316.018px;left:calc(50% + 0.31px);top:calc(50% + 13.01px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/158f53e9ad.webp" alt="" style="width:210.679px;height:316.018px;left:calc(50% + 0.31px);top:calc(50% + 13.01px);transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Mighty Fish Blue Marlin</div><p class="game__provider">WAZDAN</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
           </div>
         </section>
 
-        <!-- New Games -->
-        <section class="section" data-node-id="851:3200">
+        <!-- 5. Crash Games -->
+        <section class="section section--nav section--crash">
           <div class="section__head">
             <div class="section__title">
-              <img loading="lazy" decoding="async" src="a/4bd0173c3d.svg" alt="">
+              <img src="a/21ad8ec927.svg" alt="">
+              <h2>Crash Games</h2>
+            </div>
+            <div class="section__nav">
+              <a class="view-all" href="#">View All</a>
+              <div class="slider-btns">
+                <button class="slider-btn slider-btn--prev slider-btn--off" aria-label="Back"><i><img src="a/8196602e48.svg" alt=""></i></button>
+                <button class="slider-btn slider-btn--next" aria-label="Next"><i><img src="a/e20dc84eee.svg" alt=""></i></button>
+              </div>
+            </div>
+          </div>
+          <!-- Три плитки вместо ленты, как в образце: множитель справа меняет
+               состояние cold → warm → peak; у Aviator он растёт вживую.
+               Лента с обложками остаётся в разметке — из неё собирается
+               страница категории, на главной она скрыта стилем. -->
+          <div class="crash">
+            <a class="cr" href="#" data-cat-go="crash games" data-st="peak" data-live><span class="cr__sq" aria-hidden="true"></span><span class="cr-i"><b>Aviator</b><small>Spribe</small><span class="on"><i></i><em data-on="1204">1 204</em> playing</span></span><span class="x">×24,80</span><svg class="curve" viewBox="0 0 200 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0 80C90 79 150 66 200 4V80Z" fill="currentColor" opacity=".10"/><path d="M0 80C90 79 150 66 200 4" fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg></a>
+            <a class="cr" href="#" data-cat-go="crash games" data-st="warm"><span class="cr__sq" aria-hidden="true"></span><span class="cr-i"><b>Mines</b><small>Spribe</small><span class="on"><i></i><em data-on="640">640</em> playing</span></span><span class="x">×5,90</span><svg class="curve" viewBox="0 0 200 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0 80C90 79 150 66 200 4V80Z" fill="currentColor" opacity=".10"/><path d="M0 80C90 79 150 66 200 4" fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg></a>
+            <a class="cr" href="#" data-cat-go="crash games" data-st="cold"><span class="cr__sq" aria-hidden="true"></span><span class="cr-i"><b>JetX</b><small>SmartSoft</small><span class="on"><i></i><em data-on="862">862</em> playing</span></span><span class="x">×1,07</span><svg class="curve" viewBox="0 0 200 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0 80C90 79 150 66 200 4V80Z" fill="currentColor" opacity=".10"/><path d="M0 80C90 79 150 66 200 4" fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg></a>
+          </div>
+          <div class="rail">
+            <article class="game game--flat"><img class="layer" src="a/937ae6b6e3.webp" alt=""><span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
+            <article class="game game--flat"><img class="layer" src="a/66cfa4194f.webp" alt=""><span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
+            <article class="game game--flat"><img class="layer" src="a/8fd2ce2c26.webp" alt=""><span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
+            <article class="game game--flat"><img class="layer" src="a/dfd84b2b61.webp" alt=""><span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
+            <article class="game game--flat"><img class="layer" src="a/d64721c936.webp" alt=""><span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
+            <article class="game game--flat"><img class="layer" src="a/a40edf5429.webp" alt=""><span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
+            <article class="game game--flat"><img class="layer" src="a/8ed282e708.webp" alt=""><span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
+            <article class="game game--flat"><img class="layer" src="a/2a1bf9f4d8.webp" alt=""><span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
+            <article class="game game--flat"><img class="layer" src="a/508bda3ff7.webp" alt=""><span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
+            <article class="game game--flat"><img class="layer" src="a/a1b8141b0e.webp" alt=""><span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
+          </div>
+        </section>
+
+        <!-- New Games -->
+        <section class="section section--slots" data-node-id="851:3200">
+          <div class="section__head">
+            <div class="section__title">
+              <img src="a/4bd0173c3d.svg" alt="">
               <h2>Slots</h2>
             </div>
             <div class="section__nav">
               <a class="view-all" href="#">View All</a>
               <div class="slider-btns">
-                <button class="slider-btn slider-btn--prev slider-btn--off" aria-label="Back"><i><img loading="lazy" decoding="async" src="a/8196602e48.svg" alt=""></i></button>
-                <button class="slider-btn slider-btn--next" aria-label="Next"><i><img loading="lazy" decoding="async" src="a/e20dc84eee.svg" alt=""></i></button>
+                <button class="slider-btn slider-btn--prev slider-btn--off" aria-label="Back"><i><img src="a/8196602e48.svg" alt=""></i></button>
+                <button class="slider-btn slider-btn--next" aria-label="Next"><i><img src="a/e20dc84eee.svg" alt=""></i></button>
               </div>
             </div>
           </div>
           <div class="rail">
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/4910e1a4f8.webp" alt="" style="width:218.571px;height:218.571px;left:calc(50% + 3.96px);top:calc(50% - 8.2px);transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/09cfddd4d6.webp" alt="" style="width:218.571px;height:218.571px;left:calc(50% + 3.96px);top:calc(50% - 8.2px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/4910e1a4f8.webp" alt="" style="width:218.571px;height:218.571px;left:calc(50% + 3.96px);top:calc(50% - 8.2px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/09cfddd4d6.webp" alt="" style="width:218.571px;height:218.571px;left:calc(50% + 3.96px);top:calc(50% - 8.2px);transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Duck Hunters</div><p class="game__provider">NOLIMIT CITY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/7c1cc28009.webp" alt="" style="width:195.5px;height:293.25px;left:calc(50% + 0.31px);top:calc(50% - 19.13px);transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/24da35ff17.webp" alt="" style="width:195.5px;height:293.25px;left:calc(50% + 0.31px);top:calc(50% - 19.13px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/7c1cc28009.webp" alt="" style="width:195.5px;height:293.25px;left:calc(50% + 0.31px);top:calc(50% - 19.13px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/24da35ff17.webp" alt="" style="width:195.5px;height:293.25px;left:calc(50% + 0.31px);top:calc(50% - 19.13px);transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Kill em’ all</div><p class="game__provider">NOLIMIT CITY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/4d730cd5ac.webp" alt="" style="width:180.321px;height:270.482px;left:calc(50% + 0.23px);top:calc(50% + 11.38px);transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/fdde3c232d.webp" alt="" style="width:180.321px;height:270.482px;left:calc(50% + 0.23px);top:calc(50% + 11.38px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/4d730cd5ac.webp" alt="" style="width:180.321px;height:270.482px;left:calc(50% + 0.23px);top:calc(50% + 11.38px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/fdde3c232d.webp" alt="" style="width:180.321px;height:270.482px;left:calc(50% + 0.23px);top:calc(50% + 11.38px);transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Dead or Alive II</div><p class="game__provider">NETENT</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/fc98b34cb2.webp" alt="" style="width:278.679px;height:278.679px;left:calc(50% + 7.6px);top:calc(50% - 4.55px);transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/17dd55bdfa.webp" alt="" style="width:278.679px;height:278.679px;left:calc(50% + 5.24px);top:calc(50% - 4.55px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/fc98b34cb2.webp" alt="" style="width:278.679px;height:278.679px;left:calc(50% + 7.6px);top:calc(50% - 4.55px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/17dd55bdfa.webp" alt="" style="width:278.679px;height:278.679px;left:calc(50% + 5.24px);top:calc(50% - 4.55px);transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Tombstone Slaughter</div><p class="game__provider">NOLIMIT CITY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/00b8e695cb.webp" alt="" style="width:203.393px;height:305.089px;left:calc(50% - 3.33px);top:calc(50% + 12.29px);transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/caaccda5aa.webp" alt="" style="width:203.393px;height:305.089px;left:calc(50% - 3.33px);top:calc(50% + 12.29px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/00b8e695cb.webp" alt="" style="width:203.393px;height:305.089px;left:calc(50% - 3.33px);top:calc(50% + 12.29px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/caaccda5aa.webp" alt="" style="width:203.393px;height:305.089px;left:calc(50% - 3.33px);top:calc(50% + 12.29px);transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Aviator</div><p class="game__provider">SPRIBE</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/3fb3cce83f.webp" alt="" style="width:252.571px;height:378.857px;left:calc(50% + 0.31px);top:calc(50% + 7.29px);transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/9822165f53.webp" alt="" style="width:252.571px;height:378.857px;left:calc(50% + 0.31px);top:calc(50% + 7.29px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/3fb3cce83f.webp" alt="" style="width:252.571px;height:378.857px;left:calc(50% + 0.31px);top:calc(50% + 7.29px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/9822165f53.webp" alt="" style="width:252.571px;height:378.857px;left:calc(50% + 0.31px);top:calc(50% + 7.29px);transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Sugar Rush 1000</div><p class="game__provider">PRAGMATIC PLAY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/49a970df71.webp" alt="" style="width:210.679px;height:316.018px;left:calc(50% + 0.31px);top:calc(50% + 13.01px);transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/158f53e9ad.webp" alt="" style="width:210.679px;height:316.018px;left:calc(50% + 0.31px);top:calc(50% + 13.01px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/49a970df71.webp" alt="" style="width:210.679px;height:316.018px;left:calc(50% + 0.31px);top:calc(50% + 13.01px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/158f53e9ad.webp" alt="" style="width:210.679px;height:316.018px;left:calc(50% + 0.31px);top:calc(50% + 13.01px);transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Mighty Fish Blue Marlin</div><p class="game__provider">WAZDAN</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/e0c94c0a90.webp" alt="" style="width:227px;height:227px;left:calc(50% + 3.2px);top:calc(50% + 0.5px);transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/33353ab54a.webp" alt="" style="width:227px;height:227px;left:calc(50% + 3.2px);top:calc(50% + 0.5px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/e0c94c0a90.webp" alt="" style="width:227px;height:227px;left:calc(50% + 3.2px);top:calc(50% + 0.5px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/33353ab54a.webp" alt="" style="width:227px;height:227px;left:calc(50% + 3.2px);top:calc(50% + 0.5px);transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Gates of<br>Olympus 1000</div><p class="game__provider">PRAGMATIC PLAY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/6d544b165a.webp" alt="" style="width:222.214px;height:222.214px;left:calc(50% + 2.13px);top:50%;transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/ad60376bde.webp" alt="" style="width:222.214px;height:222.214px;left:calc(50% + 2.13px);top:50%;transform:translate(-50%,-50%)">
+              <img class="layer" src="a/6d544b165a.webp" alt="" style="width:222.214px;height:222.214px;left:calc(50% + 2.13px);top:50%;transform:translate(-50%,-50%)">
+              <img class="layer" src="a/ad60376bde.webp" alt="" style="width:222.214px;height:222.214px;left:calc(50% + 2.13px);top:50%;transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Fortune Dragon</div><p class="game__provider">PG SOFT</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/d9b382b56f.webp" alt="" style="width:159.071px;height:238.607px;left:calc(50% + 0.31px);top:calc(50% - 4.55px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/d9b382b56f.webp" alt="" style="width:159.071px;height:238.607px;left:calc(50% + 0.31px);top:calc(50% - 4.55px);transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Fortune Tiger</div><p class="game__provider">PG SOFT</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/333ed83b16.webp" alt="" style="width:379.733px;height:213.6px;left:calc(50% + 0.3px);top:50%;transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/a3c7bafe7d.webp" alt="" style="width:234.964px;height:234.964px;left:calc(50% - 2.42px);bottom:-20.04px;transform:translateX(-50%)">
+              <img class="layer" src="a/333ed83b16.webp" alt="" style="width:379.733px;height:213.6px;left:calc(50% + 0.3px);top:50%;transform:translate(-50%,-50%)">
+              <img class="layer" src="a/a3c7bafe7d.webp" alt="" style="width:234.964px;height:234.964px;left:calc(50% - 2.42px);bottom:-20.04px;transform:translateX(-50%)">
               <div class="game__info"><div class="game__name">Mighty Wild Panther</div><p class="game__provider">WAZDAN</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/ff02fcac20.webp" alt="" style="width:222.214px;height:333.321px;left:calc(50% - 2.42px);top:50%;transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/3307492a6d.webp" alt="" style="width:222.214px;height:333.321px;left:calc(50% - 2.42px);top:50%;transform:translate(-50%,-50%)">
+              <img class="layer" src="a/ff02fcac20.webp" alt="" style="width:222.214px;height:333.321px;left:calc(50% - 2.42px);top:50%;transform:translate(-50%,-50%)">
+              <img class="layer" src="a/3307492a6d.webp" alt="" style="width:222.214px;height:333.321px;left:calc(50% - 2.42px);top:50%;transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Sweet Bonanza 1000</div><p class="game__provider">PRAGMATIC PLAY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/05f10541c3.webp" alt="" style="width:231.321px;height:346.982px;left:calc(50% + 0.31px);top:calc(50% - 0.46px);transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/7823b75dd3.webp" alt="" style="width:231.321px;height:346.982px;left:calc(50% + 0.31px);top:calc(50% - 0.46px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/05f10541c3.webp" alt="" style="width:231.321px;height:346.982px;left:calc(50% + 0.31px);top:calc(50% - 0.46px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/7823b75dd3.webp" alt="" style="width:231.321px;height:346.982px;left:calc(50% + 0.31px);top:calc(50% - 0.46px);transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Spaceman</div><p class="game__provider">PRAGMATIC PLAY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img loading="lazy" decoding="async" class="layer" src="a/c4372eb7e1.webp" alt="" style="width:429.867px;height:241.8px;left:calc(50% + 5.23px);bottom:0;transform:translateX(-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/ad5ec06057.webp" alt="" style="width:386.133px;height:217.2px;left:calc(50% + 0.3px);bottom:0;transform:translateX(-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/eb593a8e28.webp" alt="" style="width:173.13px;height:199px;left:calc(50% - 2.4px);top:5px;transform:translateX(-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/11c0f00d73.webp" alt="" style="width:174.857px;height:174.857px;left:calc(50% + 0.31px);top:10.93px;transform:translateX(-50%)">
+              <img class="layer" src="a/c4372eb7e1.webp" alt="" style="width:429.867px;height:241.8px;left:calc(50% + 5.23px);bottom:0;transform:translateX(-50%)">
+              <img class="layer" src="a/ad5ec06057.webp" alt="" style="width:386.133px;height:217.2px;left:calc(50% + 0.3px);bottom:0;transform:translateX(-50%)">
+              <img class="layer" src="a/eb593a8e28.webp" alt="" style="width:173.13px;height:199px;left:calc(50% - 2.4px);top:5px;transform:translateX(-50%)">
+              <img class="layer" src="a/11c0f00d73.webp" alt="" style="width:174.857px;height:174.857px;left:calc(50% + 0.31px);top:10.93px;transform:translateX(-50%)">
               <div class="game__info"><div class="game__name">Mental II</div><p class="game__provider">NOLIMIT CITY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
           </div>
@@ -7313,98 +7587,98 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         <!-- 1. Popular · 2. Slots · 3. Live Casino · 4. баннер ·
              5. Crash Games · 6. Sports · 7. Providers -->
         <!-- Live Casino -->
-        <section class="section section--nav" data-node-id="851:3302">
+        <section class="section section--nav section--live" data-node-id="851:3302">
           <div class="section__head">
             <div class="section__title">
-              <img loading="lazy" decoding="async" src="a/e3031bd22a.svg" alt="">
+              <img src="a/e3031bd22a.svg" alt="">
               <h2>Live Casino</h2>
             </div>
             <div class="section__nav">
               <a class="view-all" href="#">View All</a>
               <div class="slider-btns">
-                <button class="slider-btn slider-btn--prev slider-btn--off" aria-label="Back"><i><img loading="lazy" decoding="async" src="a/8196602e48.svg" alt=""></i></button>
-                <button class="slider-btn slider-btn--next" aria-label="Next"><i><img loading="lazy" decoding="async" src="a/e20dc84eee.svg" alt=""></i></button>
+                <button class="slider-btn slider-btn--prev slider-btn--off" aria-label="Back"><i><img src="a/8196602e48.svg" alt=""></i></button>
+                <button class="slider-btn slider-btn--next" aria-label="Next"><i><img src="a/e20dc84eee.svg" alt=""></i></button>
               </div>
             </div>
           </div>
           <div class="rail">
             <article class="lc">
-              <img loading="lazy" decoding="async" class="layer" src="a/7b8c5a3dcf.webp" alt="" style="width:237.703px;height:278.809px;left:calc(50% + 8.75px);top:calc(50% - 20.6px);transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/edb136d804.webp" alt="" style="width:235.947px;height:276.75px;left:calc(50% - 4.01px);top:calc(50% + 6.37px);transform:translate(-50%,-50%);object-position:bottom">
+              <img class="layer" src="a/7b8c5a3dcf.webp" alt="" style="width:237.703px;height:278.809px;left:calc(50% + 8.75px);top:calc(50% - 20.6px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/edb136d804.webp" alt="" style="width:235.947px;height:276.75px;left:calc(50% - 4.01px);top:calc(50% + 6.37px);transform:translate(-50%,-50%);object-position:bottom">
               <div class="lc__info"><div class="lc__name">BLACKJACK<br>LIVE</div><p class="lc__provider">EVOLUTION</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="lc">
-              <img loading="lazy" decoding="async" class="layer" src="a/3d756c5d30.webp" alt="" style="width:180px;height:320px;left:calc(50% - 0.3px);top:calc(50% + 14px);transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/a039bbdff2.webp" alt="" style="width:190px;height:223px;left:calc(50% + 2.7px);top:calc(50% + 13.5px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/3d756c5d30.webp" alt="" style="width:180px;height:320px;left:calc(50% - 0.3px);top:calc(50% + 14px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/a039bbdff2.webp" alt="" style="width:190px;height:223px;left:calc(50% + 2.7px);top:calc(50% + 13.5px);transform:translate(-50%,-50%)">
               <div class="lc__info"><div class="lc__name">ROULETTE</div><p class="lc__provider">EVOLUTION</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="lc">
-              <img loading="lazy" decoding="async" class="layer" src="a/b9246e14f4.webp" alt="" style="width:355.179px;height:236.786px;left:calc(50% - 0.27px);top:50%;transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/c7519024b5.webp" alt="" style="width:234.964px;height:234.964px;left:calc(50% + 0.64px);bottom:-47.54px;transform:translateX(-50%)">
+              <img class="layer" src="a/b9246e14f4.webp" alt="" style="width:355.179px;height:236.786px;left:calc(50% - 0.27px);top:50%;transform:translate(-50%,-50%)">
+              <img class="layer" src="a/c7519024b5.webp" alt="" style="width:234.964px;height:234.964px;left:calc(50% + 0.64px);bottom:-47.54px;transform:translateX(-50%)">
               <div class="lc__info"><div class="lc__name">BAC BO</div><p class="lc__provider">EVOLUTION</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="lc">
-              <img loading="lazy" decoding="async" class="layer" src="a/da03040639.webp" alt="" style="width:355.121px;height:213.107px;left:calc(50% - 0.1px);top:-10.2px;transform:translateX(-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/a0fbce450a.webp" alt="" style="width:427.429px;height:240.429px;left:calc(50% + 4.91px);bottom:-44.8px;transform:translateX(-50%)">
+              <img class="layer" src="a/da03040639.webp" alt="" style="width:355.121px;height:213.107px;left:calc(50% - 0.1px);top:-10.2px;transform:translateX(-50%)">
+              <img class="layer" src="a/a0fbce450a.webp" alt="" style="width:427.429px;height:240.429px;left:calc(50% + 4.91px);bottom:-44.8px;transform:translateX(-50%)">
               <div class="lc__info"><div class="lc__name">BACCARAT</div><p class="lc__provider">PRAGMATIC PLAY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="lc">
-              <img loading="lazy" decoding="async" class="layer" src="a/a17ea45019.webp" alt="" style="width:505.957px;height:252.979px;left:calc(50% + 131.01px);bottom:-31.24px;transform:translateX(-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/8248bb9677.webp" alt="" style="width:191.59px;height:318.702px;left:calc(50% + 0.14px);bottom:-125.33px;transform:translateX(-50%)">
+              <img class="layer" src="a/a17ea45019.webp" alt="" style="width:505.957px;height:252.979px;left:calc(50% + 131.01px);bottom:-31.24px;transform:translateX(-50%)">
+              <img class="layer" src="a/8248bb9677.webp" alt="" style="width:191.59px;height:318.702px;left:calc(50% + 0.14px);bottom:-125.33px;transform:translateX(-50%)">
               <div class="lc__info"><div class="lc__name">MEGA<br>BACCARAT</div><p class="lc__provider">PRAGMATIC PLAY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="lc">
-              <img loading="lazy" decoding="async" class="layer" src="a/a07e2f7cd1.webp" alt="" style="width:417.952px;height:278.566px;left:calc(50% - 46.25px);top:calc(50% - 0.06px);transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/16f36ff5dc.webp" alt="" style="width:191.731px;height:243.351px;left:calc(50% + 2.88px);bottom:-4.07px;transform:translateX(-50%)">
+              <img class="layer" src="a/a07e2f7cd1.webp" alt="" style="width:417.952px;height:278.566px;left:calc(50% - 46.25px);top:calc(50% - 0.06px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/16f36ff5dc.webp" alt="" style="width:191.731px;height:243.351px;left:calc(50% + 2.88px);bottom:-4.07px;transform:translateX(-50%)">
               <div class="lc__info"><div class="lc__name">MEGA<br>ROULETTE</div><p class="lc__provider">PRAGMATIC PLAY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="lc lc--violet">
-              <img loading="lazy" decoding="async" class="layer" src="a/c4c48d66d3.webp" alt="" style="width:417.933px;height:235.087px;left:calc(50% + 1.14px);top:-14.9px;transform:translateX(-50%);filter:blur(1.821px)">
-              <img loading="lazy" decoding="async" class="layer" src="a/bfd0abc71b.webp" alt="" style="width:201.908px;height:226.77px;left:calc(50% + 13.01px);bottom:-24.77px;transform:translateX(-50%);object-position:bottom">
+              <img class="layer" src="a/c4c48d66d3.webp" alt="" style="width:417.933px;height:235.087px;left:calc(50% + 1.14px);top:-14.9px;transform:translateX(-50%);filter:blur(1.821px)">
+              <img class="layer" src="a/bfd0abc71b.webp" alt="" style="width:201.908px;height:226.77px;left:calc(50% + 13.01px);bottom:-24.77px;transform:translateX(-50%);object-position:bottom">
               <div class="lc__info"><div class="lc__name">TREASURE<br>ISLAND</div><p class="lc__provider">PRAGMATIC PLAY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="lc">
-              <img loading="lazy" decoding="async" class="layer" src="a/c4c48d66d3.webp" alt="" style="width:417.933px;height:235.087px;left:calc(50% + 1.14px);top:-14.9px;transform:translateX(-50%);filter:blur(1.821px)">
-              <img loading="lazy" decoding="async" class="layer" src="a/263e6997d9.webp" alt="" style="width:519px;height:519px;left:calc(50% - 152px);top:calc(50% + 31.5px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/c4c48d66d3.webp" alt="" style="width:417.933px;height:235.087px;left:calc(50% + 1.14px);top:-14.9px;transform:translateX(-50%);filter:blur(1.821px)">
+              <img class="layer" src="a/263e6997d9.webp" alt="" style="width:519px;height:519px;left:calc(50% - 152px);top:calc(50% + 31.5px);transform:translate(-50%,-50%)">
               <div class="lc__info" style="background-image:linear-gradient(to bottom, rgba(0,0,0,0), #fe0fa6)"><div class="lc__name">SWEET BONANZA CANDYLAND</div><p class="lc__provider">PRAGMATIC PLAY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="lc">
-              <img loading="lazy" decoding="async" class="layer" src="a/c4c48d66d3.webp" alt="" style="width:417.933px;height:235.087px;left:calc(50% + 1.14px);top:-14.9px;transform:translateX(-50%);filter:blur(1.821px)">
-              <img loading="lazy" decoding="async" class="layer" src="a/ae2d81fac0.webp" alt="" style="width:355.5px;height:237px;left:-2.6px;top:calc(50% + 16.5px);transform:translateY(-50%)">
+              <img class="layer" src="a/c4c48d66d3.webp" alt="" style="width:417.933px;height:235.087px;left:calc(50% + 1.14px);top:-14.9px;transform:translateX(-50%);filter:blur(1.821px)">
+              <img class="layer" src="a/ae2d81fac0.webp" alt="" style="width:355.5px;height:237px;left:-2.6px;top:calc(50% + 16.5px);transform:translateY(-50%)">
               <div class="lc__info" style="background-image:linear-gradient(to bottom, rgba(0,0,0,0), #0f13fe)"><div class="lc__name">LIGHTNING ROULETTE</div><p class="lc__provider">EVOLUTION</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="lc">
-              <img loading="lazy" decoding="async" class="layer" src="a/c4c48d66d3.webp" alt="" style="width:417.933px;height:235.087px;left:calc(50% + 1.14px);top:-14.9px;transform:translateX(-50%);filter:blur(1.821px)">
-              <img loading="lazy" decoding="async" class="layer" src="a/6d36ca316f.webp" alt="" style="width:315px;height:234px;left:calc(50% + 1.6px);top:calc(50% + 10px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/c4c48d66d3.webp" alt="" style="width:417.933px;height:235.087px;left:calc(50% + 1.14px);top:-14.9px;transform:translateX(-50%);filter:blur(1.821px)">
+              <img class="layer" src="a/6d36ca316f.webp" alt="" style="width:315px;height:234px;left:calc(50% + 1.6px);top:calc(50% + 10px);transform:translate(-50%,-50%)">
               <div class="lc__info" style="background-image:linear-gradient(to bottom, rgba(0,0,0,0), #0feefe)"><div class="lc__name">SUPER 8 BACCARAT</div><p class="lc__provider">PRAGMATIC PLAY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="lc lc--black">
-              <img loading="lazy" decoding="async" class="layer" src="a/a7d309d5b8.webp" alt="" style="width:222px;height:222px;left:calc(50% - 13.1px);top:50%;transform:translate(-50%,-50%)">
+              <img class="layer" src="a/a7d309d5b8.webp" alt="" style="width:222px;height:222px;left:calc(50% - 13.1px);top:50%;transform:translate(-50%,-50%)">
               <div class="lc__info" style="background-image:linear-gradient(to bottom, rgba(0,0,0,0), #f20ffe)"><div class="lc__name">CRAZY TIME</div><p class="lc__provider">EVOLUTION</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="lc lc--black">
-              <img loading="lazy" decoding="async" class="layer" src="a/e0164a7f9c.webp" alt="" style="width:369px;height:233px;left:calc(50% + 9.2px);top:calc(50% + 14.5px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/e0164a7f9c.webp" alt="" style="width:369px;height:233px;left:calc(50% + 9.2px);top:calc(50% + 14.5px);transform:translate(-50%,-50%)">
               <div class="lc__info" style="background-image:linear-gradient(to bottom, rgba(0,0,0,0), #830ffe)"><div class="lc__name">LUCKY 6 ROULETTE</div><p class="lc__provider">PRAGMATIC PLAY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="lc lc--black">
-              <img loading="lazy" decoding="async" class="layer" src="a/33ad6da365.webp" alt="" style="width:440px;height:248px;left:calc(50% + 10.5px);top:-2px;transform:translateX(-50%)">
+              <img class="layer" src="a/33ad6da365.webp" alt="" style="width:440px;height:248px;left:calc(50% + 10.5px);top:-2px;transform:translateX(-50%)">
               <div class="lc__info" style="background-image:linear-gradient(to bottom, rgba(0,0,0,0), #23fe0f)"><div class="lc__name">FORTUNE ROULETTE</div><p class="lc__provider">PRAGMATIC PLAY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="lc lc--black">
-              <img loading="lazy" decoding="async" class="layer" src="a/bc0eced8d1.webp" alt="" style="width:504.459px;height:264px;left:calc(50% + 0.3px);top:calc(50% + 30px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/bc0eced8d1.webp" alt="" style="width:504.459px;height:264px;left:calc(50% + 0.3px);top:calc(50% + 30px);transform:translate(-50%,-50%)">
               <div class="lc__info" style="background-image:linear-gradient(to bottom, rgba(0,0,0,0), #fea20f)"><div class="lc__name">DRAGON TIGER</div><p class="lc__provider">EVOLUTION</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
           </div>
@@ -7421,82 +7695,54 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         </section>
 
         <!-- 1068:32551 «Sport Bets» — карточки 154.2x204, зазор 12 -->
-        <!-- 5. Crash Games -->
-        <section class="section section--nav">
-          <div class="section__head">
-            <div class="section__title">
-              <img loading="lazy" decoding="async" src="a/21ad8ec927.svg" alt="">
-              <h2>Crash Games</h2>
-            </div>
-            <div class="section__nav">
-              <a class="view-all" href="#">View All</a>
-              <div class="slider-btns">
-                <button class="slider-btn slider-btn--prev slider-btn--off" aria-label="Back"><i><img loading="lazy" decoding="async" src="a/8196602e48.svg" alt=""></i></button>
-                <button class="slider-btn slider-btn--next" aria-label="Next"><i><img loading="lazy" decoding="async" src="a/e20dc84eee.svg" alt=""></i></button>
-              </div>
-            </div>
-          </div>
-          <div class="rail">
-            <article class="game game--flat"><img loading="lazy" decoding="async" class="layer" src="a/937ae6b6e3.webp" alt=""><span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-            <article class="game game--flat"><img loading="lazy" decoding="async" class="layer" src="a/66cfa4194f.webp" alt=""><span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-            <article class="game game--flat"><img loading="lazy" decoding="async" class="layer" src="a/8fd2ce2c26.webp" alt=""><span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-            <article class="game game--flat"><img loading="lazy" decoding="async" class="layer" src="a/dfd84b2b61.webp" alt=""><span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-            <article class="game game--flat"><img loading="lazy" decoding="async" class="layer" src="a/d64721c936.webp" alt=""><span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-            <article class="game game--flat"><img loading="lazy" decoding="async" class="layer" src="a/a40edf5429.webp" alt=""><span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-            <article class="game game--flat"><img loading="lazy" decoding="async" class="layer" src="a/8ed282e708.webp" alt=""><span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-            <article class="game game--flat"><img loading="lazy" decoding="async" class="layer" src="a/2a1bf9f4d8.webp" alt=""><span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-            <article class="game game--flat"><img loading="lazy" decoding="async" class="layer" src="a/508bda3ff7.webp" alt=""><span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-            <article class="game game--flat"><img loading="lazy" decoding="async" class="layer" src="a/a1b8141b0e.webp" alt=""><span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-          </div>
-        </section>
         <!-- 6. Sport Bets -->
         <section class="section section--nav section--sport" data-node-id="1068:32551">
           <div class="section__head">
             <div class="section__title">
-              <img loading="lazy" decoding="async" src="a/683a54f182.svg" alt="">
+              <img src="a/683a54f182.svg" alt="">
               <h2>Sport Bets</h2>
             </div>
             <div class="section__nav">
               <a class="view-all" href="#">View All</a>
               <div class="slider-btns">
-                <button class="slider-btn slider-btn--prev slider-btn--off" aria-label="Back"><i><img loading="lazy" decoding="async" src="a/8196602e48.svg" alt=""></i></button>
-                <button class="slider-btn slider-btn--next" aria-label="Next"><i><img loading="lazy" decoding="async" src="a/e20dc84eee.svg" alt=""></i></button>
+                <button class="slider-btn slider-btn--prev slider-btn--off" aria-label="Back"><i><img src="a/8196602e48.svg" alt=""></i></button>
+                <button class="slider-btn slider-btn--next" aria-label="Next"><i><img src="a/e20dc84eee.svg" alt=""></i></button>
               </div>
             </div>
           </div>
           <div class="rail rail--sport" data-node-id="1068:32768">
             <article class="sport">
-              <img loading="lazy" decoding="async" class="layer" src="a/8627c028a8.webp" alt="">
+              <img class="layer" src="a/8627c028a8.webp" alt="">
               <div class="sport__info" style="--plate:49px;--plate-bg:linear-gradient(to bottom, rgba(11,26,37,0) 0%, #092B68 91.8%)"><div class="sport__name">FOOTBALL</div></div>
               <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span>
             </article>
             <article class="sport">
-              <img loading="lazy" decoding="async" class="layer" src="a/2da1eae5ba.webp" alt="">
+              <img class="layer" src="a/2da1eae5ba.webp" alt="">
               <div class="sport__info" style="--plate:49px;--plate-bg:linear-gradient(to bottom, rgba(11,26,37,0) 0%, #7F0824 91.8%)"><div class="sport__name">BASKETBALL</div></div>
               <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span>
             </article>
             <article class="sport">
-              <img loading="lazy" decoding="async" class="layer" src="a/7aa1fcba38.webp" alt="">
+              <img class="layer" src="a/7aa1fcba38.webp" alt="">
               <div class="sport__info" style="--plate:49px;--plate-bg:linear-gradient(to bottom, rgba(11,26,37,0) 0%, #C07D02 91.8%)"><div class="sport__name">VOLLEYBALL</div></div>
               <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span>
             </article>
             <article class="sport">
-              <img loading="lazy" decoding="async" class="layer" src="a/413fe52f24.webp" alt="">
+              <img class="layer" src="a/413fe52f24.webp" alt="">
               <div class="sport__info" style="--plate:49px;--plate-bg:linear-gradient(to bottom, rgba(11,26,37,0) 0%, #DD3E00 91.8%)"><div class="sport__name">BASEBALL</div></div>
               <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span>
             </article>
             <article class="sport">
-              <img loading="lazy" decoding="async" class="layer" src="a/60a1c14e6e.webp" alt="">
+              <img class="layer" src="a/60a1c14e6e.webp" alt="">
               <div class="sport__info" style="--plate:52px;--plate-bg:linear-gradient(to bottom, rgba(11,26,37,0) 0%, #AD011A 100%)"><div class="sport__name">MMA</div></div>
               <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span>
             </article>
             <article class="sport">
-              <img loading="lazy" decoding="async" class="layer" src="a/5d25247418.webp" alt="">
+              <img class="layer" src="a/5d25247418.webp" alt="">
               <div class="sport__info" style="--plate:49px;--plate-bg:linear-gradient(to bottom, rgba(11,26,37,0) 0%, #C30324 91.8%)"><div class="sport__name">TENNIS</div></div>
               <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span>
             </article>
             <article class="sport">
-              <img loading="lazy" decoding="async" class="layer" src="a/4234ce4699.webp" alt="">
+              <img class="layer" src="a/4234ce4699.webp" alt="">
               <div class="sport__info" style="--plate:72px;--plate-bg:linear-gradient(to bottom, rgba(11,26,37,0) 0%, #AD011A 100%)"><div class="sport__name">TABLE<br>TENNIS</div></div>
               <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span>
             </article>
@@ -7505,41 +7751,41 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
 
       <!-- Провайдеры + футер -->
       <div class="footer-block" data-node-id="891:3010">
-        <section class="section section--nav" data-node-id="851:3474">
+        <section class="section section--nav section--prov" data-node-id="851:3474">
           <div class="section__head">
             <div class="section__title">
-              <img loading="lazy" decoding="async" src="a/46d277f6b4.svg" alt="">
+              <img src="a/46d277f6b4.svg" alt="">
               <h2>Providers</h2>
             </div>
             <div class="section__nav">
               <a class="view-all" href="#">View All</a>
               <div class="slider-btns">
-                <button class="slider-btn slider-btn--prev slider-btn--off" aria-label="Back"><i><img loading="lazy" decoding="async" src="a/8196602e48.svg" alt=""></i></button>
-                <button class="slider-btn slider-btn--next" aria-label="Next"><i><img loading="lazy" decoding="async" src="a/e20dc84eee.svg" alt=""></i></button>
+                <button class="slider-btn slider-btn--prev slider-btn--off" aria-label="Back"><i><img src="a/8196602e48.svg" alt=""></i></button>
+                <button class="slider-btn slider-btn--next" aria-label="Next"><i><img src="a/e20dc84eee.svg" alt=""></i></button>
               </div>
             </div>
           </div>
           <div class="providers-rail">
-            <div class="provider"><img loading="lazy" decoding="async" src="a/e24f34993a.svg" alt="Pragmatic Play" style="width:112.531px;height:51.656px"></div>
+            <div class="provider"><img src="a/e24f34993a.svg" alt="Pragmatic Play" style="width:112.531px;height:51.656px"></div>
             <div class="provider">
               <span class="provider__box provider__box--evolution" style="position:relative;display:block;width:109.28px;height:20px;overflow:hidden">
-                <img loading="lazy" decoding="async" src="a/d9f21d7d0e.svg" alt="" style="position:absolute;inset:12.72% 4.25% 12.68% 19.87%;width:auto;height:auto">
-                <img loading="lazy" decoding="async" src="a/263200691f.svg" alt="Evolution" style="position:absolute;inset:4.25% 84.31% 4.27% 4.25%;width:auto;height:auto">
+                <img src="a/d9f21d7d0e.svg" alt="" style="position:absolute;inset:12.72% 4.25% 12.68% 19.87%;width:auto;height:auto">
+                <img src="a/263200691f.svg" alt="Evolution" style="position:absolute;inset:4.25% 84.31% 4.27% 4.25%;width:auto;height:auto">
               </span>
             </div>
-            <div class="provider"><img loading="lazy" decoding="async" src="a/e06130a5ba.svg" alt="NetEnt" style="width:84.975px;height:30px"></div>
-            <div class="provider"><img loading="lazy" decoding="async" src="a/403c10b37b.webp" alt="Push Gaming" style="width:109.034px;height:28px;object-fit:cover"></div>
+            <div class="provider"><img src="a/e06130a5ba.svg" alt="NetEnt" style="width:84.975px;height:30px"></div>
+            <div class="provider"><img src="a/403c10b37b.webp" alt="Push Gaming" style="width:109.034px;height:28px;object-fit:cover"></div>
             <div class="provider">
               <span class="provider__box provider__box--evoplay" style="position:relative;display:block;width:115.72px;height:22px;overflow:hidden">
-                <img loading="lazy" decoding="async" src="a/9eba70be7d.webp" alt="Evoplay" style="position:absolute;left:-7.22%;top:-26.52%;width:114.45%;height:153.05%;max-width:none">
+                <img src="a/9eba70be7d.webp" alt="Evoplay" style="position:absolute;left:-7.22%;top:-26.52%;width:114.45%;height:153.05%;max-width:none">
               </span>
             </div>
             <div class="provider">
               <span class="provider__box provider__box--yggdrasil" style="position:relative;display:block;width:125.5px;height:36px;overflow:hidden">
-                <img loading="lazy" decoding="async" src="a/4b6669bad5.webp" alt="Yggdrasil" style="position:absolute;left:1.1%;top:-37.83%;width:97.81%;height:175.65%;max-width:none">
+                <img src="a/4b6669bad5.webp" alt="Yggdrasil" style="position:absolute;left:1.1%;top:-37.83%;width:97.81%;height:175.65%;max-width:none">
               </span>
             </div>
-            <div class="provider"><img loading="lazy" decoding="async" src="a/d3418c1066.webp" alt="Ezugi" style="width:85.608px;height:39.487px;object-fit:cover"></div>
+            <div class="provider"><img src="a/d3418c1066.webp" alt="Ezugi" style="width:85.608px;height:39.487px;object-fit:cover"></div>
           </div>
         </section>
 
@@ -7613,11 +7859,11 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
           <div class="prof__grid">
             <div class="prof__cell">
               <span class="prof__label">First and last name</span>
-              <div class="prof__box is-locked"><span class="prof__value">Ricardo Destaole</span><img loading="lazy" decoding="async" src="a/89b75ddaa0.svg" alt="locked" width="16" height="16"></div>
+              <div class="prof__box is-locked"><span class="prof__value">Ricardo Destaole</span><img src="a/89b75ddaa0.svg" alt="locked" width="16" height="16"></div>
             </div>
             <div class="prof__cell">
               <span class="prof__label">Date of birth</span>
-              <div class="prof__box is-locked"><span class="prof__value">23.12.1990</span><img loading="lazy" decoding="async" src="a/89b75ddaa0.svg" alt="locked" width="16" height="16"></div>
+              <div class="prof__box is-locked"><span class="prof__value">23.12.1990</span><img src="a/89b75ddaa0.svg" alt="locked" width="16" height="16"></div>
             </div>
           </div>
         </section>
@@ -7659,21 +7905,21 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
               <span class="prof__label">Current password</span>
               <label class="prof__box">
                 <input type="password" autocomplete="current-password" aria-label="Current password">
-                <button class="sec__eye" type="button" aria-label="Show password"><img loading="lazy" decoding="async" src="a/0668a3df98.svg" alt="" width="20" height="20"></button>
+                <button class="sec__eye" type="button" aria-label="Show password"><img src="a/0668a3df98.svg" alt="" width="20" height="20"></button>
               </label>
             </div>
             <div class="prof__cell">
               <span class="prof__label">New password</span>
               <label class="prof__box">
                 <input type="password" autocomplete="new-password" aria-label="New password">
-                <button class="sec__eye" type="button" aria-label="Show password"><img loading="lazy" decoding="async" src="a/0668a3df98.svg" alt="" width="20" height="20"></button>
+                <button class="sec__eye" type="button" aria-label="Show password"><img src="a/0668a3df98.svg" alt="" width="20" height="20"></button>
               </label>
             </div>
             <div class="prof__cell">
               <span class="prof__label">Repeat new password</span>
               <label class="prof__box">
                 <input type="password" autocomplete="new-password" aria-label="Repeat new password">
-                <button class="sec__eye" type="button" aria-label="Show password"><img loading="lazy" decoding="async" src="a/0668a3df98.svg" alt="" width="20" height="20"></button>
+                <button class="sec__eye" type="button" aria-label="Show password"><img src="a/0668a3df98.svg" alt="" width="20" height="20"></button>
               </label>
             </div>
           </div>
@@ -7761,7 +8007,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
                 <div class="vf__ro">
                   <input class="vf__inp" id="vf-email" type="email" value="user@plazmo.com" readonly>
                   <em class="vf__badge vf__badge--ok" data-vf-mailbadge>
-                    <img loading="lazy" decoding="async" src="a/e09ef2fd57.svg" alt="" width="14" height="14"><span>Verified</span>
+                    <img src="a/e09ef2fd57.svg" alt="" width="14" height="14"><span>Verified</span>
                   </em>
                 </div>
               </div>
@@ -7795,7 +8041,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
                 <div class="vf__ro">
                   <input class="vf__inp" id="vf-tel" type="tel" value="+55 11 992••••38" readonly>
                   <em class="vf__badge vf__badge--warn" data-vf-telbadge>
-                    <img loading="lazy" decoding="async" src="a/e09ef2fd57.svg" alt="" width="14" height="14" hidden><span>Not verified</span>
+                    <img src="a/e09ef2fd57.svg" alt="" width="14" height="14" hidden><span>Not verified</span>
                   </em>
                 </div>
               </div>
@@ -7825,7 +8071,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
                 <label class="vft__card">
                   <input class="vft__in" type="radio" name="vf-doc" value="passport">
                   <span class="vft__body">
-                    <span class="vft__ico"><img loading="lazy" decoding="async" src="a/3268f5deec.svg" alt="" width="24" height="24"></span>
+                    <span class="vft__ico"><img src="a/3268f5deec.svg" alt="" width="24" height="24"></span>
                     <b class="vft__name">Passport</b>
                     <span class="vft__hint">One photo &mdash; the&nbsp;page with your details</span>
                     <span class="vft__tick" aria-hidden="true"></span>
@@ -7834,7 +8080,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
                 <label class="vft__card">
                   <input class="vft__in" type="radio" name="vf-doc" value="licence">
                   <span class="vft__body">
-                    <span class="vft__ico"><img loading="lazy" decoding="async" src="a/61e1f360ac.svg" alt="" width="24" height="24"></span>
+                    <span class="vft__ico"><img src="a/61e1f360ac.svg" alt="" width="24" height="24"></span>
                     <b class="vft__name">Driving licence</b>
                     <span class="vft__hint">Two photos &mdash; front and&nbsp;back</span>
                     <span class="vft__tick" aria-hidden="true"></span>
@@ -7843,7 +8089,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
                 <label class="vft__card">
                   <input class="vft__in" type="radio" name="vf-doc" value="id">
                   <span class="vft__body">
-                    <span class="vft__ico"><img loading="lazy" decoding="async" src="a/4f8ff11129.svg" alt="" width="24" height="24"></span>
+                    <span class="vft__ico"><img src="a/4f8ff11129.svg" alt="" width="24" height="24"></span>
                     <b class="vft__name">ID card</b>
                     <span class="vft__hint">Two photos &mdash; front and&nbsp;back</span>
                     <span class="vft__tick" aria-hidden="true"></span>
@@ -7868,12 +8114,12 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
                     <input class="vfd__in" type="file" hidden
                            accept="image/jpeg,image/png,application/pdf,.jpg,.jpeg,.png,.pdf">
                     <button class="vfd__zone" type="button">
-                      <img loading="lazy" decoding="async" src="a/21bbc13c6a.svg" alt="" width="24" height="24">
+                      <img src="a/21bbc13c6a.svg" alt="" width="24" height="24">
                       <b class="vfd__title">Front side</b>
                       <span class="vfd__hint">Drag the&nbsp;file here or&nbsp;click to&nbsp;choose</span>
                     </button>
                     <div class="vfd__done" hidden>
-                      <span class="vfd__prev"><img loading="lazy" decoding="async" alt="" hidden><i hidden>PDF</i></span>
+                      <span class="vfd__prev"><img alt="" hidden><i hidden>PDF</i></span>
                       <span class="vfd__meta"><b class="vfd__name"></b><span class="vfd__size"></span></span>
                       <span class="vfd__acts">
                         <button class="vfd__act" type="button" data-vfd-replace>Replace</button>
@@ -7892,12 +8138,12 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
                     <input class="vfd__in" type="file" hidden
                            accept="image/jpeg,image/png,application/pdf,.jpg,.jpeg,.png,.pdf">
                     <button class="vfd__zone" type="button">
-                      <img loading="lazy" decoding="async" src="a/21bbc13c6a.svg" alt="" width="24" height="24">
+                      <img src="a/21bbc13c6a.svg" alt="" width="24" height="24">
                       <b class="vfd__title">Back side</b>
                       <span class="vfd__hint">Drag the&nbsp;file here or&nbsp;click to&nbsp;choose</span>
                     </button>
                     <div class="vfd__done" hidden>
-                      <span class="vfd__prev"><img loading="lazy" decoding="async" alt="" hidden><i hidden>PDF</i></span>
+                      <span class="vfd__prev"><img alt="" hidden><i hidden>PDF</i></span>
                       <span class="vfd__meta"><b class="vfd__name"></b><span class="vfd__size"></span></span>
                       <span class="vfd__acts">
                         <button class="vfd__act" type="button" data-vfd-replace>Replace</button>
@@ -7967,8 +8213,8 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
               <span class="rg__track"><i style="width:8%"></i></span>
             </div>
             <div class="rg__row">
-              <button class="rg__select" type="button" data-opts="Daily|Weekly|Monthly">Period<img loading="lazy" decoding="async" src="a/e139209072.svg" alt=""></button>
-              <button class="rg__select rg__select--cur" type="button" data-opts="USDT|USD|EUR|AZN">USDT<img loading="lazy" decoding="async" src="a/e139209072.svg" alt=""></button>
+              <button class="rg__select" type="button" data-opts="Daily|Weekly|Monthly">Period<img src="a/e139209072.svg" alt=""></button>
+              <button class="rg__select rg__select--cur" type="button" data-opts="USDT|USD|EUR|AZN">USDT<img src="a/e139209072.svg" alt=""></button>
               <label class="rg__input"><input type="text" inputmode="decimal" placeholder="0.00" aria-label="Limit amount"></label>
               <button class="rg__set" type="button">Set</button>
             </div>
@@ -7988,8 +8234,8 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
               <span class="rg__track"><i style="width:8%"></i></span>
             </div>
             <div class="rg__row">
-              <button class="rg__select" type="button" data-opts="Daily|Weekly|Monthly">Period<img loading="lazy" decoding="async" src="a/e139209072.svg" alt=""></button>
-              <button class="rg__select rg__select--cur" type="button" data-opts="USDT|USD|EUR|AZN">USDT<img loading="lazy" decoding="async" src="a/e139209072.svg" alt=""></button>
+              <button class="rg__select" type="button" data-opts="Daily|Weekly|Monthly">Period<img src="a/e139209072.svg" alt=""></button>
+              <button class="rg__select rg__select--cur" type="button" data-opts="USDT|USD|EUR|AZN">USDT<img src="a/e139209072.svg" alt=""></button>
               <label class="rg__input"><input type="text" inputmode="decimal" placeholder="0.00" aria-label="Limit amount"></label>
               <button class="rg__set" type="button">Set</button>
             </div>
@@ -8011,8 +8257,8 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
               <span class="rg__track"><i style="width:8%"></i></span>
             </div>
             <div class="rg__row">
-              <button class="rg__select" type="button" data-opts="Daily|Weekly|Monthly">Period<img loading="lazy" decoding="async" src="a/e139209072.svg" alt=""></button>
-              <button class="rg__select rg__select--cur" type="button" data-opts="USDT|USD|EUR|AZN">USDT<img loading="lazy" decoding="async" src="a/e139209072.svg" alt=""></button>
+              <button class="rg__select" type="button" data-opts="Daily|Weekly|Monthly">Period<img src="a/e139209072.svg" alt=""></button>
+              <button class="rg__select rg__select--cur" type="button" data-opts="USDT|USD|EUR|AZN">USDT<img src="a/e139209072.svg" alt=""></button>
               <label class="rg__input"><input type="text" inputmode="decimal" placeholder="0.00" aria-label="Limit amount"></label>
               <button class="rg__set" type="button">Set</button>
             </div>
@@ -8032,7 +8278,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
               <span class="rg__track"><i style="width:42%"></i></span>
             </div>
             <div class="rg__row rg__row--session">
-              <button class="rg__select" type="button" data-opts="15 minutes|30 minutes|60 minutes|120 minutes">Minute<img loading="lazy" decoding="async" src="a/e139209072.svg" alt=""></button>
+              <button class="rg__select" type="button" data-opts="15 minutes|30 minutes|60 minutes|120 minutes">Minute<img src="a/e139209072.svg" alt=""></button>
               <label class="rg__input"><input type="text" placeholder="Enter" aria-label="Minutes"></label>
               <button class="rg__set" type="button">Set</button>
             </div>
@@ -8045,7 +8291,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
               <p>Feel the&nbsp;need to&nbsp;stay away from the&nbsp;casino for&nbsp;some time? You can set a&nbsp;cooling-off limit for&nbsp;a&nbsp;certain period of&nbsp;time. The&nbsp;restriction takes effect instantly. You won't be able to&nbsp;make deposits and&nbsp;play during the&nbsp;specified period, also you will be excluded from all advertising offers. After the&nbsp;set period expires, you'll receive a&nbsp;notification email saying your account is&nbsp;active again.</p>
             </div>
             <div class="rg__row rg__row--wide">
-              <button class="rg__select" type="button" data-opts="None|24 hours|7 days|30 days|90 days">None<img loading="lazy" decoding="async" src="a/e139209072.svg" alt=""></button>
+              <button class="rg__select" type="button" data-opts="None|24 hours|7 days|30 days|90 days">None<img src="a/e139209072.svg" alt=""></button>
               <button class="rg__set" type="button">Set</button>
             </div>
           </section>
@@ -15758,14 +16004,17 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
       document.body.classList.toggle('nav-rail', on);
       if (navToggle) {
         navToggle.setAttribute('aria-expanded', String(!on));
+        navToggle.dataset.l = on ? 'Expand' : 'Collapse';
         /* Подпись для читалки шла по-русски при любом языке, мимо словаря */
         navToggle.setAttribute('aria-label', T(on ? 'Expand menu' : 'Collapse menu'));
       }
       if (save) { try { localStorage.setItem('ww-nav-rail', on ? '1' : '0'); } catch (e) {} }
       fit();
     }
-    var railBoot = false;
-    try { railBoot = localStorage.getItem('ww-nav-rail') === '1'; } catch (e) {}
+    /* По умолчанию — узкая колонка, как в образце PLAZMO. Развёрнутой панель
+       остаётся, только если её развернули сами. */
+    var railBoot = true;
+    try { railBoot = localStorage.getItem('ww-nav-rail') !== '0'; } catch (e) {}
     if (railBoot) {
       /* Состояние из памяти ставим без анимации: иначе панель на глазах
          съезжает от 252 к 84 при каждом открытии страницы. */
@@ -17118,7 +17367,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
       'dice': 'crash games', 'limbo': 'crash games', 'wheel': 'crash games',
       'keno': 'crash games',
       /* Заголовки разделов главной — по ним работают ссылки «View All» */
-      'popular': 'slots', 'popular slots': 'slots'
+      'popular': 'slots', 'popular slots': 'slots', 'top 10 today': 'slots'
     };
     var catView = document.getElementById('view-category');
     var catTitle = catView && catView.querySelector('[data-cat-title]');
@@ -17189,6 +17438,13 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         el.classList.toggle('is-active',
           key === 'category' ? label === catNow : chipView[label] === key);
       });
+      /* Колонка: пункт-вид светится на своей странице, пункт-категория —
+         на странице категории, когда открыта именно она */
+      document.querySelectorAll('.ri[data-ri], .ri[data-ri-cat]').forEach(function (el) {
+        el.classList.toggle('is-active', el.dataset.riCat
+          ? key === 'category' && el.dataset.riCat === catNow
+          : el.dataset.ri === key);
+      });
       /* На бонусах гостю оставляем витрину предложений и убираем личные вкладки */
       if (key === 'bonuses' && bnSync) bnSync();
       /* Переход по ссылке — это новая страница, а не прокрутка к её началу:
@@ -17223,6 +17479,25 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         showView(name === 'vip club' ? 'vip' : 'bonuses');
       });
     });
+    /* Пункты колонки с категориями открывают общую страницу категории.
+       Подпись страницы берём из английского названия раздела. */
+    var RI_TITLE = { 'slots': 'Slots', 'live casino': 'Live Casino', 'crash games': 'Crash Games',
+                     'table games': 'Table Games', 'new games': 'New Games' };
+    document.querySelectorAll('.ri[data-ri-cat]').forEach(function (it) {
+      var key = it.dataset.riCat;
+      if (CATS[key] && !catLabel[key]) catLabel[key] = RI_TITLE[key] || it.dataset.l;
+      it.addEventListener('click', function () { catOpen(key); });
+    });
+    /* Плитки главной (бенто, краш) ведут в те же категории */
+    document.querySelectorAll('[data-cat-go]').forEach(function (it) {
+      var key = it.dataset.catGo;
+      if (CATS[key] && !catLabel[key]) catLabel[key] = RI_TITLE[key] || key;
+      it.addEventListener('click', function (e) { e.preventDefault(); catOpen(key); });
+    });
+    /* Первый экран показан разметкой, showView для него не зовётся —
+       подсвечиваем Lobby сразу */
+    var riHome = document.querySelector('.ri[data-ri="home"]');
+    if (riHome && views.home && !views.home.hidden) riHome.classList.add('is-active');
     /* Пункты бокового меню открывают те же страницы, что и чипы */
     document.querySelectorAll('.sub-item').forEach(function (it) {
       /* Пункты снятого раздела не ведут никуда. pointer-events их уже
@@ -20606,6 +20881,113 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
     }
 
     document.querySelectorAll('.section').forEach(wire);
+  })();
+</script>
+<!-- ═══════════ PLAZMO: карточки главной и живые детали ═══════════
+     Карточки остаются теми же узлами (на них висят клики и поиск), их
+     только оборачиваем: под обложкой строка «N playing», в Top 10 —
+     контурная цифра. Метки и числа — пример данных, как в образце. -->
+<script>
+  (function () {
+    var home = document.getElementById('view-home');
+    if (!home) return;
+    var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var fmt = function (n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); };
+    /* Псевдослучайно, но одинаково на каждой загрузке */
+    var seed = 7;
+    var rnd = function () { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+
+    var onLine = function (n, lim) {
+      var el = document.createElement('span');
+      el.className = 'on';
+      el.innerHTML = '<i></i><em data-on="' + n + '">' + fmt(n) + '</em>&nbsp;playing' +
+        (lim ? '<span class="lim">' + lim + '</span>' : '');
+      return el;
+    };
+    var badge = function (card, kind) {
+      var b = document.createElement('span');
+      b.className = 'gbadge' + (kind === 'Hot' ? ' gbadge--hot' : '');
+      b.textContent = kind;
+      card.appendChild(b);
+    };
+    var wrap = function (card, cls) {
+      var w = document.createElement('div');
+      w.className = cls;
+      card.parentNode.insertBefore(w, card);
+      w.appendChild(card);
+      return w;
+    };
+
+    /* Top 10: первые десять, остальные на главной не показываем */
+    var top = home.querySelector('.section--top10 .rail');
+    if (top) {
+      var tops = [].slice.call(top.querySelectorAll(':scope > .game'));
+      tops.forEach(function (card, i) {
+        if (i >= 10) { card.classList.add('is-extra'); return; }
+        var t = wrap(card, 't10');
+        var num = document.createElement('span');
+        num.className = 't10__num'; num.setAttribute('aria-hidden', 'true');
+        num.textContent = i + 1;
+        t.insertBefore(num, card);
+        var g = wrap(card, 'gcard');
+        g.appendChild(onLine(Math.round(1100 - i * 90 - rnd() * 60)));
+        if (i === 0) badge(card, 'Hot');
+        if (i === 2) badge(card, 'New');
+      });
+    }
+    var slots = home.querySelector('.section--slots .rail');
+    if (slots) [].slice.call(slots.querySelectorAll(':scope > .game')).forEach(function (card, i) {
+      var g = wrap(card, 'gcard');
+      g.appendChild(onLine(Math.round(460 - i * 22 - rnd() * 30)));
+      if (i === 0) badge(card, 'New');
+      if (i === 3) badge(card, 'Hot');
+    });
+    var LIMS = ['$0.20–5 000', '$50–10 000', '$0.10–2 500', '$5–7 500', '$1–3 000', '$0.50–4 000'];
+    var live = home.querySelector('.section--live .rail');
+    if (live) [].slice.call(live.querySelectorAll(':scope > .lc')).forEach(function (card, i) {
+      var g = wrap(card, 'gcard gcard--live');
+      var pill = document.createElement('span');
+      pill.className = 'lpill'; pill.innerHTML = '<i></i>LIVE';
+      card.appendChild(pill);
+      g.appendChild(onLine(Math.round(40 + rnd() * 900), LIMS[i % LIMS.length]));
+    });
+
+    if (calm) return;
+
+    /* Счётчики «N playing» чуть дышат */
+    setInterval(function () {
+      home.querySelectorAll('em[data-on]').forEach(function (em) {
+        if (Math.random() > .3) return;
+        var base = +em.dataset.on;
+        var n = Math.max(1, Math.round(base + (Math.random() - .5) * base * .06));
+        em.textContent = fmt(n);
+      });
+    }, 2400);
+
+    /* Множитель Aviator растёт и выходит на пик, потом раунд сначала */
+    var av = home.querySelector('.cr[data-live]');
+    if (av) {
+      var x = av.querySelector('.x'), m = 1, t0 = 0;
+      var tick = function (ts) {
+        if (!t0) t0 = ts;
+        var sec = (ts - t0) / 1000;
+        m = Math.pow(1.19, sec * 2.2);
+        if (m >= 24.8) { m = 24.8; av.dataset.st = 'peak'; }
+        else av.dataset.st = m < 2 ? 'cold' : 'warm';
+        x.textContent = '×' + m.toFixed(2).replace('.', ',');
+        if (m >= 24.8) { setTimeout(function () { t0 = 0; requestAnimationFrame(tick); }, 2600); return; }
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+
+    /* Ряды мягко проявляются при прокрутке */
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+      }, { rootMargin: '0px 0px -8% 0px' });
+      home.querySelectorAll('.section').forEach(function (sec) { sec.classList.add('pz-rise'); io.observe(sec); });
+    }
   })();
 </script>
 </html>
