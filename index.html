@@ -4502,6 +4502,11 @@ body.dp-open .wallet__deposit { box-shadow: 0 0 0 2px var(--wl-money-glow),
   position: relative; box-sizing: border-box; display: flex; flex-direction: column;
   align-items: center; gap: var(--wl-sp-8); padding: 0 60px var(--wl-sp-8);
   background: var(--wl-bg-chrome); border: 0; border-radius: var(--wl-r-lg); overflow: hidden;
+  /* Высота окна не зависит от того, что внутри: короткие экраны состояний
+     (нужна верификация, заявка принята, отказ) держат размер основной формы,
+     и окно не прыгает при каждом переходе. На низком экране берём столько,
+     сколько есть, иначе кнопка ушла бы за нижний край. */
+  min-height: min(734px, calc(100vh - 140px));
 }
 /* Кант слоем поверх: обычный border забирал 2px из колонки, и она
    становилась 478 вместо макетных 480. */
@@ -5038,7 +5043,9 @@ body.dp-open .wallet__deposit { box-shadow: 0 0 0 2px var(--wl-money-glow),
 
 .dp__state { display: none; flex-direction: column; align-items: center; text-align: center;
              gap: 10px; width: 100%; padding: var(--wl-sp-8) var(--wl-sp-6) var(--wl-sp-2); }
-.dp.is-state .dp__state { display: flex; }
+/* Сообщение занимает место, освободившееся от формы, и стоит по центру:
+   без этого короткий экран прижимался к верху высокого окна. */
+.dp.is-state .dp__state { display: flex; flex: 1 1 auto; justify-content: center; }
 /* Форма на это время уходит целиком — вместе с вкладками способа */
 .dp.is-state .dp__body,
 .dp.is-state .dp__wd-foot,
