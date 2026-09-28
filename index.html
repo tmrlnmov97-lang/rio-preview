@@ -517,15 +517,7 @@ body.nav-rail .nav-toggle__label { display: none; }
 }
 .nav-toggle:hover { background: var(--wl-bg-hover); color: var(--wl-text); }
 .nav-toggle:active { background: var(--wl-bg-active); }
-/* Знак — не картинка, а надпись: так в эталоне. Шрифт заголовочный,
-   трекинг отрицательный, кружок накала после слова. */
-.logo { display: inline-flex; align-items: center; gap: .16em;
-        font-family: var(--wl-font-display); font-variation-settings: 'wdth' 125;
-        font-weight: 800; font-size: 26px; line-height: 1; letter-spacing: -.035em;
-        text-transform: uppercase; color: var(--wl-text); white-space: nowrap;
-        user-select: none; }
-.logo__orb { width: .62em; height: .62em; border-radius: 50%; flex: none;
-             background: var(--wl-orb); }
+.logo { display: block; width: auto; height: 32px; max-width: 100%; }
 
 .header-desktop {
   display: flex; align-items: center; justify-content: space-between;
@@ -2089,8 +2081,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
     display: flex; align-items: center; justify-content: center;
     border-radius: 50px;
   }
-  .bnav__orb { display: block; width: 44px; height: 44px; border-radius: 50%;
-               background: var(--wl-orb); }
+  .bnav__home img { display: block; width: 44px; height: 44px; }
   /* 903:39414 — подпись на left 184 от кадра 402, то есть по центру */
   /* Подпись растянута во всю ширину панели и перехватывала нажатия: по
      Browse и Search было не попасть. Кликов она принимать не должна. */
@@ -4078,10 +4069,8 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
            font-weight: var(--wl-fw-semibold); font-size: var(--wl-fs-sm); color: var(--wl-text); }
 .gv__cur img { display: block; opacity: .7; }
 .gv__cur:hover { background: var(--wl-bg-hover); }
-.gv__mark { display: block; margin-inline: auto; opacity: .55;
-            font-family: var(--wl-font-display); font-variation-settings: 'wdth' 125;
-            font-weight: 800; font-size: 13px; line-height: 1; letter-spacing: -.035em;
-            text-transform: uppercase; color: var(--wl-text); }
+.gv__mark { display: block; width: auto; height: 22px; margin-inline: auto;
+            object-fit: contain; opacity: .55; }
 .gv__modes { display: flex; gap: var(--wl-sp-1); padding: 3px; background: var(--wl-bg-field); border-radius: var(--wl-r-md); }
 .gv__mode { display: flex; align-items: center; justify-content: center; height: 30px; padding: 0 var(--wl-sp-4);
             border-radius: var(--wl-r-sm); font-weight: var(--wl-fw-bold); font-size: var(--wl-fs-sm); color: var(--wl-text-dim); }
@@ -6765,10 +6754,9 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
   <header class="topbar" data-node-id="860:5725">
     <div class="topbar__brand" data-node-id="860:6106">
       <div class="topbar__logo-wrap" data-node-id="860:6113">
-        <!-- Заглушка вместо знака: логотипа у Рио ещё нет, а прежний
-             варвиновский вводил в заблуждение. Габариты те же, 156×55,
-             чтобы раскладка шапки не поехала. -->
-        <span class="logo" role="img" aria-label="PLAZMO">PLAZMO<i class="logo__orb" aria-hidden="true"></i></span>
+        <!-- Знак из макета (1188:15). Ширина по содержимому, высота фиксированная —
+             так он одинаково сидит в шапке и на узком экране. -->
+        <img class="logo" src="a/0d526d6016.svg" alt="PLAZMO" width="216" height="40">
       </div>
     </div>
 
@@ -12834,7 +12822,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
               <span class="gv__curwrap">
                 <button class="gv__cur" type="button" data-opts="USDT|USD|EUR|AZN">USDT<img loading="lazy" decoding="async" src="a/e139209072.svg" alt=""></button>
               </span>
-              <span class="gv__mark" role="img" aria-label="PLAZMO">PLAZMO</span>
+              <img loading="lazy" decoding="async" class="gv__mark" src="a/0d526d6016.svg" alt="PLAZMO">
               <div class="gv__modes" role="tablist" aria-label="Game mode">
                 <button class="gv__mode" type="button" role="tab" aria-selected="false">Demo</button>
                 <button class="gv__mode is-active" type="button" role="tab" aria-selected="true">Play</button>
@@ -13911,7 +13899,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
     </a>
   </div>
   <!-- Знак WarWin из диска убран: подпись Home под ним и так называет кнопку -->
-  <a class="bnav__home" href="#" data-node-id="903:39410" aria-label="Home"><i class="bnav__orb" aria-hidden="true"></i></a>
+  <a class="bnav__home" href="#" data-node-id="903:39410" aria-label="Home"><img loading="lazy" decoding="async" src="a/24c140befa.svg" alt="" width="44" height="44"></a>
   <span class="bnav__home-label" data-node-id="903:39414">Home</span>
   <div class="bnav__group" data-node-id="903:39402">
     <a class="bnav__item" href="#" data-node-id="903:39403">
