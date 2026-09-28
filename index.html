@@ -5087,16 +5087,6 @@ body.dp-open .wallet__deposit { box-shadow: 0 0 0 2px var(--wl-money-glow),
 .dp__note p { margin: 0; flex: 1 0 0; min-width: 0;
               font-family: var(--wl-font); font-weight: var(--wl-fw-regular);
               font-size: var(--wl-fs-sm); line-height: var(--wl-lh-xs); color: var(--wl-text); }
-/* 1180:32173, 1180:32174 — уголки: бокс 45.31 на -1px от края, внутри дуга
-   46.31 прижата к левому верхнему углу бокса (в макете inset 0 -2.21% -2.21% 0).
-   Левый — тот же файл, отражённый по горизонтали: в макете на него навешены
-   rotate(180) и scaleY(-1), что вместе даёт зеркало по X. */
-.dp__corner { position: absolute; bottom: 0; width: 45.31px; height: 45.31px;
-              display: block; pointer-events: none; }
-.dp__corner img { position: absolute; left: 0; top: 0;
-                  width: 46.31px; height: 46.31px; display: block; max-width: none; }
-.dp__corner--l { left: 0; transform: scaleX(-1); }
-.dp__corner--r { right: 0; }
 
 @media (prefers-reduced-motion: reduce) { .dp__wrap { animation: none; } }
 /* 1180:32851 — мобильное окно 370x549. Ряды здесь НЕ складываются в столбик:
@@ -5116,7 +5106,6 @@ body.dp-open .wallet__deposit { box-shadow: 0 0 0 2px var(--wl-money-glow),
   .dp__modal::after { display: none; }   /* канта у листа нет — он во весь экран */
   /* Уголки рисовались по скруглению окна; у листа скругления нет, и они
      повисали цветными дугами в углах экрана */
-  .dp__corner { display: none; }
   .dp__gap, .dp__switches { flex: none; }
   .dp__switches { box-sizing: border-box; padding: var(--wl-sp-5) var(--wl-sp-6) 0; }
   /* Поля уехали из модалки сюда: прокручивается только эта часть */
@@ -14506,8 +14495,6 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
       </div>
 
       <!-- 1180:32173 и 1180:32174 — уголки 45.31 по нижним углам -->
-      <span class="dp__corner dp__corner--l" aria-hidden="true"><img loading="lazy" decoding="async" src="a/d11cccd4f1.svg" alt=""></span>
-      <span class="dp__corner dp__corner--r" aria-hidden="true"><img loading="lazy" decoding="async" src="a/90c3752bfe.svg" alt=""></span>
     </div>
   </div>
 </div>
