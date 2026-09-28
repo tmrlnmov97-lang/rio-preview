@@ -15646,7 +15646,22 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
           railSet(false, true);
           if (!sub.classList.contains('is-collapsed')) return;
         }
-        var open = head.classList.toggle('side-item--active');
+        var open = !head.classList.contains('side-item--active');
+        /* Открытый раздел один: с двумя развёрнутыми список уезжает вниз,
+           и до нижних пунктов приходится прокручивать колонку. Приём тот же,
+           что в панели профиля. */
+        if (open) {
+          for (var k = 0; k < heads.length; k++) {
+            var o = heads[k];
+            if (o === head) continue;
+            var os = o.nextElementSibling;
+            if (!os || !os.classList.contains('subcat')) continue;
+            o.classList.remove('side-item--active');
+            os.classList.add('is-collapsed');
+            o.setAttribute('aria-expanded', 'false');
+          }
+        }
+        head.classList.toggle('side-item--active', open);
         sub.classList.toggle('is-collapsed', !open);
         head.setAttribute('aria-expanded', String(open));
         syncExpanded();
@@ -20334,6 +20349,15 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
         row.addEventListener('click', function () {
           var list = document.getElementById(row.dataset.toggle);
           var open = list.hidden;
+          /* Открытый раздел один — как в боковом меню и панели профиля */
+          if (open) {
+            brMenu.querySelectorAll('[data-toggle]').forEach(function (o) {
+              if (o === row) return;
+              var ol = document.getElementById(o.dataset.toggle);
+              if (ol) ol.hidden = true;
+              o.setAttribute('aria-expanded', 'false');
+            });
+          }
           list.hidden = !open;
           row.setAttribute('aria-expanded', open ? 'true' : 'false');
         });
