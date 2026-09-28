@@ -130,10 +130,11 @@
   --wl-grad-primary:        linear-gradient(180deg, #68e1b5 0%, #1a3d34 100%);
   --wl-grad-primary-hover:  linear-gradient(180deg, #7ce8c1 0%, #234e43 100%);
   --wl-grad-primary-active: linear-gradient(180deg, #55cda2 0%, #142e28 100%);
-  /* Текст на заливке — белый, по решению пользователя. Ни один цвет не держит
-     4.5 по всей высоте градиента: наверху он светлый, внизу тёмный. У белого
-     по полосе, где реально стоит подпись, выходит от 2.6 до 6.2. */
-  --wl-on-primary:     #ffffff;
+  /* Текст на активной заливке — тёмный. Ни один цвет не держит 4.5 по всей
+     высоте градиента: наверху он светлый, внизу тёмный. По полосе, где реально
+     стоит подпись, тёмный даёт от 3.1 до 7.5 против 2.6…6.2 у белого.
+     У выключенных кнопок свой приглушённый цвет, их это не касается. */
+  --wl-on-primary:     #0e1011;
   --wl-focus:          #9af0d2;
 
   /* ---------- Успех: регистрация, «выполнено», Live, выигрыш ----------
@@ -164,11 +165,15 @@
   /* ---------- Деньги: кнопка депозита ----------
      Лайм заменён на зелёный «Пополнить»: у 1win всё про деньги
      набрано одним зелёным, отдельного кислотного цвета нет. */
-  --wl-money-a:     #5cb964;
-  --wl-money-b:     #50b058;
-  --wl-money-ink:   #ffffff;  /* текст на зелёном */
-  --wl-money-hi:    #7fcd86;  /* «максимум» и сумма в депозите */
-  --wl-money-glow:  rgba(80, 176, 88, .22);
+  /* С 28.09 денежные кнопки идут основным цветом: акцент сам стал зелёным,
+     и два разных зелёных рядом читались как ошибка, а не как смысл. Токены
+     оставлены — по ним красится «Пополнить», отправка в кассе, кнопки
+     состояний и полоса баланса в профиле. */
+  --wl-money-a:     #68e1b5;  /* верх градиента, он же --wl-primary */
+  --wl-money-b:     #1a3d34;  /* низ градиента */
+  --wl-money-ink:   #0e1011;  /* текст на заливке */
+  --wl-money-hi:    #68e1b5;  /* «максимум» и сумма в депозите */
+  --wl-money-glow:  rgba(104, 225, 181, .22);
   --wl-money-grad:  linear-gradient(180deg, var(--wl-money-a), var(--wl-money-b));
 
   /* ---------- VIP: цвет ранга ---------- */
@@ -788,8 +793,9 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 .banner__cta {
   display: flex; align-items: center; justify-content: center;
   width: 288px; height: 45px; padding: 14px 28px 14px 26px;
-  background: var(--wl-ok); border-radius: var(--wl-r-md);
-  font-weight: var(--wl-fw-bold); font-size: var(--wl-fs-sm); color: var(--wl-text); border: 0; cursor: pointer;
+  background-color: var(--wl-primary); background-image: var(--wl-grad-primary);
+  background-origin: border-box; border-radius: var(--wl-r-md);
+  font-weight: var(--wl-fw-bold); font-size: var(--wl-fs-sm); color: var(--wl-on-primary); border: 0; cursor: pointer;
   font-family: inherit; font-variation-settings: 'wdth' 100;
 }
 .banner__or { margin: 0; font-family: var(--wl-font); font-weight: var(--wl-fw-regular); font-size: var(--wl-fs-md); line-height: 19px; text-align: center; color: var(--wl-text); width: 100%; }
@@ -1514,8 +1520,8 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 .btn--primary:active { background-color: var(--wl-primary-active);
                        background-image: var(--wl-grad-primary-active); transform: translateY(1px); }
 
-.banner__cta:hover { background: var(--wl-ok-hover); }
-.banner__cta:active { background: var(--wl-ok-active); transform: translateY(1px); }
+.banner__cta:hover { background-image: var(--wl-grad-primary-hover); }
+.banner__cta:active { background-image: var(--wl-grad-primary-active); transform: translateY(1px); }
 
 /* --- Вторичные кнопки на плотной подложке --- */
 .btn--ghost:hover, .btn-search:hover, .cat-tab:hover { background: var(--wl-bg-hover); }
@@ -2748,12 +2754,13 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
     display: flex; align-items: center; justify-content: center;
     /* Та же кнопка, что в шапке (.btn): высота 40, паддинг 12, радиус 10 */
     height: 40px; padding: var(--wl-sp-3); flex: none;
-    background: var(--wl-ok-active); border: 0; border-radius: var(--wl-r-md); cursor: pointer;
+    background-color: var(--wl-primary); background-image: var(--wl-grad-primary);
+    background-origin: border-box; border: 0; border-radius: var(--wl-r-md); cursor: pointer;
     font-family: inherit; font-variation-settings: 'wdth' 100;
-    font-weight: var(--wl-fw-bold); font-size: var(--wl-fs-sm); color: var(--wl-text);
+    font-weight: var(--wl-fw-bold); font-size: var(--wl-fs-sm); color: var(--wl-on-primary);
   }
-  .hero__cta:hover  { background: #14c449; }
-  .hero__cta:active { background: #0e9235; transform: translateY(1px); }
+  .hero__cta:hover  { background-image: var(--wl-grad-primary-hover); }
+  .hero__cta:active { background-image: var(--wl-grad-primary-active); transform: translateY(1px); }
   .hero__or { font-family: var(--wl-font); font-weight: var(--wl-fw-bold); font-size: var(--wl-fs-xl); color: var(--wl-text-muted); }
   .hero__socials { display: flex; align-items: center; gap: var(--wl-sp-2); height: 40px; }
   .hero__soc {
@@ -3060,7 +3067,8 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
   .hero__title { width: 196px; font-size: var(--wl-fs-xl); line-height: var(--wl-lh-md); margin: -3px 0; }
   .hero__sub   { width: 160px; font-size: var(--wl-fs-md); line-height: var(--wl-lh-sm); }
   .hero__row   { height: 40px; gap: var(--wl-sp-2); }
-  .hero__cta   { height: 40px; padding: var(--wl-sp-3); border-radius: var(--wl-r-md); background: var(--wl-ok-active); }
+  .hero__cta   { height: 40px; padding: var(--wl-sp-3); border-radius: var(--wl-r-md);
+                 background-image: var(--wl-grad-primary); }
   .hero__or    { font-weight: var(--wl-fw-medium); font-size: var(--wl-fs-xl); color: var(--wl-text-muted); }
   .hero__soc   { width: 41px; height: 40px; background: #2b2b2b; }
   /* В мобильном макете соцкнопки две */
