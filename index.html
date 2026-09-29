@@ -7035,6 +7035,13 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
    в боковой колонке. Прячем стилем: значки категорий переключает скрипт. */
 .section__title img, .nt__h2-ico { display: none !important; }
 
+/* Название раздела — ссылка на его страницу: на наведении шеврон светлеет и
+   чуть сдвигается, как в образце */
+.section__title.is-link { cursor: pointer; border-radius: var(--wl-r-sm); }
+.section__title.is-link::after { transition: translate .2s ease, background-color .2s ease; }
+.section__title.is-link:hover::after { translate: 3px 0; background: var(--wl-text); }
+.section__title.is-link:focus-visible { outline: 2px solid var(--wl-primary); outline-offset: 4px; }
+
 </style>
 </head>
 <body>
@@ -20953,6 +20960,23 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
       }, { rootMargin: '0px 0px -8% 0px' });
       home.querySelectorAll('.section').forEach(function (sec) { sec.classList.add('pz-rise'); io.observe(sec); });
     }
+  })();
+</script>
+<!-- Название раздела ведёт туда же, куда «View All» рядом с ним -->
+<script>
+  (function () {
+    document.querySelectorAll('.section').forEach(function (sec) {
+      var title = sec.querySelector('.section__title');
+      var all = sec.querySelector('.view-all');
+      if (!title || !all) return;
+      title.classList.add('is-link');
+      title.setAttribute('role', 'link');
+      title.setAttribute('tabindex', '0');
+      title.addEventListener('click', function () { all.click(); });
+      title.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); all.click(); }
+      });
+    });
   })();
 </script>
 </html>
