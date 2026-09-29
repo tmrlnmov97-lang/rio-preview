@@ -6680,7 +6680,7 @@ body:not(.is-authed) [data-auth-only] { display: none !important; }
 /* Карточки игр, лайв-казино и спорта — тем же приёмом: арт и подписи
    скрыты, остаётся залитый прямоугольник. Плитки провайдеров получают
    такую же подложку, иначе знаки висели в воздухе. */
-.game > img.layer, .lc > img.layer, .lc > .clip, .sport > * { display: none !important; }
+.sport > * { display: none !important; }
 .sport, .provider {
   background: var(--wl-bg-chrome); background-image: none; border: 0;
 }
@@ -6886,8 +6886,6 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
 /* Обёртка на главной: карточка и под ней «● N playing» */
 .gcard { flex: none; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; min-width: 0; }
 .gcard > .game, .gcard > .lc { width: 100%; height: auto; aspect-ratio: 3 / 4; }
-.gcard--live > .lc { aspect-ratio: 16 / 10; }
-.gcard--live .lc::before { top: 44%; }
 .on { display: flex; align-items: center; gap: 6px; height: 16px; min-width: 0;
       font-size: 12px; color: var(--wl-text-dim); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .on em { font-style: normal; }
@@ -6958,7 +6956,7 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
 /* ── Ряды главной ── */
 #view-home .rail { gap: 12px; }
 #view-home .section--slots .gcard { flex-basis: calc((100% - 5 * 12px) / 6); }
-#view-home .section--live  .gcard { flex-basis: calc((100% - 3 * 12px) / 4); }
+#view-home .section--live  .gcard { flex-basis: calc((100% - 5 * 12px) / 6); }
 #view-home .section--top10 .t10 { position: relative; flex: none; min-width: 0;
                                   flex-basis: calc((100% - 4 * 12px) / 5); padding-left: clamp(44px, 4.6vw, 64px); }
 #view-home .section--top10 .t10 .gcard { position: relative; z-index: 1; }
@@ -7008,7 +7006,7 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
   .t-side { grid-column: span 6; }
   #view-home .section--slots .gcard { flex-basis: calc((100% - 3 * 12px) / 4); }
   #view-home .section--top10 .t10 { flex-basis: calc((100% - 2 * 12px) / 3); }
-  #view-home .section--live .gcard { flex-basis: calc((100% - 2 * 12px) / 3); }
+  #view-home .section--live .gcard { flex-basis: calc((100% - 3 * 12px) / 4); }
   .crash { grid-template-columns: repeat(3, minmax(240px, 1fr)); overflow-x: auto; }
 }
 /* Телефон: промо — прежний слайдер героя, ленты листаются пальцем */
@@ -7016,7 +7014,7 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
   .bento { display: none; }
   .pz-top { gap: 0; }
   #view-home .section--slots .gcard { flex-basis: 132px; }
-  #view-home .section--live .gcard { flex-basis: 220px; }
+  #view-home .section--live .gcard { flex-basis: 132px; }
   #view-home .section--top10 .t10 { flex-basis: 184px; padding-left: 52px; }
   .t10__num { font-size: 120px; }
   .crash { grid-template-columns: repeat(3, 260px); overflow-x: auto; scrollbar-width: none; }
@@ -7060,6 +7058,22 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
 .srch__pnone[hidden] { display: none; }
 /* На телефоне селектор провайдеров стоит справа — список раскрываем влево */
 @media (max-width: 767px) { .srch__menu--prov { left: auto; right: 0; } }
+
+/* ── Обложки игр (Figma 1779:13886 / 13637 / 13727) ──
+   Слои обложки нарисованы под карточку 154×204 и расставлены в пикселях.
+   Скрипт складывает их в коробку .art этого размера и масштабирует под
+   настоящую ширину карточки (--k), поэтому композиция одинакова и в ряду
+   на главной, и в сетке категории, и в поиске. */
+.art { position: absolute; left: 50%; top: 50%; width: 154.2px; height: 204px; z-index: 1;
+       transform: translate(-50%, -50%) scale(var(--k, 1)); pointer-events: none; }
+.art > img.layer { position: absolute; display: block; max-width: none; object-fit: cover; pointer-events: none; }
+/* Подпись поверх обложки читается на затемнении снизу */
+.game__info, .lc__info { z-index: 4;
+  background: linear-gradient(to top, rgba(11, 10, 10, .88) 0%, rgba(11, 10, 10, .45) 28%, transparent 55%); }
+.game__name, .lc__name { text-shadow: 0 1px 12px rgba(0, 0, 0, .6); }
+/* Цветная плашка подписи из Figma — только внизу карточки, высотой с подпись,
+   а не на всю обложку: блок подписи теперь растянут на карточку целиком */
+.lc__info[style] { background-size: 100% 42%; background-position: bottom; background-repeat: no-repeat; }
 
 </style>
 </head>
@@ -7347,89 +7361,65 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
           </div>
 
           <div class="rail">
+            <!-- Top 10 по Figma (1779:13886): краш-игры с обложками -->
             <article class="game">
-              <img class="layer" src="a/e0c94c0a90.webp" alt="" style="width:227px;height:227px;left:calc(50% + 3.2px);top:calc(50% + 0.5px);transform:translate(-50%,-50%)">
-              <img class="layer" src="a/33353ab54a.webp" alt="" style="width:227px;height:227px;left:calc(50% + 3.2px);top:calc(50% + 0.5px);transform:translate(-50%,-50%)">
-              <div class="game__info"><div class="game__name">Gates of<br>Olympus 1000</div><p class="game__provider">PRAGMATIC PLAY</p></div>
-            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-
-            <article class="game">
-              <img class="layer" src="a/6d544b165a.webp" alt="" style="width:222.214px;height:222.214px;left:calc(50% + 2.13px);top:50%;transform:translate(-50%,-50%)">
-              <img class="layer" src="a/ad60376bde.webp" alt="" style="width:222.214px;height:222.214px;left:calc(50% + 2.13px);top:50%;transform:translate(-50%,-50%)">
-              <div class="game__info"><div class="game__name">Fortune Dragon</div><p class="game__provider">PG SOFT</p></div>
-            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-
-            <article class="game">
-              <img class="layer" src="a/d9b382b56f.webp" alt="" style="width:159.071px;height:238.607px;left:calc(50% + 0.31px);top:calc(50% - 4.55px);transform:translate(-50%,-50%)">
-              <div class="game__info"><div class="game__name">Fortune Tiger</div><p class="game__provider">PG SOFT</p></div>
-            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-
-            <article class="game">
-              <img class="layer" src="a/333ed83b16.webp" alt="" style="width:379.733px;height:213.6px;left:calc(50% + 0.3px);top:50%;transform:translate(-50%,-50%)">
-              <img class="layer" src="a/a3c7bafe7d.webp" alt="" style="width:234.964px;height:234.964px;left:calc(50% - 2.42px);bottom:-20.04px;transform:translateX(-50%)">
-              <div class="game__info"><div class="game__name">Mighty Wild Panther</div><p class="game__provider">WAZDAN</p></div>
-            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-
-            <article class="game">
-              <img class="layer" src="a/ff02fcac20.webp" alt="" style="width:222.214px;height:333.321px;left:calc(50% - 2.42px);top:50%;transform:translate(-50%,-50%)">
-              <img class="layer" src="a/3307492a6d.webp" alt="" style="width:222.214px;height:333.321px;left:calc(50% - 2.42px);top:50%;transform:translate(-50%,-50%)">
-              <div class="game__info"><div class="game__name">Sweet Bonanza 1000</div><p class="game__provider">PRAGMATIC PLAY</p></div>
-            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-
-            <article class="game">
-              <img class="layer" src="a/05f10541c3.webp" alt="" style="width:231.321px;height:346.982px;left:calc(50% + 0.31px);top:calc(50% - 0.46px);transform:translate(-50%,-50%)">
-              <img class="layer" src="a/7823b75dd3.webp" alt="" style="width:231.321px;height:346.982px;left:calc(50% + 0.31px);top:calc(50% - 0.46px);transform:translate(-50%,-50%)">
-              <div class="game__info"><div class="game__name">Spaceman</div><p class="game__provider">PRAGMATIC PLAY</p></div>
-            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-
-            <article class="game">
-              <img class="layer" src="a/c4372eb7e1.webp" alt="" style="width:429.867px;height:241.8px;left:calc(50% + 5.23px);bottom:0;transform:translateX(-50%)">
-              <img class="layer" src="a/ad5ec06057.webp" alt="" style="width:386.133px;height:217.2px;left:calc(50% + 0.3px);bottom:0;transform:translateX(-50%)">
-              <img class="layer" src="a/eb593a8e28.webp" alt="" style="width:173.13px;height:199px;left:calc(50% - 2.4px);top:5px;transform:translateX(-50%)">
-              <img class="layer" src="a/11c0f00d73.webp" alt="" style="width:174.857px;height:174.857px;left:calc(50% + 0.31px);top:10.93px;transform:translateX(-50%)">
-              <div class="game__info"><div class="game__name">Mental II</div><p class="game__provider">NOLIMIT CITY</p></div>
-            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-
-            <article class="game">
-              <img class="layer" src="a/4910e1a4f8.webp" alt="" style="width:218.571px;height:218.571px;left:calc(50% + 3.96px);top:calc(50% - 8.2px);transform:translate(-50%,-50%)">
-              <img class="layer" src="a/09cfddd4d6.webp" alt="" style="width:218.571px;height:218.571px;left:calc(50% + 3.96px);top:calc(50% - 8.2px);transform:translate(-50%,-50%)">
-              <div class="game__info"><div class="game__name">Duck Hunters</div><p class="game__provider">NOLIMIT CITY</p></div>
-            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-
-            <article class="game">
-              <img class="layer" src="a/7c1cc28009.webp" alt="" style="width:195.5px;height:293.25px;left:calc(50% + 0.31px);top:calc(50% - 19.13px);transform:translate(-50%,-50%)">
-              <img class="layer" src="a/24da35ff17.webp" alt="" style="width:195.5px;height:293.25px;left:calc(50% + 0.31px);top:calc(50% - 19.13px);transform:translate(-50%,-50%)">
-              <div class="game__info"><div class="game__name">Kill em’ all</div><p class="game__provider">NOLIMIT CITY</p></div>
-            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-
-            <article class="game">
-              <img class="layer" src="a/4d730cd5ac.webp" alt="" style="width:180.321px;height:270.482px;left:calc(50% + 0.23px);top:calc(50% + 11.38px);transform:translate(-50%,-50%)">
-              <img class="layer" src="a/fdde3c232d.webp" alt="" style="width:180.321px;height:270.482px;left:calc(50% + 0.23px);top:calc(50% + 11.38px);transform:translate(-50%,-50%)">
-              <div class="game__info"><div class="game__name">Dead or Alive II</div><p class="game__provider">NETENT</p></div>
-            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-
-            <article class="game">
-              <img class="layer" src="a/fc98b34cb2.webp" alt="" style="width:278.679px;height:278.679px;left:calc(50% + 7.6px);top:calc(50% - 4.55px);transform:translate(-50%,-50%)">
-              <img class="layer" src="a/17dd55bdfa.webp" alt="" style="width:278.679px;height:278.679px;left:calc(50% + 5.24px);top:calc(50% - 4.55px);transform:translate(-50%,-50%)">
-              <div class="game__info"><div class="game__name">Tombstone Slaughter</div><p class="game__provider">NOLIMIT CITY</p></div>
-            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-
-            <article class="game">
-              <img class="layer" src="a/00b8e695cb.webp" alt="" style="width:203.393px;height:305.089px;left:calc(50% - 3.33px);top:calc(50% + 12.29px);transform:translate(-50%,-50%)">
-              <img class="layer" src="a/caaccda5aa.webp" alt="" style="width:203.393px;height:305.089px;left:calc(50% - 3.33px);top:calc(50% + 12.29px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/a4e2f2ef2d.webp" alt="" style="width:203.393px;height:305.089px;left:calc(50% - 3.33px);top:calc(50% + 12.29px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/82a86577a8.webp" alt="" style="width:203.393px;height:305.089px;left:calc(50% - 3.33px);top:calc(50% + 12.29px);transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Aviator</div><p class="game__provider">SPRIBE</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img class="layer" src="a/3fb3cce83f.webp" alt="" style="width:252.571px;height:378.857px;left:calc(50% + 0.31px);top:calc(50% + 7.29px);transform:translate(-50%,-50%)">
-              <img class="layer" src="a/9822165f53.webp" alt="" style="width:252.571px;height:378.857px;left:calc(50% + 0.31px);top:calc(50% + 7.29px);transform:translate(-50%,-50%)">
-              <div class="game__info"><div class="game__name">Sugar Rush 1000</div><p class="game__provider">PRAGMATIC PLAY</p></div>
+              <img class="layer" src="a/f3e1dab2c9.webp" alt="" style="width:172px;height:258px;left:-9px;top:-11px">
+              <img class="layer" src="a/f4fe29ef69.webp" alt="" style="width:172px;height:258px;left:-9px;top:-11px">
+              <div class="game__info"><div class="game__name">Big Bass<br>Crash</div><p class="game__provider">PRAGMATIC PLAY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
             <article class="game">
-              <img class="layer" src="a/49a970df71.webp" alt="" style="width:210.679px;height:316.018px;left:calc(50% + 0.31px);top:calc(50% + 13.01px);transform:translate(-50%,-50%)">
-              <img class="layer" src="a/158f53e9ad.webp" alt="" style="width:210.679px;height:316.018px;left:calc(50% + 0.31px);top:calc(50% + 13.01px);transform:translate(-50%,-50%)">
-              <div class="game__info"><div class="game__name">Mighty Fish Blue Marlin</div><p class="game__provider">WAZDAN</p></div>
+              <img class="layer" src="a/8e2f163f33.webp" alt="" style="width:211px;height:211px;left:-29px;top:0">
+              <img class="layer" src="a/d5c05ec850.webp" alt="" style="width:211px;height:211px;left:-29px;top:0">
+              <div class="game__info"><div class="game__name">Dice</div><p class="game__provider">PRAGMATIC PLAY</p></div>
+            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
+
+            <article class="game">
+              <img class="layer" src="a/08bf1973bd.webp" alt="" style="width:220px;height:220px;left:-36px;top:0">
+              <img class="layer" src="a/d7022f1a82.webp" alt="" style="width:220px;height:220px;left:-36px;top:0">
+              <div class="game__info"><div class="game__name">Hilo</div><p class="game__provider">PRAGMATIC PLAY</p></div>
+            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
+
+            <article class="game">
+              <img class="layer" src="a/62a7ab5f55.webp" alt="" style="width:166px;height:249px;left:-1px;top:-13px">
+              <img class="layer" src="a/90169e365d.webp" alt="" style="width:166px;height:249px;left:-1px;top:-13px">
+              <div class="game__info"><div class="game__name">Plinko XY</div><p class="game__provider">PRAGMATIC PLAY</p></div>
+            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
+
+            <article class="game">
+              <img class="layer" src="a/11268164a2.webp" alt="" style="width:231.321px;height:346.982px;left:calc(50% + 0.31px);top:calc(50% - 0.46px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/2f82764127.webp" alt="" style="width:231.321px;height:346.982px;left:calc(50% + 0.31px);top:calc(50% - 0.46px);transform:translate(-50%,-50%)">
+              <div class="game__info"><div class="game__name">Spaceman</div><p class="game__provider">PRAGMATIC PLAY</p></div>
+            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
+
+            <article class="game">
+              <img class="layer" src="a/23e01c896a.webp" alt="" style="width:157px;height:235px;left:-3px;top:0">
+              <img class="layer" src="a/ff884776d9.webp" alt="" style="width:157px;height:235px;left:-3px;top:0">
+              <div class="game__info"><div class="game__name">Fortune<br>Crash</div><p class="game__provider">PRAGMATIC PLAY</p></div>
+            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
+
+            <article class="game">
+              <img class="layer" src="a/a720025d6e.webp" alt="" style="width:163px;height:245px;left:-5px;top:-21px">
+              <img class="layer" src="a/5adc0ab8a6.webp" alt="" style="width:163px;height:245px;left:-5px;top:-21px">
+              <div class="game__info"><div class="game__name">Crash</div><p class="game__provider">PRAGMATIC PLAY</p></div>
+            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
+
+            <article class="game">
+              <img class="layer" src="a/fc679d15cc.webp" alt="" style="width:170px;height:255px;left:-3.5px;top:-23px">
+              <img class="layer" src="a/745e95214a.webp" alt="" style="width:170px;height:255px;left:-3.5px;top:-23px">
+              <div class="game__info"><div class="game__name">Mines</div><p class="game__provider">PRAGMATIC PLAY</p></div>
+            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
+
+            <article class="game">
+              <img class="layer" src="a/1930e10091.webp" alt="" style="width:196px;height:294px;left:-38px;top:-53px">
+              <img class="layer" src="a/510bc5a28e.webp" alt="" style="width:196px;height:294px;left:-38px;top:-53px">
+              <div class="game__info"><div class="game__name">Space XY</div><p class="game__provider">PRAGMATIC PLAY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
           </div>
         </section>
@@ -7489,48 +7479,6 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
           </div>
           <div class="rail">
             <article class="game">
-              <img class="layer" src="a/4910e1a4f8.webp" alt="" style="width:218.571px;height:218.571px;left:calc(50% + 3.96px);top:calc(50% - 8.2px);transform:translate(-50%,-50%)">
-              <img class="layer" src="a/09cfddd4d6.webp" alt="" style="width:218.571px;height:218.571px;left:calc(50% + 3.96px);top:calc(50% - 8.2px);transform:translate(-50%,-50%)">
-              <div class="game__info"><div class="game__name">Duck Hunters</div><p class="game__provider">NOLIMIT CITY</p></div>
-            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-
-            <article class="game">
-              <img class="layer" src="a/7c1cc28009.webp" alt="" style="width:195.5px;height:293.25px;left:calc(50% + 0.31px);top:calc(50% - 19.13px);transform:translate(-50%,-50%)">
-              <img class="layer" src="a/24da35ff17.webp" alt="" style="width:195.5px;height:293.25px;left:calc(50% + 0.31px);top:calc(50% - 19.13px);transform:translate(-50%,-50%)">
-              <div class="game__info"><div class="game__name">Kill em’ all</div><p class="game__provider">NOLIMIT CITY</p></div>
-            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-
-            <article class="game">
-              <img class="layer" src="a/4d730cd5ac.webp" alt="" style="width:180.321px;height:270.482px;left:calc(50% + 0.23px);top:calc(50% + 11.38px);transform:translate(-50%,-50%)">
-              <img class="layer" src="a/fdde3c232d.webp" alt="" style="width:180.321px;height:270.482px;left:calc(50% + 0.23px);top:calc(50% + 11.38px);transform:translate(-50%,-50%)">
-              <div class="game__info"><div class="game__name">Dead or Alive II</div><p class="game__provider">NETENT</p></div>
-            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-
-            <article class="game">
-              <img class="layer" src="a/fc98b34cb2.webp" alt="" style="width:278.679px;height:278.679px;left:calc(50% + 7.6px);top:calc(50% - 4.55px);transform:translate(-50%,-50%)">
-              <img class="layer" src="a/17dd55bdfa.webp" alt="" style="width:278.679px;height:278.679px;left:calc(50% + 5.24px);top:calc(50% - 4.55px);transform:translate(-50%,-50%)">
-              <div class="game__info"><div class="game__name">Tombstone Slaughter</div><p class="game__provider">NOLIMIT CITY</p></div>
-            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-
-            <article class="game">
-              <img class="layer" src="a/00b8e695cb.webp" alt="" style="width:203.393px;height:305.089px;left:calc(50% - 3.33px);top:calc(50% + 12.29px);transform:translate(-50%,-50%)">
-              <img class="layer" src="a/caaccda5aa.webp" alt="" style="width:203.393px;height:305.089px;left:calc(50% - 3.33px);top:calc(50% + 12.29px);transform:translate(-50%,-50%)">
-              <div class="game__info"><div class="game__name">Aviator</div><p class="game__provider">SPRIBE</p></div>
-            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-
-            <article class="game">
-              <img class="layer" src="a/3fb3cce83f.webp" alt="" style="width:252.571px;height:378.857px;left:calc(50% + 0.31px);top:calc(50% + 7.29px);transform:translate(-50%,-50%)">
-              <img class="layer" src="a/9822165f53.webp" alt="" style="width:252.571px;height:378.857px;left:calc(50% + 0.31px);top:calc(50% + 7.29px);transform:translate(-50%,-50%)">
-              <div class="game__info"><div class="game__name">Sugar Rush 1000</div><p class="game__provider">PRAGMATIC PLAY</p></div>
-            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-
-            <article class="game">
-              <img class="layer" src="a/49a970df71.webp" alt="" style="width:210.679px;height:316.018px;left:calc(50% + 0.31px);top:calc(50% + 13.01px);transform:translate(-50%,-50%)">
-              <img class="layer" src="a/158f53e9ad.webp" alt="" style="width:210.679px;height:316.018px;left:calc(50% + 0.31px);top:calc(50% + 13.01px);transform:translate(-50%,-50%)">
-              <div class="game__info"><div class="game__name">Mighty Fish Blue Marlin</div><p class="game__provider">WAZDAN</p></div>
-            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
-
-            <article class="game">
               <img class="layer" src="a/e0c94c0a90.webp" alt="" style="width:227px;height:227px;left:calc(50% + 3.2px);top:calc(50% + 0.5px);transform:translate(-50%,-50%)">
               <img class="layer" src="a/33353ab54a.webp" alt="" style="width:227px;height:227px;left:calc(50% + 3.2px);top:calc(50% + 0.5px);transform:translate(-50%,-50%)">
               <div class="game__info"><div class="game__name">Gates of<br>Olympus 1000</div><p class="game__provider">PRAGMATIC PLAY</p></div>
@@ -7571,6 +7519,48 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
               <img class="layer" src="a/eb593a8e28.webp" alt="" style="width:173.13px;height:199px;left:calc(50% - 2.4px);top:5px;transform:translateX(-50%)">
               <img class="layer" src="a/11c0f00d73.webp" alt="" style="width:174.857px;height:174.857px;left:calc(50% + 0.31px);top:10.93px;transform:translateX(-50%)">
               <div class="game__info"><div class="game__name">Mental II</div><p class="game__provider">NOLIMIT CITY</p></div>
+            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
+
+            <article class="game">
+              <img class="layer" src="a/4910e1a4f8.webp" alt="" style="width:218.571px;height:218.571px;left:calc(50% + 3.96px);top:calc(50% - 8.2px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/09cfddd4d6.webp" alt="" style="width:218.571px;height:218.571px;left:calc(50% + 3.96px);top:calc(50% - 8.2px);transform:translate(-50%,-50%)">
+              <div class="game__info"><div class="game__name">Duck Hunters</div><p class="game__provider">NOLIMIT CITY</p></div>
+            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
+
+            <article class="game">
+              <img class="layer" src="a/7c1cc28009.webp" alt="" style="width:195.5px;height:293.25px;left:calc(50% + 0.31px);top:calc(50% - 19.13px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/24da35ff17.webp" alt="" style="width:195.5px;height:293.25px;left:calc(50% + 0.31px);top:calc(50% - 19.13px);transform:translate(-50%,-50%)">
+              <div class="game__info"><div class="game__name">Kill em’ all</div><p class="game__provider">NOLIMIT CITY</p></div>
+            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
+
+            <article class="game">
+              <img class="layer" src="a/4d730cd5ac.webp" alt="" style="width:180.321px;height:270.482px;left:calc(50% + 0.23px);top:calc(50% + 11.38px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/fdde3c232d.webp" alt="" style="width:180.321px;height:270.482px;left:calc(50% + 0.23px);top:calc(50% + 11.38px);transform:translate(-50%,-50%)">
+              <div class="game__info"><div class="game__name">Dead or Alive II</div><p class="game__provider">NETENT</p></div>
+            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
+
+            <article class="game">
+              <img class="layer" src="a/fc98b34cb2.webp" alt="" style="width:278.679px;height:278.679px;left:calc(50% + 7.6px);top:calc(50% - 4.55px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/17dd55bdfa.webp" alt="" style="width:278.679px;height:278.679px;left:calc(50% + 5.24px);top:calc(50% - 4.55px);transform:translate(-50%,-50%)">
+              <div class="game__info"><div class="game__name">Tombstone Slaughter</div><p class="game__provider">NOLIMIT CITY</p></div>
+            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
+
+            <article class="game">
+              <img class="layer" src="a/00b8e695cb.webp" alt="" style="width:203.393px;height:305.089px;left:calc(50% - 3.33px);top:calc(50% + 12.29px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/caaccda5aa.webp" alt="" style="width:203.393px;height:305.089px;left:calc(50% - 3.33px);top:calc(50% + 12.29px);transform:translate(-50%,-50%)">
+              <div class="game__info"><div class="game__name">Aviator</div><p class="game__provider">SPRIBE</p></div>
+            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
+
+            <article class="game">
+              <img class="layer" src="a/3fb3cce83f.webp" alt="" style="width:252.571px;height:378.857px;left:calc(50% + 0.31px);top:calc(50% + 7.29px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/9822165f53.webp" alt="" style="width:252.571px;height:378.857px;left:calc(50% + 0.31px);top:calc(50% + 7.29px);transform:translate(-50%,-50%)">
+              <div class="game__info"><div class="game__name">Sugar Rush 1000</div><p class="game__provider">PRAGMATIC PLAY</p></div>
+            <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
+
+            <article class="game">
+              <img class="layer" src="a/49a970df71.webp" alt="" style="width:210.679px;height:316.018px;left:calc(50% + 0.31px);top:calc(50% + 13.01px);transform:translate(-50%,-50%)">
+              <img class="layer" src="a/158f53e9ad.webp" alt="" style="width:210.679px;height:316.018px;left:calc(50% + 0.31px);top:calc(50% + 13.01px);transform:translate(-50%,-50%)">
+              <div class="game__info"><div class="game__name">Mighty Fish Blue Marlin</div><p class="game__provider">WAZDAN</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
           </div>
         </section>
@@ -7626,7 +7616,7 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
 
             <article class="lc">
               <img class="layer" src="a/a07e2f7cd1.webp" alt="" style="width:417.952px;height:278.566px;left:calc(50% - 46.25px);top:calc(50% - 0.06px);transform:translate(-50%,-50%)">
-              <img class="layer" src="a/16f36ff5dc.webp" alt="" style="width:191.731px;height:243.351px;left:calc(50% + 2.88px);bottom:-4.07px;transform:translateX(-50%)">
+              <img class="layer" src="a/16f36ff5dc.webp" alt="" style="width:191.731px;height:243.351px;left:calc(50% + 2.88px);bottom:-2.07px;transform:translateX(-50%);object-position:100% 0">
               <div class="lc__info"><div class="lc__name">MEGA<br>ROULETTE</div><p class="lc__provider">PRAGMATIC PLAY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
@@ -13911,7 +13901,7 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
 
             <article class="lc">
               <img loading="lazy" decoding="async" class="layer" src="a/a07e2f7cd1.webp" alt="" style="width:417.952px;height:278.566px;left:calc(50% - 46.25px);top:calc(50% - 0.06px);transform:translate(-50%,-50%)">
-              <img loading="lazy" decoding="async" class="layer" src="a/16f36ff5dc.webp" alt="" style="width:191.731px;height:243.351px;left:calc(50% + 2.88px);bottom:-4.07px;transform:translateX(-50%)">
+              <img loading="lazy" decoding="async" class="layer" src="a/16f36ff5dc.webp" alt="" style="width:191.731px;height:243.351px;left:calc(50% + 2.88px);bottom:-2.07px;transform:translateX(-50%);object-position:100% 0">
               <div class="lc__info"><div class="lc__name">MEGA<br>ROULETTE</div><p class="lc__provider">PRAGMATIC PLAY</p></div>
             <span class="card-veil" aria-hidden="true"><span class="card-play"><svg viewBox="0 0 32 32" focusable="false"><path d="M24.91 13.94 13.96 6.44a2.94 2.94 0 0 0-2.61-.16A2.79 2.79 0 0 0 10 8.5v15a2.79 2.79 0 0 0 1.35 2.21 2.94 2.94 0 0 0 2.61-.16l10.95-7.5a2.5 2.5 0 0 0 0-4.11Z"/></svg></span></span></article>
 
@@ -21034,6 +21024,41 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); all.click(); }
       });
     });
+  })();
+</script>
+<!-- Обложки: слои складываем в коробку 154×204 и масштабируем под карточку -->
+<script>
+  (function () {
+    var BASE_W = 154.2, BASE_H = 204;
+    var ro = 'ResizeObserver' in window ? new ResizeObserver(function (es) {
+      es.forEach(function (e) {
+        var r = e.contentRect;
+        if (!r.width) return;
+        var k = Math.max(r.width / BASE_W, r.height / BASE_H);
+        e.target.style.setProperty('--k', k.toFixed(4));
+      });
+    }) : null;
+    var seen = new WeakSet();
+    var wrap = function () {
+      document.querySelectorAll('.game:not(.game--flat), .lc').forEach(function (card) {
+        if (seen.has(card)) return;
+        seen.add(card);
+        var art = card.querySelector(':scope > .art');
+        if (!art) {
+          var layers = card.querySelectorAll(':scope > img.layer');
+          if (!layers.length) return;
+          art = document.createElement('div');
+          art.className = 'art';
+          art.setAttribute('aria-hidden', 'true');
+          card.insertBefore(art, layers[0]);
+          layers.forEach(function (l) { art.appendChild(l); });
+        }
+        if (ro) ro.observe(card);
+      });
+    };
+    wrap();
+    /* Копии карточек появляются на странице категории, в избранном и в игре */
+    document.addEventListener('ww:view', function () { setTimeout(wrap, 0); });
   })();
 </script>
 </html>
