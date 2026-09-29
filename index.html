@@ -7044,6 +7044,23 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
 .fav__lead { margin: 0; font-size: var(--wl-fs-md); line-height: var(--wl-lh-md); color: var(--wl-text-dim); }
 .view--fav .category-grid[hidden], .view--fav .prof__fav-empty[hidden] { display: none; }
 
+/* Провайдеры в поиске — текстовым списком со строкой поиска */
+.srch__menu--prov { width: 264px; min-width: 0; padding: 8px; }
+.srch__pfind { display: flex; align-items: center; gap: 8px; height: 38px; padding: 0 12px; margin-bottom: 6px;
+               border-radius: var(--wl-r-pill); background: var(--wl-bg-chrome); box-shadow: inset 0 0 0 1px var(--wl-w-08); }
+.srch__pfind:focus-within { box-shadow: inset 0 0 0 1px var(--wl-primary); }
+.srch__pfind img { flex: none; opacity: .6; }
+.srch__pfind input { flex: 1; min-width: 0; height: 100%; padding: 0; border: 0; outline: 0; background: none;
+                     font: inherit; font-size: var(--wl-fs-sm); color: var(--wl-text); }
+.srch__pfind input::placeholder { color: var(--wl-text-dim); }
+.srch__plist { margin: 0; padding: 0; list-style: none; max-height: 288px; overflow-y: auto; scrollbar-width: thin; }
+.srch__plist li { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.srch__plist li[hidden] { display: none; }
+.srch__pnone { margin: 0; padding: 14px 12px; font-size: var(--wl-fs-sm); color: var(--wl-text-dim); text-align: center; }
+.srch__pnone[hidden] { display: none; }
+/* На телефоне селектор провайдеров стоит справа — список раскрываем влево */
+@media (max-width: 767px) { .srch__menu--prov { left: auto; right: 0; } }
+
 </style>
 </head>
 <body>
@@ -14929,16 +14946,32 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
             <span>Providers</span><b data-value>All</b>
             <img loading="lazy" decoding="async" src="a/245863d307.svg" alt="" width="20" height="20">
           </button>
-          <ul class="srch__menu srch__menu--logos" role="listbox" hidden>
-            <li role="option" aria-selected="true" data-p="all" data-name="All"><span>All</span></li>
-            <li role="option" aria-selected="false" data-p="pragmatic" data-name="Pragmatic Play"><img loading="lazy" decoding="async" src="a/e24f34993a.svg" alt=""><span class="sr-only">Pragmatic Play</span></li>
-            <li role="option" aria-selected="false" data-p="evolution" data-name="Evolution"><img loading="lazy" decoding="async" src="a/263200691f.svg" alt=""><span class="sr-only">Evolution</span></li>
-            <li role="option" aria-selected="false" data-p="netent" data-name="NetEnt"><img loading="lazy" decoding="async" src="a/e06130a5ba.svg" alt=""><span class="sr-only">NetEnt</span></li>
-            <li role="option" aria-selected="false" data-p="push" data-name="Push Gaming"><img loading="lazy" decoding="async" src="a/403c10b37b.webp" alt=""><span class="sr-only">Push Gaming</span></li>
-            <li role="option" aria-selected="false" data-p="evoplay" data-name="Evoplay"><img loading="lazy" decoding="async" src="a/9eba70be7d.webp" alt=""><span class="sr-only">Evoplay</span></li>
-            <li role="option" aria-selected="false" data-p="yggdrasil" data-name="Yggdrasil"><img loading="lazy" decoding="async" src="a/4b6669bad5.webp" alt=""><span class="sr-only">Yggdrasil</span></li>
-            <li role="option" aria-selected="false" data-p="ezugi" data-name="Ezugi"><img loading="lazy" decoding="async" src="a/d3418c1066.webp" alt=""><span class="sr-only">Ezugi</span></li>
-          </ul>
+          <!-- Провайдеров много, поэтому список текстом и со строкой поиска -->
+          <div class="srch__menu srch__menu--prov" hidden>
+            <label class="srch__pfind">
+              <img loading="lazy" decoding="async" src="a/25f570e1f7.svg" alt="" width="16" height="16">
+              <input type="text" placeholder="Search providers" autocomplete="off" aria-label="Search providers" data-pfind>
+            </label>
+            <ul class="srch__plist" role="listbox">
+              <li role="option" aria-selected="true" data-p="all" data-name="All"><span>All providers</span></li>
+              <li role="option" aria-selected="false" data-p="betsoft" data-name="Betsoft"><span>Betsoft</span></li>
+              <li role="option" aria-selected="false" data-p="bgaming" data-name="BGaming"><span>BGaming</span></li>
+              <li role="option" aria-selected="false" data-p="evolution" data-name="Evolution"><span>Evolution</span></li>
+              <li role="option" aria-selected="false" data-p="evoplay" data-name="Evoplay"><span>Evoplay</span></li>
+              <li role="option" aria-selected="false" data-p="ezugi" data-name="Ezugi"><span>Ezugi</span></li>
+              <li role="option" aria-selected="false" data-p="netent" data-name="NetEnt"><span>NetEnt</span></li>
+              <li role="option" aria-selected="false" data-p="nolimit-city" data-name="NoLimit City"><span>NoLimit City</span></li>
+              <li role="option" aria-selected="false" data-p="pg-soft" data-name="PG Soft"><span>PG Soft</span></li>
+              <li role="option" aria-selected="false" data-p="playson" data-name="Playson"><span>Playson</span></li>
+              <li role="option" aria-selected="false" data-p="pragmatic-play" data-name="Pragmatic Play"><span>Pragmatic Play</span></li>
+              <li role="option" aria-selected="false" data-p="push-gaming" data-name="Push Gaming"><span>Push Gaming</span></li>
+              <li role="option" aria-selected="false" data-p="spribe" data-name="Spribe"><span>Spribe</span></li>
+              <li role="option" aria-selected="false" data-p="voltent" data-name="Voltent"><span>Voltent</span></li>
+              <li role="option" aria-selected="false" data-p="wazdan" data-name="Wazdan"><span>Wazdan</span></li>
+              <li role="option" aria-selected="false" data-p="yggdrasil" data-name="Yggdrasil"><span>Yggdrasil</span></li>
+            </ul>
+            <p class="srch__pnone" data-pnone hidden>No providers found</p>
+          </div>
         </div>
       </div>
     </div>
@@ -17212,11 +17245,39 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
         pmenu.hidden = true; pdrop.classList.remove('is-open');
         pbtn.setAttribute('aria-expanded', 'false');
       };
+      /* Строка поиска по провайдерам */
+      var pfind = pmenu.querySelector('[data-pfind]');
+      var pnone = pmenu.querySelector('[data-pnone]');
+      var plis = [].slice.call(pmenu.querySelectorAll('li'));
+      var pfilter = function () {
+        var q = pfind ? norm(pfind.value) : '';
+        var shown = 0;
+        plis.forEach(function (li) {
+          var hit = !q || li.dataset.p !== 'all' && norm(li.dataset.name).indexOf(q) >= 0;
+          li.hidden = !hit;
+          if (hit) shown++;
+        });
+        if (pnone) pnone.hidden = shown > 0;
+      };
+      if (pfind) {
+        pfind.addEventListener('input', pfilter);
+        /* Enter выбирает первого найденного */
+        pfind.addEventListener('keydown', function (e) {
+          if (e.key !== 'Enter') return;
+          e.preventDefault();
+          /* Enter — сперва тот, чьё имя начинается с набранного */
+          var q = norm(pfind.value);
+          var seen = plis.filter(function (li) { return !li.hidden; });
+          var first = seen.filter(function (li) { return norm(li.dataset.name).indexOf(q) === 0; })[0] || seen[0];
+          if (first) first.click();
+        });
+      }
       pbtn.addEventListener('click', function (e) {
         e.stopPropagation(); closeMenu();
         var open = pmenu.hidden;
         pmenu.hidden = !open; pdrop.classList.toggle('is-open', open);
         pbtn.setAttribute('aria-expanded', String(open));
+        if (open && pfind) { pfind.value = ''; pfilter(); pfind.focus(); }
       });
       pmenu.addEventListener('click', function (e) {
         var li = e.target.closest('li'); if (!li) return;
