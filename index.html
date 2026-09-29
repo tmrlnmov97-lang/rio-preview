@@ -6561,13 +6561,19 @@ body.cur-open .wallet__balance { background: var(--wl-w-18); }
    вкладки, фильтры, скелет и постраничная навигация достаются даром.
    Своего здесь — четыре колонки строки и значок способа оплаты.
    ─────────────────────────────────────────────────────────────────── */
-.tx__ico { display: grid; place-items: center; flex: none; width: 48px; height: 48px;
-           border-radius: var(--wl-r-md); background: var(--white-06, var(--wl-w-08)); }
-.tx__ico img { display: block; opacity: .9; }
-/* Пополнение и вывод различаются подложкой значка, а не только подписью:
-   в списке из двенадцати строк вид операции должен читаться до чтения. */
-.tx__ico--deposit { background: rgba(126, 231, 135, .12); }
-.tx__ico--withdraw { background: var(--wl-bad-bg); }
+/* Значок способа оплаты — обводкой в круге на Char-2, как значки шапки.
+   Направление — маленький кружок в углу: пополнение зелёной стрелкой вниз,
+   вывод накалом вверх. Раньше направление несла цветная подложка всего
+   значка, а сам знак крипты был многоцветной картинкой на 10px. */
+.tx__ico { position: relative; display: grid; place-items: center; flex: none; width: 44px; height: 44px;
+           border-radius: 50%; background: var(--wl-bg-raised); color: var(--wl-text);
+           box-shadow: inset 0 0 0 1px var(--wl-w-08); }
+.tx__ico > svg { width: 20px; height: 20px; display: block; }
+.tx__dir { position: absolute; right: -3px; bottom: -3px; width: 18px; height: 18px; border-radius: 50%;
+           display: grid; place-items: center; box-shadow: 0 0 0 2px var(--wl-bg-chrome); }
+.tx__dir svg { width: 11px; height: 11px; stroke-width: 2.6; display: block; }
+.tx__ico--deposit .tx__dir { background: #3ddc84; color: var(--wl-bg-page); }
+.tx__ico--withdraw .tx__dir { background: var(--wl-primary); color: var(--wl-bg-page); }
 .tx__sum, .tx__date { text-align: right; font-family: var(--wl-font); }
 .tx__sum { font-weight: var(--wl-fw-semibold); font-size: var(--wl-fs-md); line-height: 22px; color: var(--wl-text);
            font-variant-numeric: tabular-nums; }
@@ -6588,7 +6594,7 @@ body.cur-open .wallet__balance { background: var(--wl-w-18); }
                        font-size: var(--wl-fs-xs); line-height: var(--wl-lh-xs); padding-top: 2px; }
   /* Правило ставок дописывает «Bet» перед суммой — здесь оно не к месту */
   .tx__row .tx__sum::before { content: none; }
-  .tx__ico { width: 40px; height: 40px; border-radius: var(--wl-r-md); }
+  .tx__ico { width: 40px; height: 40px; }
 }
 
 /* Парное правило к hidden. Без него display: grid из .hist__row перебивает
@@ -13169,7 +13175,7 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
             </div>
           <div class="hist__row tx__row" data-tx-kind="deposit" data-tx-state="done" data-tx-when="today">
             <div class="hist__game">
-              <span class="tx__ico tx__ico--deposit"><img loading="lazy" decoding="async" src="a/796916f40e.svg" alt="" width="20" height="20"></span>
+              <span class="tx__ico tx__ico--deposit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M9.5 8.5h3.8a1.8 1.8 0 0 1 0 3.5H9.5zm0 3.5h4.3a1.8 1.8 0 0 1 0 3.5H9.5zM9.5 7v10M11.5 7v1.5M11.5 15.5V17"/></svg><i class="tx__dir" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6v12M7 13l5 5 5-5"/></svg></i></span>
               <div class="hist__game-text"><b>Deposit</b><span>Crypto · ERC20</span></div>
             </div>
             <span class="tx__sum hist__win--up">+500.00 USDT</span>
@@ -13178,7 +13184,7 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
           </div>
           <div class="hist__row tx__row" data-tx-kind="withdraw" data-tx-state="wait" data-tx-when="today">
             <div class="hist__game">
-              <span class="tx__ico tx__ico--withdraw"><img loading="lazy" decoding="async" src="a/64aeb080c4.svg" alt="" width="20" height="20"></span>
+              <span class="tx__ico tx__ico--withdraw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3 10h18M7 14.5h3"/></svg><i class="tx__dir" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V6M7 11l5-5 5 5"/></svg></i></span>
               <div class="hist__game-text"><b>Withdrawal</b><span>Card · Visa</span></div>
             </div>
             <span class="tx__sum hist__win--down">-250.00 USDT</span>
@@ -13187,7 +13193,7 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
           </div>
           <div class="hist__row tx__row" data-tx-kind="deposit" data-tx-state="done" data-tx-when="today">
             <div class="hist__game">
-              <span class="tx__ico tx__ico--deposit"><img loading="lazy" decoding="async" src="a/c22f96a525.svg" alt="" width="20" height="20"></span>
+              <span class="tx__ico tx__ico--deposit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 9 12 4.5 20.5 9"/><path d="M5 9v8M9.7 9v8M14.3 9v8M19 9v8M3.5 19.5h17"/></svg><i class="tx__dir" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6v12M7 13l5 5 5-5"/></svg></i></span>
               <div class="hist__game-text"><b>Deposit</b><span>Payphone</span></div>
             </div>
             <span class="tx__sum hist__win--up">+100.00 USDT</span>
@@ -13196,7 +13202,7 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
           </div>
           <div class="hist__row tx__row" data-tx-kind="withdraw" data-tx-state="done" data-tx-when="week">
             <div class="hist__game">
-              <span class="tx__ico tx__ico--withdraw"><img loading="lazy" decoding="async" src="a/796916f40e.svg" alt="" width="20" height="20"></span>
+              <span class="tx__ico tx__ico--withdraw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M9.5 8.5h3.8a1.8 1.8 0 0 1 0 3.5H9.5zm0 3.5h4.3a1.8 1.8 0 0 1 0 3.5H9.5zM9.5 7v10M11.5 7v1.5M11.5 15.5V17"/></svg><i class="tx__dir" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V6M7 11l5-5 5 5"/></svg></i></span>
               <div class="hist__game-text"><b>Withdrawal</b><span>Crypto · TRC20</span></div>
             </div>
             <span class="tx__sum hist__win--down">-1,000.00 USDT</span>
@@ -13205,7 +13211,7 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
           </div>
           <div class="hist__row tx__row" data-tx-kind="deposit" data-tx-state="bad" data-tx-when="week">
             <div class="hist__game">
-              <span class="tx__ico tx__ico--deposit"><img loading="lazy" decoding="async" src="a/64aeb080c4.svg" alt="" width="20" height="20"></span>
+              <span class="tx__ico tx__ico--deposit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3 10h18M7 14.5h3"/></svg><i class="tx__dir" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6v12M7 13l5 5 5-5"/></svg></i></span>
               <div class="hist__game-text"><b>Deposit</b><span>Card · Mastercard</span></div>
             </div>
             <span class="tx__sum hist__win--up">+50.00 USDT</span>
@@ -13214,7 +13220,7 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
           </div>
           <div class="hist__row tx__row" data-tx-kind="deposit" data-tx-state="done" data-tx-when="week">
             <div class="hist__game">
-              <span class="tx__ico tx__ico--deposit"><img loading="lazy" decoding="async" src="a/796916f40e.svg" alt="" width="20" height="20"></span>
+              <span class="tx__ico tx__ico--deposit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M9.5 8.5h3.8a1.8 1.8 0 0 1 0 3.5H9.5zm0 3.5h4.3a1.8 1.8 0 0 1 0 3.5H9.5zM9.5 7v10M11.5 7v1.5M11.5 15.5V17"/></svg><i class="tx__dir" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6v12M7 13l5 5 5-5"/></svg></i></span>
               <div class="hist__game-text"><b>Deposit</b><span>Crypto · BTC</span></div>
             </div>
             <span class="tx__sum hist__win--up">+2,000.00 USDT</span>
@@ -13223,7 +13229,7 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
           </div>
           <div class="hist__row tx__row" data-tx-kind="withdraw" data-tx-state="done" data-tx-when="week">
             <div class="hist__game">
-              <span class="tx__ico tx__ico--withdraw"><img loading="lazy" decoding="async" src="a/c22f96a525.svg" alt="" width="20" height="20"></span>
+              <span class="tx__ico tx__ico--withdraw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 9 12 4.5 20.5 9"/><path d="M5 9v8M9.7 9v8M14.3 9v8M19 9v8M3.5 19.5h17"/></svg><i class="tx__dir" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V6M7 11l5-5 5 5"/></svg></i></span>
               <div class="hist__game-text"><b>Withdrawal</b><span>Bank transfer</span></div>
             </div>
             <span class="tx__sum hist__win--down">-300.00 USDT</span>
@@ -13232,7 +13238,7 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
           </div>
           <div class="hist__row tx__row" data-tx-kind="deposit" data-tx-state="done" data-tx-when="month">
             <div class="hist__game">
-              <span class="tx__ico tx__ico--deposit"><img loading="lazy" decoding="async" src="a/796916f40e.svg" alt="" width="20" height="20"></span>
+              <span class="tx__ico tx__ico--deposit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M9.5 8.5h3.8a1.8 1.8 0 0 1 0 3.5H9.5zm0 3.5h4.3a1.8 1.8 0 0 1 0 3.5H9.5zM9.5 7v10M11.5 7v1.5M11.5 15.5V17"/></svg><i class="tx__dir" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6v12M7 13l5 5 5-5"/></svg></i></span>
               <div class="hist__game-text"><b>Deposit</b><span>Crypto · ERC20</span></div>
             </div>
             <span class="tx__sum hist__win--up">+150.00 USDT</span>
@@ -13241,7 +13247,7 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
           </div>
           <div class="hist__row tx__row" data-tx-kind="withdraw" data-tx-state="bad" data-tx-when="month">
             <div class="hist__game">
-              <span class="tx__ico tx__ico--withdraw"><img loading="lazy" decoding="async" src="a/64aeb080c4.svg" alt="" width="20" height="20"></span>
+              <span class="tx__ico tx__ico--withdraw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3 10h18M7 14.5h3"/></svg><i class="tx__dir" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V6M7 11l5-5 5 5"/></svg></i></span>
               <div class="hist__game-text"><b>Withdrawal</b><span>Card · Visa</span></div>
             </div>
             <span class="tx__sum hist__win--down">-75.00 USDT</span>
@@ -13250,7 +13256,7 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
           </div>
           <div class="hist__row tx__row" data-tx-kind="deposit" data-tx-state="done" data-tx-when="month">
             <div class="hist__game">
-              <span class="tx__ico tx__ico--deposit"><img loading="lazy" decoding="async" src="a/c22f96a525.svg" alt="" width="20" height="20"></span>
+              <span class="tx__ico tx__ico--deposit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 9 12 4.5 20.5 9"/><path d="M5 9v8M9.7 9v8M14.3 9v8M19 9v8M3.5 19.5h17"/></svg><i class="tx__dir" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6v12M7 13l5 5 5-5"/></svg></i></span>
               <div class="hist__game-text"><b>Deposit</b><span>Payphone</span></div>
             </div>
             <span class="tx__sum hist__win--up">+400.00 USDT</span>
@@ -13259,7 +13265,7 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
           </div>
           <div class="hist__row tx__row" data-tx-kind="withdraw" data-tx-state="done" data-tx-when="month">
             <div class="hist__game">
-              <span class="tx__ico tx__ico--withdraw"><img loading="lazy" decoding="async" src="a/796916f40e.svg" alt="" width="20" height="20"></span>
+              <span class="tx__ico tx__ico--withdraw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M9.5 8.5h3.8a1.8 1.8 0 0 1 0 3.5H9.5zm0 3.5h4.3a1.8 1.8 0 0 1 0 3.5H9.5zM9.5 7v10M11.5 7v1.5M11.5 15.5V17"/></svg><i class="tx__dir" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V6M7 11l5-5 5 5"/></svg></i></span>
               <div class="hist__game-text"><b>Withdrawal</b><span>Crypto · TRC20</span></div>
             </div>
             <span class="tx__sum hist__win--down">-600.00 USDT</span>
@@ -13268,7 +13274,7 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
           </div>
           <div class="hist__row tx__row" data-tx-kind="deposit" data-tx-state="wait" data-tx-when="month">
             <div class="hist__game">
-              <span class="tx__ico tx__ico--deposit"><img loading="lazy" decoding="async" src="a/796916f40e.svg" alt="" width="20" height="20"></span>
+              <span class="tx__ico tx__ico--deposit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M9.5 8.5h3.8a1.8 1.8 0 0 1 0 3.5H9.5zm0 3.5h4.3a1.8 1.8 0 0 1 0 3.5H9.5zM9.5 7v10M11.5 7v1.5M11.5 15.5V17"/></svg><i class="tx__dir" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6v12M7 13l5 5 5-5"/></svg></i></span>
               <div class="hist__game-text"><b>Deposit</b><span>Crypto · ETH</span></div>
             </div>
             <span class="tx__sum hist__win--up">+1,200.00 USDT</span>
