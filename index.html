@@ -4545,9 +4545,7 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
 .dp { position: fixed; inset: 0; z-index: 70; display: flex; align-items: flex-start;
       justify-content: center; padding: var(--wl-sp-6) var(--wl-sp-4); box-sizing: border-box; overflow-y: auto; }
 .dp[hidden] { display: none; }
-/* Пополнение — про деньги, поэтому шапка с балансом остаётся читаемой:
-   затемнение мягче обычного, а сама шапка поднята над ним. Ниже ещё и
-   лёгкий подсвет от кнопки DEPOSIT, чтобы видно было, откуда пришло окно. */
+/* Затемнение мягче обычного, сверху лёгкий подсвет акцентом. */
 /* fixed, а не absolute: внутри прокручиваемого .dp затемнение было ростом
    в один экран и уезжало вместе с содержимым, оголяя страницу снизу */
 .dp__scrim { position: fixed; inset: 0;
@@ -4557,15 +4555,8 @@ body.dp-open .wallet__deposit, body.dp-open .wallet__deposit::after { animation:
                rgba(12, 12, 12, .52);
              -webkit-backdrop-filter: blur(6px) saturate(.9);
              backdrop-filter: blur(6px) saturate(.9); }
-/* 20 у шапки против 70 у окна — при открытом депозите поднимаем её выше
-   затемнения. Класс ставит скрипт, чтобы у остальных окон осталось как было. */
-body.dp-open .topbar { z-index: 71; }
-/* На телефоне окно — лист во весь экран, и шапка должна уйти под него */
-@media (max-width: 767px) { body.dp-open .topbar { z-index: 20; } }
-/* На мобильной окно занимает почти весь экран, и поднятая шапка накрывала его
-   верх: кнопки кошелька перехватывали нажатия по крестику и вкладкам.
-   Правило стоит здесь, а не в мобильном блоке выше: при равной силе
-   побеждает то, что записано позже. */
+/* Шапка уходит под затемнение, как под любым окном: раньше при депозите
+   её поднимали над ним (z-index 71), теперь окно перекрывает всё. */
 /* Кнопка, из которой пришло окно, остаётся подсвеченной */
 body.dp-open .wallet__deposit { box-shadow: 0 0 0 2px var(--wl-money-glow),
                                             0 8px 24px -8px var(--wl-money-glow); }
