@@ -7099,17 +7099,17 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
     </div>
 
     <div class="header-desktop">
-      <!-- Разделы прямо в шапке, как в образце: одна тёмная пилюля, внутри
+      <!-- Разделы прямо в шапке: Lobby, Casino, Sport — одна тёмная пилюля, внутри
            вкладки. Значки нарисованы прямо в разметке обводкой currentColor —
            только так они перекрашиваются вместе с активной вкладкой.
            Спорт снят с сайта, поэтому вкладка стоит, но не нажимается. -->
       <div class="hdtabs" role="group" aria-label="Sections">
+        <button class="hdtab" type="button" data-hdtab="home" data-fgo="view:home">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg>Lobby</button>
         <button class="hdtab" type="button" data-hdtab="casino" data-fgo="view:casino">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="3"/><path d="M9.2 5v14M14.8 5v14"/></svg>Casino</button>
         <button class="hdtab is-off" type="button" data-hdtab="sport" disabled>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="m12 7.5 4 2.9-1.5 4.6h-5L8 10.4z"/></svg>Sport</button>
-        <button class="hdtab" type="button" data-hdtab="bonuses" data-fgo="view:bonuses">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="8" width="17" height="4" rx="1.5"/><path d="M5 12v7.5h14V12M12 8v11.5M12 8c-1.5-3-5-3.5-5-1.2C7 8 9 8 12 8zm0 0c1.5-3 5-3.5 5-1.2C17 8 15 8 12 8z"/></svg>Bonuses</button>
       </div>
       <span class="hdsp" aria-hidden="true"></span>
       <!-- Поиск — широкая пилюля с подсказкой клавиши, а не один значок -->
