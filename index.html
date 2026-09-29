@@ -2287,7 +2287,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 .srch__filters { display: flex; gap: var(--wl-sp-2); padding: 6px 0; }
 .srch__sel {
   display: flex; align-items: center; justify-content: space-between; gap: var(--wl-sp-2);
-  width: 190px; padding: var(--wl-sp-3); border-radius: var(--wl-r-sm); background: var(--wl-bg-raised);
+  width: 190px; padding: var(--wl-sp-3) var(--wl-sp-4); border-radius: var(--wl-r-pill); background: var(--wl-bg-raised);
   font-family: var(--wl-font-ui); font-variation-settings: 'wdth' 100;
   font-size: var(--wl-fs-sm); line-height: normal; white-space: nowrap;
   transition: background-color .15s ease;
@@ -2358,7 +2358,7 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
                 mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent); }
   .srch__tag { padding: 7px 14px; font-size: var(--wl-fs-sm); }
   .srch__filters { padding: 0; gap: var(--wl-sp-2); }
-  .srch__sel { flex: 1 0 0; width: auto; min-width: 0; padding: 10px var(--wl-sp-3); }
+  .srch__sel { flex: 1 0 0; width: auto; min-width: 0; padding: 10px var(--wl-sp-4); }
   /* Сетка забирает остаток высоты. Плитка ровно та же, что в мобильном
      каталоге: 3 в ряд по 151. Выше делать нельзя — арт внутри карточки
      это картинка фиксированного размера по центру, на высоком боксе она
@@ -2427,13 +2427,13 @@ body.nav-rail .sidebar.is-expanded .sidebar__inner { overflow: visible; }
 .srch__menu {
   position: absolute; left: 0; top: calc(100% + 6px); z-index: 2;
   min-width: 100%; margin: 0; padding: 6px; list-style: none;
-  background: var(--wl-bg-raised); border: 1px solid var(--wl-w-12); border-radius: var(--wl-r-md);
+  background: var(--wl-bg-raised); border: 1px solid var(--wl-w-12); border-radius: 20px;
   box-shadow: 0 12px 28px -8px rgba(0, 0, 0, .6);
   animation: srch-rise .16s cubic-bezier(.22, .61, .36, 1) both;
 }
 .srch__menu[hidden] { display: none; }
 .srch__menu li {
-  padding: 9px var(--wl-sp-3); border-radius: var(--wl-r-sm); cursor: pointer; white-space: nowrap;
+  padding: 9px var(--wl-sp-3); border-radius: var(--wl-r-pill); cursor: pointer; white-space: nowrap;
   font-family: var(--wl-font-ui); font-variation-settings: 'wdth' 100;
   font-weight: var(--wl-fw-medium); font-size: var(--wl-fs-sm); line-height: normal; color: var(--wl-text-muted);
   transition: background-color .12s ease, color .12s ease;
