@@ -7079,39 +7079,52 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
 .category-grid[hidden] { display: none; }
 
 /* ── Слайдер баннеров (Figma 315:4629) ──
-   Баннер 1586×800 показан целиком, поэтому коробка держит его пропорцию:
-   тогда невидимые кнопки ложатся ровно на нарисованные. */
-.bsl { position: relative; width: 100%; aspect-ratio: 1586 / 800; border-radius: inherit; overflow: hidden; }
+   Макет 1586×800. Текст и кнопки меряются в cqh — долях высоты баннера,
+   поэтому раскладка та же при любой пропорции; арт тянется по ширине и
+   прижат вправо. На компьютере баннер низкий и вытянутый (21:8), на
+   телефоне — пропорция макета. */
+.bsl { position: relative; width: 100%; aspect-ratio: 21 / 8; border-radius: inherit; overflow: hidden; background: #000; }
 .bsl__track { display: flex; width: 100%; height: 100%; overflow-x: auto; scroll-snap-type: x mandatory;
               scroll-behavior: smooth; scrollbar-width: none; }
 .bsl__track::-webkit-scrollbar { display: none; }
-.bsl__slide { position: relative; flex: 0 0 100%; height: 100%; scroll-snap-align: start; }
-.bsl__slide img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.bsl__hot { position: absolute; top: 75.75%; height: 16.25%; padding: 0; border: 0; background: none;
-            border-radius: 4%/8%; cursor: pointer; }
-.bsl__hot--claim { left: 4.04%; width: 25.6%; }
-.bsl__hot--terms { left: 31.15%; width: 17.21%; }
-.bsl__hot--play { left: 4.04%; width: 21.37%; }
-.bsl__hot--terms-s { left: 27.24%; width: 17.21%; }
-.bsl__hot:hover { background: rgba(255, 255, 255, .08); }
-.bsl__hot:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.bsl__slide { position: relative; flex: 0 0 100%; height: 100%; scroll-snap-align: start; container-type: size; overflow: hidden; }
+.bsl__art { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; object-position: 100% 45%; }
+.bsl__txt { position: absolute; inset: 0; pointer-events: none; color: #f0eeea; }
+.bsl .bsl__info { position: absolute; left: 8cqh; top: 8cqh; font-family: 'JetBrains Mono', ui-monospace, monospace;
+             font-size: 4cqh; line-height: 1; text-transform: uppercase; opacity: .5; white-space: nowrap; }
+.bsl .bsl__title { position: absolute; max-width: none; color: #f0eeea; left: 7.25cqh; top: 28.6cqh; margin: 0; font-family: 'Archivo', 'Arial Black', sans-serif;
+              font-variation-settings: 'wdth' 112; font-stretch: 112%; font-weight: 800; font-size: 16cqh; line-height: 1;
+              letter-spacing: -.01em; text-transform: uppercase; white-space: nowrap; }
+.bsl .bsl__sub { position: absolute; max-width: none; color: #f0eeea; left: 8cqh; top: 63.2cqh; margin: 0; font-family: 'Onest', system-ui, sans-serif;
+            font-size: 5cqh; line-height: 1.1; white-space: nowrap; }
+.bsl .bsl__btns { position: absolute; left: 8cqh; top: 75.75cqh; display: flex; gap: 3cqh; pointer-events: auto; }
+.bsl .bsl__btn { box-sizing: border-box; height: 16.25cqh; padding: 0 8cqh; border-radius: 4cqh; cursor: pointer;
+            font-family: 'Onest', system-ui, sans-serif; font-weight: 600; font-size: 6cqh; line-height: 1; white-space: nowrap;
+            transition: background-color .15s ease, box-shadow .15s ease, transform .1s ease; }
+.bsl__btn--main { border: 0; background: #f0eeea; color: #0c0c0c; }
+.bsl__btn--main:hover { background: #fff; }
+.bsl__btn--ghost { border: .5cqh solid #f0eeea; background: none; color: #f0eeea; }
+.bsl__btn--ghost:hover { background: rgba(240, 238, 234, .1); }
+.bsl__btn:active { transform: translateY(1px); }
+.bsl__btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .bsl__dots { position: absolute; right: 3%; top: 7%; display: flex; gap: 6px; }
 .bsl__dots button { width: 16px; height: 4px; padding: 0; border: 0; border-radius: 999px; cursor: pointer;
                     background: rgba(240, 238, 234, .35); transition: width .2s ease, background-color .2s ease; }
 .bsl__dots button[aria-selected="true"] { width: 32px; background: #f0eeea; }
-@media (max-width: 767px) { .bsl__dots { top: 7%; bottom: auto; gap: 4px; } .bsl__dots button { width: 8px; } .bsl__dots button[aria-selected="true"] { width: 18px; } }
+@media (max-width: 1023px) { .bsl { aspect-ratio: 1586 / 800; } }
+@media (max-width: 767px) { .bsl__dots { gap: 4px; } .bsl__dots button { width: 8px; } .bsl__dots button[aria-selected="true"] { width: 18px; } }
 
 /* Большой промоблок на главной — теперь слайдер баннеров: коробка по
    пропорции баннера, две карточки справа делят его высоту. */
 .bento { grid-template-rows: auto auto; }
-.t-main { padding: 0; background: #0b0a0a; aspect-ratio: 1586 / 800; gap: 0; }
+.t-main { padding: 0; background: #0b0a0a; aspect-ratio: 21 / 8; gap: 0; }
 @media (min-width: 1024px) and (max-width: 1279px) {
   .bento { grid-template-rows: auto 180px; }
 }
 /* Телефон: вместо прежнего героя — тот же слайдер во всю ширину */
 @media (max-width: 1023px) {
   .bento { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; margin-bottom: 8px; }
-  .t-main { grid-column: auto; grid-row: auto; border-radius: 16px; }
+  .t-main { grid-column: auto; grid-row: auto; border-radius: 16px; aspect-ratio: 1586 / 800; }
   .t-side { display: none; }
   .hero { display: none !important; }
 }
@@ -7357,24 +7370,25 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
     <div class="pz-top">
       <div class="bento">
         <div class="tile t-main">
-          <!-- Баннеры из Figma (Design QA 315:4629): картинка баннера целиком,
-               поверх нарисованных кнопок — настоящие кнопки-невидимки. -->
+          <!-- Баннеры из Figma (Design QA 315:4629). Арт — картинкой, текст и кнопки —
+               живым HTML: так баннер держит любую пропорцию, а размеры текста
+               считаются от его высоты (container query), как в макете 1586×800. -->
           <div class="bsl" data-bsl aria-roledescription="carousel" aria-label="Promotions">
             <div class="bsl__track">
-              <div class="bsl__slide" role="group" aria-roledescription="slide"><img src="a/1f41a97a15.webp" alt="Heat up to 350% — welcome pack" width="1586" height="800"><button class="bsl__hot bsl__hot--claim" type="button" data-fgo="auth:reg" aria-label="Claim bonus"></button><button class="bsl__hot bsl__hot--terms" type="button" data-fgo="view:promo" aria-label="Terms"></button></div>
-              <div class="bsl__slide" role="group" aria-roledescription="slide"><img src="a/8f3025f001.webp" alt="Zeus Fridays — 20 free spins on Gates of Olympus" width="1586" height="800"><button class="bsl__hot bsl__hot--claim" type="button" data-fgo="auth:reg" aria-label="Claim bonus"></button><button class="bsl__hot bsl__hot--terms" type="button" data-fgo="view:promo" aria-label="Terms"></button></div>
-              <div class="bsl__slide" role="group" aria-roledescription="slide"><img src="a/aaa5515201.webp" alt="Welcome free spins for new players" width="1586" height="800"><button class="bsl__hot bsl__hot--claim" type="button" data-fgo="auth:reg" aria-label="Claim bonus"></button><button class="bsl__hot bsl__hot--terms" type="button" data-fgo="view:promo" aria-label="Terms"></button></div>
-              <div class="bsl__slide" role="group" aria-roledescription="slide"><img src="a/bd83c5ddf9.webp" alt="Referral program — 5% of friends’ net loss" width="1586" height="800"><button class="bsl__hot bsl__hot--claim" type="button" data-fgo="auth:reg" aria-label="Claim bonus"></button><button class="bsl__hot bsl__hot--terms" type="button" data-fgo="view:promo" aria-label="Terms"></button></div>
-              <div class="bsl__slide" role="group" aria-roledescription="slide"><img src="a/358c733900.webp" alt="Sport event" width="1586" height="800"><button class="bsl__hot bsl__hot--play" type="button" data-fgo="msg:Sport is coming soon." aria-label="Play now"></button><button class="bsl__hot bsl__hot--terms-s" type="button" data-fgo="view:promo" aria-label="Terms"></button></div>
-              <div class="bsl__slide" role="group" aria-roledescription="slide"><img src="a/f77d9ab632.webp" alt="Heat up to 350%" width="1586" height="800"><button class="bsl__hot bsl__hot--claim" type="button" data-fgo="auth:reg" aria-label="Claim bonus"></button><button class="bsl__hot bsl__hot--terms" type="button" data-fgo="view:promo" aria-label="Terms"></button></div>
-              <div class="bsl__slide" role="group" aria-roledescription="slide"><img src="a/07e5062ef2.webp" alt="Heat up to 350%" width="1586" height="800"><button class="bsl__hot bsl__hot--claim" type="button" data-fgo="auth:reg" aria-label="Claim bonus"></button><button class="bsl__hot bsl__hot--terms" type="button" data-fgo="view:promo" aria-label="Terms"></button></div>
-              <div class="bsl__slide" role="group" aria-roledescription="slide"><img src="a/b15df42907.webp" alt="Heat up to 350%" width="1586" height="800"><button class="bsl__hot bsl__hot--claim" type="button" data-fgo="auth:reg" aria-label="Claim bonus"></button><button class="bsl__hot bsl__hot--terms" type="button" data-fgo="view:promo" aria-label="Terms"></button></div>
-              <div class="bsl__slide" role="group" aria-roledescription="slide"><img src="a/a268912f1c.webp" alt="Heat up to 350%" width="1586" height="800"><button class="bsl__hot bsl__hot--claim" type="button" data-fgo="auth:reg" aria-label="Claim bonus"></button><button class="bsl__hot bsl__hot--terms" type="button" data-fgo="view:promo" aria-label="Terms"></button></div>
-              <div class="bsl__slide" role="group" aria-roledescription="slide"><img src="a/f658cfa89b.webp" alt="Heat up to 350%" width="1586" height="800"><button class="bsl__hot bsl__hot--claim" type="button" data-fgo="auth:reg" aria-label="Claim bonus"></button><button class="bsl__hot bsl__hot--terms" type="button" data-fgo="view:promo" aria-label="Terms"></button></div>
-              <div class="bsl__slide" role="group" aria-roledescription="slide"><img src="a/94be92433c.webp" alt="Heat up to 350%" width="1586" height="800"><button class="bsl__hot bsl__hot--claim" type="button" data-fgo="auth:reg" aria-label="Claim bonus"></button><button class="bsl__hot bsl__hot--terms" type="button" data-fgo="view:promo" aria-label="Terms"></button></div>
-              <div class="bsl__slide" role="group" aria-roledescription="slide"><img src="a/fac07efb93.webp" alt="Heat up to 350%" width="1586" height="800"><button class="bsl__hot bsl__hot--claim" type="button" data-fgo="auth:reg" aria-label="Claim bonus"></button><button class="bsl__hot bsl__hot--terms" type="button" data-fgo="view:promo" aria-label="Terms"></button></div>
-              <div class="bsl__slide" role="group" aria-roledescription="slide"><img src="a/92e31c5ff0.webp" alt="Heat up to 350%" width="1586" height="800"><button class="bsl__hot bsl__hot--claim" type="button" data-fgo="auth:reg" aria-label="Claim bonus"></button><button class="bsl__hot bsl__hot--terms" type="button" data-fgo="view:promo" aria-label="Terms"></button></div>
-              <div class="bsl__slide" role="group" aria-roledescription="slide"><img src="a/bbf3acab0c.webp" alt="Heat up to 350%" width="1586" height="800"><button class="bsl__hot bsl__hot--claim" type="button" data-fgo="auth:reg" aria-label="Claim bonus"></button><button class="bsl__hot bsl__hot--terms" type="button" data-fgo="view:promo" aria-label="Terms"></button></div>
+              <div class="bsl__slide" role="group" aria-roledescription="slide"><img class="bsl__art" src="a/1f41a97a15.webp" alt="" width="1586" height="800"><div class="bsl__txt"><span class="bsl__info">Welcome pack · 3 deposits</span><h3 class="bsl__title">Heat up<br>to 350%</h3><p class="bsl__sub">Warm up your balance.</p><div class="bsl__btns"><button class="bsl__btn bsl__btn--main" type="button" data-fgo="auth:reg">Claim bonus</button><button class="bsl__btn bsl__btn--ghost" type="button" data-fgo="view:promo">Terms</button></div></div></div>
+              <div class="bsl__slide" role="group" aria-roledescription="slide"><img class="bsl__art" src="a/8f3025f001.webp" alt="" width="1586" height="800"><div class="bsl__txt"><span class="bsl__info">Every Friday, 20:00 UTC</span><h3 class="bsl__title">Zeus<br>Fridays</h3><p class="bsl__sub">Get 20 FS on Gates of Olympus</p><div class="bsl__btns"><button class="bsl__btn bsl__btn--main" type="button" data-fgo="auth:reg">Claim bonus</button><button class="bsl__btn bsl__btn--ghost" type="button" data-fgo="view:promo">Terms</button></div></div></div>
+              <div class="bsl__slide" role="group" aria-roledescription="slide"><img class="bsl__art" src="a/aaa5515201.webp" alt="" width="1586" height="800"><div class="bsl__txt"><span class="bsl__info">Active for registration</span><h3 class="bsl__title">Welcome<br>freespins</h3><p class="bsl__sub">For new players</p><div class="bsl__btns"><button class="bsl__btn bsl__btn--main" type="button" data-fgo="auth:reg">Claim bonus</button><button class="bsl__btn bsl__btn--ghost" type="button" data-fgo="view:promo">Terms</button></div></div></div>
+              <div class="bsl__slide" role="group" aria-roledescription="slide"><img class="bsl__art" src="a/bd83c5ddf9.webp" alt="" width="1586" height="800"><div class="bsl__txt"><span class="bsl__info">Active for registration</span><h3 class="bsl__title">Referal<br>program</h3><p class="bsl__sub">5% of invited friend’s net loss for 30 days</p><div class="bsl__btns"><button class="bsl__btn bsl__btn--main" type="button" data-fgo="auth:reg">Claim bonus</button><button class="bsl__btn bsl__btn--ghost" type="button" data-fgo="view:promo">Terms</button></div></div></div>
+              <div class="bsl__slide" role="group" aria-roledescription="slide"><img class="bsl__art" src="a/358c733900.webp" alt="" width="1586" height="800"><div class="bsl__txt"><span class="bsl__info">Sport event, 20:00 UTC</span><h3 class="bsl__title">Sport<br>banner</h3><p class="bsl__sub">Make the move</p><div class="bsl__btns"><button class="bsl__btn bsl__btn--main" type="button" data-fgo="msg:Sport is coming soon.">Play now</button><button class="bsl__btn bsl__btn--ghost" type="button" data-fgo="view:promo">Terms</button></div></div></div>
+              <div class="bsl__slide" role="group" aria-roledescription="slide"><img class="bsl__art" src="a/f77d9ab632.webp" alt="" width="1586" height="800"><div class="bsl__txt"><span class="bsl__info">Welcome pack · 3 deposits</span><h3 class="bsl__title">Heat up<br>to 350%</h3><p class="bsl__sub">Warm up your balance.</p><div class="bsl__btns"><button class="bsl__btn bsl__btn--main" type="button" data-fgo="auth:reg">Claim bonus</button><button class="bsl__btn bsl__btn--ghost" type="button" data-fgo="view:promo">Terms</button></div></div></div>
+              <div class="bsl__slide" role="group" aria-roledescription="slide"><img class="bsl__art" src="a/07e5062ef2.webp" alt="" width="1586" height="800"><div class="bsl__txt"><span class="bsl__info">Welcome pack · 3 deposits</span><h3 class="bsl__title">Heat up<br>to 350%</h3><p class="bsl__sub">Warm up your balance.</p><div class="bsl__btns"><button class="bsl__btn bsl__btn--main" type="button" data-fgo="auth:reg">Claim bonus</button><button class="bsl__btn bsl__btn--ghost" type="button" data-fgo="view:promo">Terms</button></div></div></div>
+              <div class="bsl__slide" role="group" aria-roledescription="slide"><img class="bsl__art" src="a/b15df42907.webp" alt="" width="1586" height="800"><div class="bsl__txt"><span class="bsl__info">Welcome pack · 3 deposits</span><h3 class="bsl__title">Heat up<br>to 350%</h3><p class="bsl__sub">Warm up your balance.</p><div class="bsl__btns"><button class="bsl__btn bsl__btn--main" type="button" data-fgo="auth:reg">Claim bonus</button><button class="bsl__btn bsl__btn--ghost" type="button" data-fgo="view:promo">Terms</button></div></div></div>
+              <div class="bsl__slide" role="group" aria-roledescription="slide"><img class="bsl__art" src="a/a268912f1c.webp" alt="" width="1586" height="800"><div class="bsl__txt"><span class="bsl__info">Welcome pack · 3 deposits</span><h3 class="bsl__title">Heat up<br>to 350%</h3><p class="bsl__sub">Warm up your balance.</p><div class="bsl__btns"><button class="bsl__btn bsl__btn--main" type="button" data-fgo="auth:reg">Claim bonus</button><button class="bsl__btn bsl__btn--ghost" type="button" data-fgo="view:promo">Terms</button></div></div></div>
+              <div class="bsl__slide" role="group" aria-roledescription="slide"><img class="bsl__art" src="a/f658cfa89b.webp" alt="" width="1586" height="800"><div class="bsl__txt"><span class="bsl__info">Welcome pack · 3 deposits</span><h3 class="bsl__title">Heat up<br>to 350%</h3><p class="bsl__sub">Warm up your balance.</p><div class="bsl__btns"><button class="bsl__btn bsl__btn--main" type="button" data-fgo="auth:reg">Claim bonus</button><button class="bsl__btn bsl__btn--ghost" type="button" data-fgo="view:promo">Terms</button></div></div></div>
+              <div class="bsl__slide" role="group" aria-roledescription="slide"><img class="bsl__art" src="a/94be92433c.webp" alt="" width="1586" height="800"><div class="bsl__txt"><span class="bsl__info">Welcome pack · 3 deposits</span><h3 class="bsl__title">Heat up<br>to 350%</h3><p class="bsl__sub">Warm up your balance.</p><div class="bsl__btns"><button class="bsl__btn bsl__btn--main" type="button" data-fgo="auth:reg">Claim bonus</button><button class="bsl__btn bsl__btn--ghost" type="button" data-fgo="view:promo">Terms</button></div></div></div>
+              <div class="bsl__slide" role="group" aria-roledescription="slide"><img class="bsl__art" src="a/fac07efb93.webp" alt="" width="1586" height="800"><div class="bsl__txt"><span class="bsl__info">Welcome pack · 3 deposits</span><h3 class="bsl__title">Heat up<br>to 350%</h3><p class="bsl__sub">Warm up your balance.</p><div class="bsl__btns"><button class="bsl__btn bsl__btn--main" type="button" data-fgo="auth:reg">Claim bonus</button><button class="bsl__btn bsl__btn--ghost" type="button" data-fgo="view:promo">Terms</button></div></div></div>
+              <div class="bsl__slide" role="group" aria-roledescription="slide"><img class="bsl__art" src="a/92e31c5ff0.webp" alt="" width="1586" height="800"><div class="bsl__txt"><span class="bsl__info">Welcome pack · 3 deposits</span><h3 class="bsl__title">Heat up<br>to 350%</h3><p class="bsl__sub">Warm up your balance.</p><div class="bsl__btns"><button class="bsl__btn bsl__btn--main" type="button" data-fgo="auth:reg">Claim bonus</button><button class="bsl__btn bsl__btn--ghost" type="button" data-fgo="view:promo">Terms</button></div></div></div>
+              <div class="bsl__slide" role="group" aria-roledescription="slide"><img class="bsl__art" src="a/bbf3acab0c.webp" alt="" width="1586" height="800"><div class="bsl__txt"><span class="bsl__info">Welcome pack · 3 deposits</span><h3 class="bsl__title">Heat up<br>to 350%</h3><p class="bsl__sub">Warm up your balance.</p><div class="bsl__btns"><button class="bsl__btn bsl__btn--main" type="button" data-fgo="auth:reg">Claim bonus</button><button class="bsl__btn bsl__btn--ghost" type="button" data-fgo="view:promo">Terms</button></div></div></div>
             </div>
             <div class="bsl__dots" role="tablist" aria-label="Banners"></div>
           </div>
