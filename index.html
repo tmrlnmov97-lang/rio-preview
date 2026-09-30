@@ -7152,6 +7152,16 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
   .hero { display: none !important; }
 }
 
+/* Плитки справа от баннера — арт из Figma (Page 4, Frame 10/11): кубики и мяч.
+   Текст и раскладка плиток прежние, меняется только фон. */
+.t-side, .t-side--crash { background: #000; }
+.t-side__art { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%;
+               object-fit: cover; object-position: 100% 0; pointer-events: none;
+               transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+.t-side:hover .t-side__art { transform: scale(1.03); }
+/* Круглая стрелка лежит поверх светлого арта — подложка темнее, чтобы читалась */
+.t-side .go { background: rgba(11, 10, 10, .55); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+
 </style>
 </head>
 <body>
@@ -7409,12 +7419,14 @@ body.nav-rail .ri:hover::after, body.nav-rail .ri:focus-visible::after { opacity
           </div>
         </div>
         <a class="tile t-side" href="#" data-cat-go="live casino">
+          <img class="t-side__art" src="a/bfc92e2a2f.webp" alt="" width="351" height="176">
           <span class="eyebrow">Live casino</span>
           <h3>Soft dice,<br>hard tables</h3>
           <span class="sub-l">148 tables live now</span>
           <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
         </a>
         <a class="tile t-side t-side--crash" href="#" data-cat-go="crash games">
+          <img class="t-side__art" src="a/9ea8852046.webp" alt="" width="351" height="176">
           <span class="eyebrow">Crash games · 24</span>
           <h3>Cash out<br>before the crash</h3>
           <span class="sub-l">Aviator peaked at ×24,80</span>
